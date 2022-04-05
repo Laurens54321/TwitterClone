@@ -50,7 +50,8 @@ defmodule TwittercloneWeb.MixProject do
       {:gettext, "~> 0.18"},
       {:twitterclone, in_umbrella: true},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+      {:guardian, "~> 2.0"}
     ]
   end
 

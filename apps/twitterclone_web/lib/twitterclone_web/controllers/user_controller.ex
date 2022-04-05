@@ -11,7 +11,8 @@ defmodule TwittercloneWeb.UserController do
 
   def new(conn, _params) do
     changeset = UserContext.change_user(%User{})
-    render(conn, "new.html", changeset: changeset)
+    roles = UserContext.get_acceptable_roles()
+    render(conn, "new.html", changeset: changeset, acceptable_roles: roles)
   end
 
   def create(conn, %{"user" => user_params}) do
@@ -27,14 +28,15 @@ defmodule TwittercloneWeb.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    user = UserContext.get_user!(id)
+    user = UserContext.get_user(id)
     render(conn, "show.html", user: user)
   end
 
   def edit(conn, %{"id" => id}) do
     user = UserContext.get_user!(id)
     changeset = UserContext.change_user(user)
-    render(conn, "edit.html", user: user, changeset: changeset)
+    roles = UserContext.get_acceptable_roles()
+    render(conn, "edit.html", user: user, changeset: changeset, acceptable_roles: roles)
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
@@ -58,5 +60,10 @@ defmodule TwittercloneWeb.UserController do
     conn
     |> put_flash(:info, "User deleted successfully.")
     |> redirect(to: Routes.user_path(conn, :index))
+  end
+
+  def profile(conn, %{"user_id" => user_id}) do
+    user = UserContext.get_user!(user_id)
+    render(conn, "show.html", user: user)
   end
 end

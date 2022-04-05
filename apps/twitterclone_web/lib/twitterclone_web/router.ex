@@ -10,20 +10,52 @@ defmodule TwittercloneWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :allowed_for_users do
+    plug TwittercloneWeb.Plugs.AuthorizationPlug, ["Admin", "Manager", "User"]
+  end
+
+  pipeline :allowed_for_managers do
+    plug TwittercloneWeb.Plugs.AuthorizationPlug, ["Admin", "Manager"]
+  end
+
+  pipeline :allowed_for_admins do
+    plug TwittercloneWeb.Plugs.AuthorizationPlug, ["Admin"]
+  end
+
+
   pipeline :api do
     plug :accepts, ["json"]
   end
 
   scope "/", TwittercloneWeb do
-    pipe_through :browser
+    pipe_through [:browser, :auth]
+
+    get "/login", SessionController, :new
+    post "/login", SessionController, :login
+    get "/logout", SessionController, :logout
 
     resources "/users", UserController
+    get "/users/profile/:user_id", UserController, :profile
+
+    get "/", PageController, :index
+  end
+
+  scope "/", TwittercloneWeb do
+    pipe_through [:browser, :auth, :allowed_for_managers]
+
+
 
     resources "/twats", TwatController, except: [:new, :edit]
 
     resources "/comments", CommentController, except: [:new, :edit]
+  end
 
-    get "/", PageController, :index
+  pipeline :auth do
+    plug TwittercloneWeb.Pipeline
+  end
+
+  pipeline :ensure_auth do
+    plug Guardian.Plug.EnsureAuthenticated
   end
 
   # Other scopes may use custom stacks.

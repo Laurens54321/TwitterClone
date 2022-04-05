@@ -17,9 +17,13 @@
   <%= text_input f, :email %>
   <%= error_tag f, :email %>
 
-  <%= label f, :passwordHash %>
-  <%= text_input f, :passwordHash %>
-  <%= error_tag f, :passwordHash %>
+  <%= label f, :password %>
+  <%= text_input f, :password %>
+  <%= error_tag f, :password %>
+
+  <%= label f, :role %>
+  <%= select f, :role, @acceptable_roles %>
+  <%= error_tag f, :role %>
 
   <div>
     <%= submit "Save" %>

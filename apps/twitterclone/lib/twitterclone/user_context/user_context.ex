@@ -37,6 +37,9 @@ defmodule Twitterclone.UserContext do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_user(user_id), do: Repo.get(User, user_id)
+
+
   @doc """
   Creates a user.
 
@@ -101,4 +104,22 @@ defmodule Twitterclone.UserContext do
   def change_user(%User{} = user, attrs \\ %{}) do
     User.changeset(user, attrs)
   end
+
+  defdelegate get_acceptable_roles(), to: User
+
+  def authenticate_user(user_id, plain_text_password) do
+    case Repo.get_by(User, user_id: user_id) do
+      nil ->
+        Pbkdf2.no_user_verify()
+        {:error, :invalid_credentials}
+
+      user ->
+        if Pbkdf2.verify_pass(plain_text_password, user.passwordHash) do
+          {:ok, user}
+        else
+          {:error, :invalid_credentials}
+        end
+    end
+  end
+
 end

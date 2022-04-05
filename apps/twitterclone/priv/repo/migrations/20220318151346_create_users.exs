@@ -3,10 +3,11 @@ defmodule Twitterclone.Repo.Migrations.CreateUsers do
 
   def change do
     create table(:users) do
-      add :user_id, :string
-      add :name, :string
-      add :email, :string
-      add :passwordHash, :string
+      add :user_id, :string, null: false
+      add :name, :string, null: false
+      add :email, :string, null: false
+      add :passwordHash, :string, null: false
+      add :role, :string, null: false
 
       timestamps()
     end
