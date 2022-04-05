@@ -10,19 +10,6 @@ defmodule TwittercloneWeb.Router do
     plug :put_secure_browser_headers
   end
 
-  pipeline :allowed_for_users do
-    plug TwittercloneWeb.Plugs.AuthorizationPlug, ["Admin", "Manager", "User"]
-  end
-
-  pipeline :allowed_for_managers do
-    plug TwittercloneWeb.Plugs.AuthorizationPlug, ["Admin", "Manager"]
-  end
-
-  pipeline :allowed_for_admins do
-    plug TwittercloneWeb.Plugs.AuthorizationPlug, ["Admin"]
-  end
-
-
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -41,7 +28,7 @@ defmodule TwittercloneWeb.Router do
   end
 
   scope "/", TwittercloneWeb do
-    pipe_through [:browser, :auth, :allowed_for_managers]
+    pipe_through [:browser, :auth]
 
 
 
@@ -56,6 +43,18 @@ defmodule TwittercloneWeb.Router do
 
   pipeline :ensure_auth do
     plug Guardian.Plug.EnsureAuthenticated
+  end
+
+  pipeline :allowed_for_users do
+    plug TwittercloneWeb.Plugs.AuthorizationPlug, ["Admin", "Manager", "User"]
+  end
+
+  pipeline :allowed_for_managers do
+    plug TwittercloneWeb.Plugs.AuthorizationPlug, ["Admin", "Manager"]
+  end
+
+  pipeline :allowed_for_admins do
+    plug TwittercloneWeb.Plugs.AuthorizationPlug, ["Admin"]
   end
 
   # Other scopes may use custom stacks.

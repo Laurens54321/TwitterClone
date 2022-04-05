@@ -37,8 +37,17 @@
     "role" => "Admin" })
 
 {:ok, _cs} =
+  Twitterclone.UserContext.create_user(%{
+    "user_id" => "4",
+    "name" => "user 1",
+    "email" => "user@mail.com",
+    "password" => "t",
+    "role" => "User"
+    })
+
+{:ok, _cs} =
   Twitterclone.TwatContext.create_twat(%{
     "twat_id" => "qmsldkfjmlkqj",
     "creationDate" => "2022-04-05 11:53:40",
-    "text" => "some text",
-    "belongs_to" => "4"})
+    "text" => "First tweet!",
+    "user_id" => "4"})

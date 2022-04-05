@@ -101,4 +101,9 @@ defmodule Twitterclone.TwatContext do
   def change_twat(%Twat{} = twat, attrs \\ %{}) do
     Twat.changeset(twat, attrs)
   end
+
+  def get_by_userid(belongs_to) do
+    recording_query = from(t in Twat, where: t.user_id == ^belongs_to)
+    Repo.all(recording_query)
+  end
 end

@@ -15,7 +15,7 @@ defmodule Twitterclone.TwatContext.Twat do
   @doc false
   def changeset(twat, attrs) do
     twat
-    |> cast(attrs, [:text, :creationDate])
-    |> validate_required([:text, :creationDate])
+    |> cast(attrs, [:twat_id, :text, :creationDate, :user_id])
+    |> validate_required([:twat_id, :text, :creationDate, :user_id])
   end
 end
