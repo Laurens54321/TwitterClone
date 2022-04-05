@@ -40,9 +40,10 @@ defmodule Twitterclone.Umbrella.MixProject do
     [
       # run `mix setup` in all child apps
       setup: ["deps.get", "ecto.setup", "cmd npm install --prefix assets"],
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      "ecto.setup": ["ecto.create", "ecto.migrate", "run apps/twitterclone/priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      routes: ["phx.routes TwittercloneWeb.Router"]
     ]
   end
 end

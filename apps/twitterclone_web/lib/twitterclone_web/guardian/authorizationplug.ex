@@ -10,6 +10,8 @@ defmodule TwittercloneWeb.Plugs.AuthorizationPlug do
     |> grant_access(u.role in roles)
   end
 
+  def call(conn, _), do: grant_access(conn, false) # user not found so no authorization
+
   def grant_access(conn, true), do: conn  # role is in accepted roles
 
   def grant_access(conn, false) do        # role is not in accepted roles

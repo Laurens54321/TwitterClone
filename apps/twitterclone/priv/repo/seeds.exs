@@ -50,4 +50,4 @@
     "twat_id" => "qmsldkfjmlkqj",
     "creationDate" => "2022-04-05 11:53:40",
     "text" => "First tweet!",
-    "user_id" => "4"})
+    "user_id" => "admin"})

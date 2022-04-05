@@ -7,7 +7,7 @@ defmodule Twitterclone.Repo.Migrations.CreateComments do
       add :text, :string
       add :creationDate, :date
       add :twat_id, references(:twats)
-      add :user_id, references(:users)
+      add :user_id, references(:users, type: :string,  column: :user_id)
 
       timestamps()
     end

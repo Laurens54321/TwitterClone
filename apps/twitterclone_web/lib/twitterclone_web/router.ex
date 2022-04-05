@@ -22,13 +22,21 @@ defmodule TwittercloneWeb.Router do
     get "/logout", SessionController, :logout
 
     resources "/users", UserController
-    get "/users/profile/:user_id", UserController, :profile
+    get "/profile", ProfileController, :myprofile
+    get "/twat", ProfileController, :twat
+    get "/profile/:user_id", ProfileController, :profile
 
     get "/", PageController, :index
   end
 
   scope "/", TwittercloneWeb do
-    pipe_through [:browser, :auth]
+    pipe_through [:browser, :auth,  :allowed_for_users]
+
+
+  end
+
+  scope "/", TwittercloneWeb do
+    pipe_through [:browser, :auth,  :allowed_for_admins]
 
 
 
@@ -39,11 +47,13 @@ defmodule TwittercloneWeb.Router do
 
   pipeline :auth do
     plug TwittercloneWeb.Pipeline
+    plug TwittercloneWeb.Plugs.CurrentUserPlug
   end
 
-  pipeline :ensure_auth do
-    plug Guardian.Plug.EnsureAuthenticated
-  end
+  # modified AuthorizationPlug to make this unnecesary
+  # pipeline :ensure_auth do
+  #   plug Guardian.Plug.EnsureAuthenticated
+  # end
 
   pipeline :allowed_for_users do
     plug TwittercloneWeb.Plugs.AuthorizationPlug, ["Admin", "Manager", "User"]

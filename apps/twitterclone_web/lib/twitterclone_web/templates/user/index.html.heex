@@ -20,9 +20,9 @@
       <td><%= user.passwordHash %></td>
 
       <td>
-        <span><%= link "Show", to: Routes.user_path(@conn, :show, user) %></span>
-        <span><%= link "Edit", to: Routes.user_path(@conn, :edit, user) %></span>
-        <span><%= link "Delete", to: Routes.user_path(@conn, :delete, user), method: :delete, data: [confirm: "Are you sure?"] %></span>
+        <span><%= link "Show", to: Routes.user_path(@conn, :show, user.user_id) %></span>
+        <span><%= link "Edit", to: Routes.user_path(@conn, :edit, user.user_id) %></span>
+        <span><%= link "Delete", to: Routes.user_path(@conn, :delete, user.user_id), method: :delete, data: [confirm: "Are you sure?"] %></span>
       </td>
     </tr>
 <% end %>

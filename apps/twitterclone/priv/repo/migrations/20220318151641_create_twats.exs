@@ -6,7 +6,7 @@ defmodule Twitterclone.Repo.Migrations.CreateTwats do
       add :twat_id, :string
       add :text, :string
       add :creationDate, :date
-      add :user_id, references(:users)
+      add :user_id, references(:users, type: :string,  column: :user_id)
 
       timestamps()
     end

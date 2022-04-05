@@ -37,8 +37,15 @@ defmodule Twitterclone.UserContext do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
-  def get_user(user_id), do: Repo.get(User, user_id)
+  def get_user(user_id, preloads \\ []) do
+    Repo.get(User, user_id)
+    |> Repo.preload(preloads)
+  end
 
+  def get_by_userid(user_id) do
+    recording_query = from(u in User, where: u.user_id == ^user_id)
+    Repo.all(recording_query)
+  end
 
   @doc """
   Creates a user.

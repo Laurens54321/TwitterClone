@@ -7,7 +7,7 @@ defmodule Twitterclone.CommentContext.Comment do
     field :creationDate, :date
     field :text, :string
     belongs_to :twat, Twitterclone.TwatContext.Twat
-    belongs_to :user, Twitterclone.UserContext.User
+    belongs_to :user, Twitterclone.UserContext.User, foreign_key: :user_id
 
     timestamps()
   end

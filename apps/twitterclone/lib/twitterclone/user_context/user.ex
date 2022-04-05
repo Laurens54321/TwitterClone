@@ -4,15 +4,15 @@ defmodule Twitterclone.UserContext.User do
 
   @acceptable_roles ["Admin", "Manager", "User"]
 
+  @primary_key {:user_id, :string, []}
   schema "users" do
-    field :user_id, :string
     field :name, :string
     field :email, :string
     field :password, :string, virtual: true
     field :passwordHash, :string
     field :role, :string, default: "User"
-    has_many :tasks, Twitterclone.TwatContext.Twat
-    has_many :comments, Twitterclone.CommentContext.Comment
+    has_many :twats, Twitterclone.TwatContext.Twat, foreign_key: :user_id
+    has_many :comments, Twitterclone.CommentContext.Comment, foreign_key: :user_id
 
     timestamps()
   end
@@ -22,8 +22,8 @@ defmodule Twitterclone.UserContext.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:user_id, :name, :email, :password])
-    |> validate_required([:user_id, :name, :email, :password])
+    |> cast(attrs, [:user_id, :name, :email, :password, :role])
+    |> validate_required([:user_id, :name, :email, :password, :role])
     |> validate_inclusion(:role, @acceptable_roles)
     |> put_password_hash()
   end

@@ -4,9 +4,6 @@ defmodule TwittercloneWeb.UserController do
   alias Twitterclone.UserContext
   alias Twitterclone.UserContext.User
 
-  alias Twitterclone.TwatContext
-  alias Twitterclone.TwatContext.Twat
-
   def index(conn, _params) do
     users = UserContext.list_users()
     render(conn, "index.html", users: users)
@@ -65,11 +62,5 @@ defmodule TwittercloneWeb.UserController do
     |> redirect(to: Routes.user_path(conn, :index))
   end
 
-  def profile(conn, %{"user_id" => user_id}) do
-    user = UserContext.get_user!(user_id)
-    twats = TwatContext.get_by_userid(user_id)
-    IO.puts("THIS IS IT")
-    #IO.puts(twats)
-    render(conn, "profile.html", user: user, twats: twats)
-  end
+
 end
