@@ -9,7 +9,7 @@ defmodule Twitterclone.TwatContext.Twat do
     field :twat_id, :string
     field :creationDate, :date
     field :text, :string
-    belongs_to :user, User, foreign_key: :user_id, references: :user_id
+    belongs_to :user, User, foreign_key: :user_id, references: :user_id, type: :string
     has_many :comments, Twitterclone.CommentContext.Comment
 
     timestamps()
@@ -18,9 +18,8 @@ defmodule Twitterclone.TwatContext.Twat do
   @doc false
   def changeset(twat, attrs) do
     twat
-    |> cast(attrs, [:twat_id, :text, :creationDate])
-    |> validate_required([:twat_id, :text, :creationDate])
-    |> create_relation()
+    |> cast(attrs, [:twat_id, :text, :creationDate, :user_id])
+    |> validate_required([:twat_id, :text, :creationDate, :user_id])
   end
 
   defp create_relation(%Ecto.Changeset{valid?: true, changes: %{user_id: user_id} = changeset}) do

@@ -7,19 +7,13 @@ defmodule TwittercloneWeb.ProfileController do
 
   def myprofile(conn, _args) do
     current_user = Guardian.Plug.current_resource(conn)
-    preloadeduser = UserContext.get_by_userid(current_user.user_id, [:twats])
-    assign(conn, :current_user, preloadeduser)
-
-    render(conn, "myprofile.html")
+    user = UserContext.get_by_userid(current_user.user_id, [:twats])
+    render(conn, "profile.html", user: user, twats: user.twats)
   end
 
   def profile(conn, %{"user_id" => user_id}) do
-    user = UserContext.get_by_userid(user_id)
-    twats = TwatContext.get_by_userid(user_id)
-    IO.puts("USER ID")
-    IO.puts(twats)
-
-    render(conn, "profile.html", user: user, twats: twats)
+    user = UserContext.get_by_userid(user_id, [:twats])
+    render(conn, "profile.html", user: user, twats: user.twats)
   end
 
   def twat(conn, _params) do

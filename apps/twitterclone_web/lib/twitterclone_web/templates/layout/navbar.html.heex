@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <%= csrf_meta_tag() %>
+    <%= live_title_tag assigns[:page_title] || "Twitterclone", suffix: " · Phoenix Framework" %>
+    <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
+    <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/styles.css")}/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+      crossorigin="anonymous"
+    />
+    <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
+  </head>
+  <body>
+
+    <!-- sidebar starts -->
+    <div class="sidebar">
+    <i class="fab fa-twitter"></i>
+    <div class="sidebarOption">
+        <span class="material-icons"> home </span>
+        <%= link "Home", to: Routes.page_path(@conn, :index)%>
+    </div>
+
+    <div class="sidebarOption">
+        <span class="material-icons"> perm_identity </span>
+        <%= link "Profile", to: Routes.profile_path(@conn, :profile, @current_user.user_id)%>
+    </div>
+    
+
+    <div class="sidebarOption">
+        <span class="material-icons"> list_alt </span>
+        <%= link "Users", to: Routes.user_path(@conn, :index)%>
+    </div>
+
+
+    <div class="sidebarOption">
+        <span class="material-icons"> more_horiz </span>
+        <a href="/">More</a>
+    </div>
+    <button class="sidebar__tweet">Tweet</button>
+    </div>
+    <!-- sidebar ends -->
+
+    <%= @inner_content%>
+  </body>
+</html>
+
+<!--
+
+<div class="sidebarOption">
+        <span class="material-icons"> search </span>
+        <h2>Explore</h2>
+    </div>
+
+    <div class="sidebarOption">
+        <span class="material-icons"> notifications_none </span>
+        <h2>Notifications</h2>
+    </div>
+
+    <div class="sidebarOption">
+        <span class="material-icons"> mail_outline </span>
+        <h2>Messages</h2>
+    </div>
+
+    <div class="sidebarOption">
+        <span class="material-icons"> bookmark_border </span>
+        <h2>Bookmarks</h2>
+    </div>
+
+
+
+    -->
