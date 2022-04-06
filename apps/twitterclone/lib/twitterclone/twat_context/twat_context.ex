@@ -98,8 +98,12 @@ defmodule Twitterclone.TwatContext do
       %Ecto.Changeset{data: %Twat{}}
 
   """
-  def change_twat(%Twat{} = twat, attrs \\ %{}) do
+  def change_twat(%Twat{} = twat, attrs) do
     Twat.changeset(twat, attrs)
+  end
+
+  def change_twat(%Twat{} = twat) do
+    Ecto.Changeset.change(twat)
   end
 
   def get_by_userid(user_id) do

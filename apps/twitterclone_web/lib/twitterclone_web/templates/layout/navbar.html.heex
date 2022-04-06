@@ -43,7 +43,8 @@
         <span class="material-icons"> more_horiz </span>
         <a href="/">More</a>
     </div>
-    <button class="sidebar__tweet">Tweet</button>
+
+    <%= button "Twat", to: Routes.profile_path(@conn, :newtwat), method: :get, class: "sidebar__tweet"%>
     </div>
     <!-- sidebar ends -->
 

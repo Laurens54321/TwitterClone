@@ -16,9 +16,19 @@ defmodule TwittercloneWeb.ProfileController do
     render(conn, "profile.html", user: user, twats: user.twats)
   end
 
-  def twat(conn, _params) do
+  def newtwat(conn, _params) do
     changeset = TwatContext.change_twat(%Twat{})
-    render(conn, "twat.html", changeset)
+    render(conn, "twat.html", changeset: changeset)
+  end
+
+  def createtwat(conn, %{"twat" => twat_params}) do
+    current_user = Guardian.Plug.current_resource(conn)
+    twat_params
+      |> Map.put(:creationDate, DateTime.utc_now)
+      |> Map.put(:user_id, current_user.user_id)
+    with {:ok, _} <- TwatContext.create_twat(twat_params) do
+      redirect(conn, to: "/profile")
+    end
   end
 
 

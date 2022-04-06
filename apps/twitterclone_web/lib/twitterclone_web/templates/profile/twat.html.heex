@@ -1,6 +1,6 @@
 <h1>New Twat</h1>
 
-<%= form_for @changeset, Routes.twat_path(@conn, :create), fn f -> %>
+<%= form_for @changeset, Routes.profile_path(@conn, :createtwat), fn f -> %>
 
 <%= if @changeset.action do %>
 <div class="alert alert-danger">
@@ -8,7 +8,7 @@
 </div>
 <% end %>
 
-<%= label f, :user_id %>
+<%= label f, @current_user.name %>
 
 <%= label f, :text %>
 <%= text_input f, :text %>

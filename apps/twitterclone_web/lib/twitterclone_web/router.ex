@@ -22,8 +22,8 @@ defmodule TwittercloneWeb.Router do
     get "/logout", SessionController, :logout
 
     resources "/users", UserController
-    get "/profile", ProfileController, :myprofile
-    get "/twat", ProfileController, :twat
+
+
     get "/profile/:user_id", ProfileController, :profile
 
     get "/", PageController, :index
@@ -32,6 +32,9 @@ defmodule TwittercloneWeb.Router do
   scope "/", TwittercloneWeb do
     pipe_through [:browser, :auth,  :allowed_for_users]
 
+    get "/profile", ProfileController, :myprofile
+    get "/twat", ProfileController, :newtwat
+    post "/twat", ProfileController, :createtwat
 
   end
 
