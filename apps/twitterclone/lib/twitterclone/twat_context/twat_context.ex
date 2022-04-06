@@ -103,7 +103,7 @@ defmodule Twitterclone.TwatContext do
   end
 
   def get_by_userid(user_id) do
-    recording_query = from(t in Twat, where: t.user_id == ^user_id)
+    recording_query = from(t in Twat, where: like(t.user_id, ^user_id))
     Repo.all(recording_query)
   end
 end

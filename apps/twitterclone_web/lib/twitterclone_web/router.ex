@@ -45,6 +45,10 @@ defmodule TwittercloneWeb.Router do
     resources "/comments", CommentController, except: [:new, :edit]
   end
 
+  scope "/api", TwittercloneWeb do
+    resources "/users", UserRestController
+  end
+
   pipeline :auth do
     plug TwittercloneWeb.Pipeline
     plug TwittercloneWeb.Plugs.CurrentUserPlug

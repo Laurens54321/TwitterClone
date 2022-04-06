@@ -42,9 +42,10 @@ defmodule Twitterclone.UserContext do
     |> Repo.preload(preloads)
   end
 
-  def get_by_userid(user_id) do
-    recording_query = from(u in User, where: u.user_id == ^user_id)
-    Repo.all(recording_query)
+  def get_by_userid(user_id, preloads \\ []) do
+    recording_query = from(u in User, where: like(u.user_id, ^user_id))
+    Repo.one(recording_query)
+      |> Repo.preload(preloads)
   end
 
   @doc """
