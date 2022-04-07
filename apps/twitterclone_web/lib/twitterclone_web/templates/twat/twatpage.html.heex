@@ -1,0 +1,20 @@
+<%= render TwittercloneWeb.TwatView, "twat.html", conn: @conn, twat: @twat %>
+
+<%= if @current_user do %>
+<!-- tweetbox starts, don't show it if not logged in -->
+<%= form_for @changeset, Routes.profile_path(@conn, :createtwat), fn f -> %>
+    <div class="tweetBox">
+    <form>
+        <div class="tweetbox__input">
+        <%= text_input f, :text, class: "tweetBox", placeholder: "What's twatting?"  %>
+        </div>
+        <%= submit "Twat", class: "tweetBox__tweetButton"%>
+    </form>
+</div>
+<% end %>
+<!-- tweetbox ends -->
+<% end %>
+
+<%= for subtwat <- @twat.comments do %>
+    <%= render TwittercloneWeb.TwatView, "twat.html", conn: @conn, twat: subtwat %>
+<% end %>

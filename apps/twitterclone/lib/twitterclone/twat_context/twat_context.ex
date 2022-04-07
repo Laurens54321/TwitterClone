@@ -37,6 +37,11 @@ defmodule Twitterclone.TwatContext do
   """
   def get_twat!(id), do: Repo.get!(Twat, id)
 
+  def get_twat(id, args \\ []) do
+      Repo.get(Twat, id)
+      |> Repo.preload(args)
+  end
+
   @doc """
   Creates a twat.
 
@@ -106,8 +111,15 @@ defmodule Twitterclone.TwatContext do
     Ecto.Changeset.change(twat)
   end
 
-  def get_by_userid(user_id) do
-    recording_query = from(t in Twat, where: like(t.user_id, ^user_id))
+  def get_by_userid(user_id, args \\ []) do
+    recording_query = from(t in Twat, where: like(t.user_id, ^user_id), preload: ^args)
     Repo.all(recording_query)
+  end
+
+  def get_by_userid_list(users, args \\ []) do
+    twats = []
+    for user <- users do
+      twats ++ get_by_userid(user.user_id, args)
+    end
   end
 end

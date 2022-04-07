@@ -6,7 +6,7 @@
       <th>User</th>
       <th>Name</th>
       <th>Email</th>
-      <th>Passwordhash</th>
+      <th>Options</th>
 
       <th></th>
     </tr>
@@ -17,10 +17,9 @@
       <td><%= user.user_id %></td>
       <td><%= user.name %></td>
       <td><%= user.email %></td>
-      <td><%= user.passwordHash %></td>
 
       <td>
-        <span><%= link "Show", to: Routes.user_path(@conn, :show, user.user_id) %></span>
+        <span><%= link "Show", to: Routes.profile_path(@conn, :profile, user.user_id) %></span>
         <span><%= link "Edit", to: Routes.user_path(@conn, :edit, user.user_id) %></span>
         <span><%= link "Delete", to: Routes.user_path(@conn, :delete, user.user_id), method: :delete, data: [confirm: "Are you sure?"] %></span>
       </td>

@@ -24,12 +24,12 @@
     <i class="fab fa-twitter"></i>
     <div class="sidebarOption">
         <span class="material-icons"> home </span>
-        <%= link "Home", to: Routes.page_path(@conn, :index)%>
+        <%= link "Feed", to: Routes.profile_path(@conn, :feed)%>
     </div>
 
     <div class="sidebarOption">
         <span class="material-icons"> perm_identity </span>
-        <%= link "Profile", to: Routes.profile_path(@conn, :profile, @current_user.user_id)%>
+        <%= link "Profile", to: Routes.profile_path(@conn, :myprofile)%>
     </div>
     
 
@@ -41,14 +41,21 @@
 
     <div class="sidebarOption">
         <span class="material-icons"> more_horiz </span>
-        <a href="/">More</a>
+        <%= link "Home", to: Routes.page_path(@conn, :index)%>
     </div>
 
-    <%= button "Twat", to: Routes.profile_path(@conn, :newtwat), method: :get, class: "sidebar__tweet"%>
+    <%= if @current_user do %>
+      <%= button "Twat", to: Routes.profile_path(@conn, :newtwat), method: :get, class: "sidebar__tweet"%>
+    <% end %>
     </div>
     <!-- sidebar ends -->
 
-    <%= @inner_content%>
+    <div class="feed">
+      <div class="feed__header">
+        <h2>Twatter</h2>
+      </div>
+      <%= @inner_content%>
+    </div>
   </body>
 </html>
 

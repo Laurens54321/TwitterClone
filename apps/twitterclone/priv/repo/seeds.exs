@@ -50,3 +50,15 @@
     "creationDate" => "2022-04-05 11:53:40",
     "text" => "First tweet!",
     "user_id" => "admin"})
+
+{:ok, _cs} =
+  Twitterclone.TwatContext.create_twat(%{
+    "creationDate" => "2022-04-09 11:53:40",
+    "text" => "Subtweet!",
+    "user_id" => "admin",
+    "parent_twat" => 1})
+
+{:ok, _cs} =
+  Twitterclone.UserContext.create_follower(%{
+    "user_id" => "admin",
+    "follower_id" => "user"})

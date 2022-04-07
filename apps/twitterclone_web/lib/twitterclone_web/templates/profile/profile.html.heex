@@ -1,28 +1,40 @@
-<h1>Show User</h1>
+<div>
 
-<ul>
+  <h1>Profile</h1>
 
-  <li>
-    <strong>User:</strong>
-    <%= @user.user_id %>
-  </li>
+  <%= if !@current_user do %>
+    <button disabled class="sidebar__tweet">Not Logged In</button>  
+  <% else %>
+    <%= if @current_user == @user do %>
+     <!-- don't show anything when viewing own page-->
+    <% else %>
+      <%= if false do %>
+        <button disabled class="sidebar__tweet">Already Following</button>  
+        <% else %>
+          <%= button "Follow", to: Routes.follower_path(@conn, :create, @current_user.user_id, @user.user_id ), method: :get, class: "sidebar__tweet"%>
+        <% end %>
+    <% end %>
+  <% end %>
 
-  <li>
-    <strong>Name:</strong>
-    <%= @user.name %>
-  </li>
+  <ul>
+    <li>
+      <strong><%= @user.name %></strong>
+      @<%= @user.user_id %>
+    </li>
 
-  <li>
-    <strong>Email:</strong>
-    <%= @user.email %>
-  </li>
+    <li>
+      <strong>Email:</strong>
+      <%= @user.email %>
+    </li>
 
-  <li>
-    <strong>Passwordhash:</strong>
-    <%= @user.passwordHash %>
-  </li>
+    <li>
+      <strong>Passwordhash:</strong>
+      <%= @user.passwordHash %>
+    </li>
 
-</ul>
+  </ul>
+
+</div>
 
 <span><%= link "Edit", to: Routes.user_path(@conn, :edit, @user.user_id) %></span> |
 <span><%= link "Back", to: Routes.user_path(@conn, :index) %></span>
@@ -32,9 +44,6 @@
 <h2>Twats </h2>
 
 <%= for twat <- @twats do %>
-    <tr>
-      <td><b> <%= twat.text%></b> </td> <br/>
-      <td><i> <%= twat.creationDate %> </i></td>
-    </tr>
+    <%= render TwittercloneWeb.TwatView, "twat.html", conn: @conn, twat: twat %>
 <% end %>
 </div>

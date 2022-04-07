@@ -2,19 +2,20 @@
 
 <%= form_for @changeset, Routes.profile_path(@conn, :createtwat), fn f -> %>
 
-<%= if @changeset.action do %>
-<div class="alert alert-danger">
-    <p>Oops, something went wrong! Please check the errors below.</p>
-</div>
-<% end %>
+    <%= if @changeset.action do %>
+        <div class="alert alert-danger">
+            <p>Oops, something went wrong! Please check the errors below.</p>
+        </div>
+    <% end %>
+    <div class ="tweetBox">
+        <%= label f, @current_user.name %>
 
-<%= label f, @current_user.name %>
+        <%= label f, :text %>
+        <%= text_input f, :text, class: "tweetBox" %>
+        <%= error_tag f, :text %>
 
-<%= label f, :text %>
-<%= text_input f, :text %>
-<%= error_tag f, :text %>
-
-<div>
-<%= submit "Save" %>
-</div>
+        <div>
+            <%= submit "Save", class: "tweetBox__tweetButton"%>
+        </div>
+    </div>
 <% end %>

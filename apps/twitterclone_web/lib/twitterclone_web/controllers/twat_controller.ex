@@ -25,6 +25,12 @@ defmodule TwittercloneWeb.TwatController do
     render(conn, "show.json", twat: twat)
   end
 
+  def get(conn, %{"id" => id}) do
+    twat = TwatContext.get_twat(id, [:user, :comments, comments: [:user]])
+    changeset = Ecto.Changeset.put_change(TwatContext.change_twat(%Twat{}), :parent_twat,  twat.id)
+    render(conn, "twatpage.html", twat: twat, changeset: changeset)
+  end
+
   def update(conn, %{"id" => id, "twat" => twat_params}) do
     twat = TwatContext.get_twat!(id)
 

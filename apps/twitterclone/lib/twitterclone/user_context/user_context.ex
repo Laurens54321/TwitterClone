@@ -130,4 +130,53 @@ defmodule Twitterclone.UserContext do
     end
   end
 
+  def preload_feed(user) do
+    Repo.preload(user, [{:following, :twats}])
+  end
+
+
+  alias Twitterclone.UserContext.Follower
+
+  def list_followers do
+    Repo.all(Follower)
+  end
+
+  def is_following(user_id, follower_id) do
+    recording_query = from(u in Follower, where: like(u.user_id, ^user_id) and like(u.follower_id, ^follower_id))
+    if Repo.one(recording_query), do: True
+    False
+  end
+
+  def get_follower!(user_id), do: Repo.get!(Follower, user_id)
+
+  def get_following(user_id) do
+    recording_query = from(u in Follower, where: like(u.follower_id, ^user_id))
+    Repo.all(recording_query)
+  end
+
+  def get_followers(user_id) do
+    recording_query = from(u in Follower, where: like(u.user_id, ^user_id))
+    Repo.all(recording_query)
+  end
+
+  def create_follower(attrs \\ %{}) do
+    %Follower{}
+    |> Follower.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_follower(%Follower{} = follower, attrs) do
+    follower
+    |> Follower.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_follower(%Follower{} = follower) do
+    Repo.delete(follower)
+  end
+
+  def change_follower(%Follower{} = follower, attrs \\ %{}) do
+    Follower.changeset(follower, attrs)
+  end
+
 end

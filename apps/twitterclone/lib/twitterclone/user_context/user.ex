@@ -12,10 +12,20 @@ defmodule Twitterclone.UserContext.User do
     field :passwordHash, :string
     field :role, :string, default: "User"
     has_many :twats, Twitterclone.TwatContext.Twat, foreign_key: :user_id
-    has_many :comments, Twitterclone.CommentContext.Comment, foreign_key: :user_id
+    many_to_many  :following,
+                  Twitterclone.UserContext.User,
+                  join_through: Twitterclone.UserContext.Follower,
+                  join_keys: [user_id: :user_id, follower_id: :user_id]
+
+    many_to_many  :followers,
+                  Twitterclone.UserContext.User,
+                  join_through: Twitterclone.UserContext.Follower,
+                  join_keys: [follower_id: :user_id,user_id: :user_id]
+
 
     timestamps()
   end
+
 
   def get_acceptable_roles, do: @acceptable_roles
 
@@ -25,6 +35,9 @@ defmodule Twitterclone.UserContext.User do
     |> cast(attrs, [:user_id, :name, :email, :password, :role])
     |> validate_required([:user_id, :name, :email, :password, :role])
     |> validate_inclusion(:role, @acceptable_roles)
+    |> validate_format(:email, ~r/@/)
+    |> unique_constraint([:user_id, :email])
+
     |> put_password_hash()
   end
 

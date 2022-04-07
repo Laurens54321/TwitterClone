@@ -20,4 +20,19 @@ defmodule Twitterclone.UserContextFixtures do
 
     user
   end
+
+  @doc """
+  Generate a follower.
+  """
+  def follower_fixture(attrs \\ %{}) do
+    {:ok, follower} =
+      attrs
+      |> Enum.into(%{
+        follower_id: "some follower_id",
+        user_id: "some user_id"
+      })
+      |> Twitterclone.UserContext.create_follower()
+
+    follower
+  end
 end

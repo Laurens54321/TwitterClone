@@ -1,0 +1,27 @@
+<!-- post starts -->
+    <%= link to: Routes.twat_path(@conn, :get, @twat.id), 
+        method: :get, class: "btn " do %>
+        <div class="post">
+            <div class="post__avatar"> </div>
+
+            <div class="post__body">
+            <div class="post__header">
+                <div class="post__headerText">
+                <h3>
+                    <%= @twat.user.name %> 
+                    <span class="post__headerSpecial">@<%= @twat.user_id %></span>
+                </h3>
+                </div>
+                <div class="post__headerDescription">
+                <%= @twat.text %>
+                </div>
+            </div>
+            
+            <div class="post__footer">
+                <span class="post__headerSpecial">@<%= @twat.creationDate %></span>
+            </div>
+            
+            </div>
+        </div>
+    <% end %>
+<!-- post ends -->
