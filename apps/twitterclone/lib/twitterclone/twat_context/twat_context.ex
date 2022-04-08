@@ -121,5 +121,6 @@ defmodule Twitterclone.TwatContext do
     for user <- users do
       twats ++ get_by_userid(user.user_id, args)
     end
+
   end
 end

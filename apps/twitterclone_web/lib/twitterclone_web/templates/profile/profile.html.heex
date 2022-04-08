@@ -2,18 +2,8 @@
 
   <h1>Profile</h1>
 
-  <%= if !@current_user do %>
-    <button disabled class="sidebar__tweet">Not Logged In</button>  
-  <% else %>
-    <%= if @current_user == @user do %>
-     <!-- don't show anything when viewing own page-->
-    <% else %>
-      <%= if false do %>
-        <button disabled class="sidebar__tweet">Already Following</button>  
-        <% else %>
-          <%= button "Follow", to: Routes.follower_path(@conn, :create, @current_user.user_id, @user.user_id ), method: :get, class: "sidebar__tweet"%>
-        <% end %>
-    <% end %>
+  <%= if assigns[:follow_button] do %> <!-- trick to check if nil -->
+    <%= render @follow_button, conn: @conn, current_user: @current_user, user: @user %>
   <% end %>
 
   <ul>

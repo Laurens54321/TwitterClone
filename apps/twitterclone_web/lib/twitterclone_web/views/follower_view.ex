@@ -18,9 +18,9 @@ defmodule TwittercloneWeb.FollowerView do
     }
   end
 
-  def render("credentials.json", _) do
+  def render("credentials.json", %{follower: follower}) do
     %{
-      error: "Not authenticated as following user"
+      error: "Not authenticated as following user: " <> follower
     }
   end
 end

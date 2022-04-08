@@ -6,7 +6,7 @@ defmodule TwittercloneWeb.FollowerController do
 
   action_fallback TwittercloneWeb.FallbackController
 
-  def create(conn, %{"user_id" => user_id, "follower_id" => follower_id}) do
+  def follow(conn, %{"user_id" => user_id, "follower_id" => follower_id}) do
     if Guardian.Plug.current_resource(conn).user_id != follower_id do
       conn
       |> put_status(:failed)
@@ -16,7 +16,17 @@ defmodule TwittercloneWeb.FollowerController do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.follower_path(conn, :show, follower))
-      |> render("show.json", follower: follower)
+      |> send_resp(:no_content, "")
+    end
+  end
+
+  def unfollow(conn, %{"user_id" => user_id, "follower_id" => follower_id}) do
+    if Guardian.Plug.current_resource(conn).user_id != follower_id do
+      conn
+      |> render("credentials.json", follower: follower_id)
+    end
+    with {:ok, _} <- UserContext.delete_follower(UserContext.get_follower_record(user_id, follower_id)) do
+      send_resp(conn, :no_content, "")
     end
   end
 

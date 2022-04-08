@@ -15,12 +15,14 @@ defmodule Twitterclone.UserContext.User do
     many_to_many  :following,
                   Twitterclone.UserContext.User,
                   join_through: Twitterclone.UserContext.Follower,
-                  join_keys: [user_id: :user_id, follower_id: :user_id]
+                  join_keys: [follower_id: :user_id, user_id: :user_id]
+
 
     many_to_many  :followers,
                   Twitterclone.UserContext.User,
                   join_through: Twitterclone.UserContext.Follower,
-                  join_keys: [follower_id: :user_id,user_id: :user_id]
+                  join_keys: [user_id: :user_id, follower_id: :user_id]
+
 
 
     timestamps()
