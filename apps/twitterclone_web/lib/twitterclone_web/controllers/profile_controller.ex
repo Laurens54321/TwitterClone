@@ -42,13 +42,18 @@ defmodule TwittercloneWeb.ProfileController do
   end
 
   def createtwat(conn, %{"twat" => twat_params}) do
+    parent_id = Map.get(twat_params, :parent_id)
     current_user = Guardian.Plug.current_resource(conn)
     twat_params
       |> Map.put("user_id", current_user.user_id)
       |> Map.put("creationDate", DateTime.utc_now)
       |> TwatContext.create_twat()
 
-    redirect(conn, to: "/profile")
+    if parent_id do
+      redirect(conn, to: Routes.twat_path(conn, :get, parent_id))
+    else
+      redirect(conn, to: "/profile")
+    end
   end
 
 

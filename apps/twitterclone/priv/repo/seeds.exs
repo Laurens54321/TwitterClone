@@ -40,7 +40,7 @@
   Twitterclone.UserContext.create_user(%{
     "user_id" => "4",
     "name" => "user 1",
-    "email" => "user@mail.com",
+    "email" => "usernumberfour@mail.com",
     "password" => "t",
     "role" => "User"
     })
@@ -53,10 +53,17 @@
 
 {:ok, _cs} =
   Twitterclone.TwatContext.create_twat(%{
+    "creationDate" => "2022-04-06 11:53:40",
+    "text" => "Another tweet!",
+    "user_id" => "admin"})
+
+{:ok, _cs} =
+  Twitterclone.TwatContext.create_twat(%{
     "creationDate" => "2022-04-09 11:53:40",
     "text" => "Subtweet!",
-    "user_id" => "admin",
+    "user_id" => "user",
     "parent_twat" => 1})
+
 
 {:ok, _cs} =
   Twitterclone.UserContext.create_follower(%{

@@ -7,16 +7,9 @@ defmodule Twitterclone.UserContext do
   alias Twitterclone.Repo
 
   alias Twitterclone.UserContext.User
+  alias Twitterclone.UserContext.ApiKey
 
-  @doc """
-  Returns the list of users.
 
-  ## Examples
-
-      iex> list_users()
-      [%User{}, ...]
-
-  """
   def list_users do
     Repo.all(User)
   end
@@ -43,8 +36,8 @@ defmodule Twitterclone.UserContext do
   end
 
   def get_by_userid(user_id, preloads \\ []) do
-    recording_query = from(u in User, where: like(u.user_id, ^user_id))
-    Repo.one(recording_query)
+    query = from(u in User, where: like(u.user_id, ^user_id))
+    Repo.one(query)
       |> Repo.preload(preloads)
   end
 
@@ -134,6 +127,27 @@ defmodule Twitterclone.UserContext do
     Repo.preload(user, [{:following, :twats}])
   end
 
+  ### API KEY ###
+
+  def api_key_exists?(key) do
+    query = from(u in ApiKey, where: like(u.key, ^key))
+    Repo.all(query)
+  end
+
+  def gen_api_key(%User{} = user) do
+    user = Repo.preload(user, :api_key)
+    case user.api_key do
+      nil ->
+        %ApiKey{user_id: user.id}
+      api_key ->
+        api_key
+    end
+    |> ApiKey.changeset(%{key: Twitterclone.key_gen()})
+    |> Repo.insert_or_update()
+  end
+
+
+  ### FOLLOWER  ###
 
   alias Twitterclone.UserContext.Follower
 
@@ -142,26 +156,26 @@ defmodule Twitterclone.UserContext do
   end
 
   def is_following(user_id, follower_id) do
-    recording_query = from(u in Follower, where: like(u.user_id, ^user_id) and like(u.follower_id, ^follower_id))
-    if Repo.one(recording_query), do: True
+    query = from(u in Follower, where: like(u.user_id, ^user_id) and like(u.follower_id, ^follower_id))
+    if Repo.one(query), do: True
     False
   end
 
   def get_follower!(user_id), do: Repo.get!(Follower, user_id)
 
   def get_following(user_id) do
-    recording_query = from(u in Follower, where: like(u.follower_id, ^user_id))
-    Repo.all(recording_query)
+    query = from(u in Follower, where: like(u.follower_id, ^user_id))
+    Repo.all(query)
   end
 
   def get_followers(user_id) do
-    recording_query = from(u in Follower, where: like(u.user_id, ^user_id))
-    Repo.all(recording_query)
+    query = from(u in Follower, where: like(u.user_id, ^user_id))
+    Repo.all(query)
   end
 
   def get_follower_record(user_id, follower_id) do
-    recording_query = from(u in Follower, where: like(u.user_id, ^user_id) and like(u.follower_id, ^follower_id))
-    Repo.one(recording_query)
+    query = from(u in Follower, where: like(u.user_id, ^user_id) and like(u.follower_id, ^follower_id))
+    Repo.one(query)
   end
 
   def create_follower(attrs \\ %{}) do

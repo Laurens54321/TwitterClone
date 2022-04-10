@@ -6,4 +6,10 @@ defmodule Twitterclone do
   Contexts are also responsible for managing your data, regardless
   if it comes from the database, an external API or others.
   """
+
+  def key_gen() do
+    base = 255
+      |> :crypto.strong_rand_bytes()
+      |> Base.encode16()
+  end
 end

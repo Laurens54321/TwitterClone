@@ -31,14 +31,6 @@ defmodule TwittercloneWeb.TwatController do
     render(conn, "twatpage.html", twat: twat, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "twat" => twat_params}) do
-    twat = TwatContext.get_twat!(id)
-
-    with {:ok, %Twat{} = twat} <- TwatContext.update_twat(twat, twat_params) do
-      render(conn, "show.json", twat: twat)
-    end
-  end
-
   def delete(conn, %{"id" => id}) do
     twat = TwatContext.get_twat!(id)
 

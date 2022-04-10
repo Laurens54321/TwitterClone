@@ -11,5 +11,11 @@ defmodule Twitterclone.Repo.Migrations.CreateUsers do
 
       timestamps()
     end
+
+    create unique_index(:users, [:user_id],
+              name: :unique_user_id_index)
+
+    create unique_index(:users, [:email],
+              name: :unique_email_index)
   end
 end
