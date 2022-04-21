@@ -13,6 +13,8 @@ defmodule Twitterclone.UserContext.Follower do
   def changeset(follower, attrs) do
     follower
     |> cast(attrs, [:user_id, :follower_id])
+    |> foreign_key_constraint(:user_id, name: :follower_user_id_follower_id_match)
+    |> foreign_key_constraint(:follower_id)
     |> unique_constraint([:user_id, :follower_id], name: :follower_user_id_follower_id_match)
     |> unique_constraint([:follower_id, :user_id], name: :follower_follower_id_user_id_match)
   end

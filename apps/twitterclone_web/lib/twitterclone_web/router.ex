@@ -36,6 +36,7 @@ defmodule TwittercloneWeb.Router do
     get "/profile", ProfileController, :myprofile
     get "/twat", ProfileController, :newtwat
     post "/twat", ProfileController, :createtwat
+    post "/comment/:twat_id", ProfileController, :createcomment
     get "/feed", ProfileController, :feed
 
     post "/follow/:user_id/:follower_id", FollowerController, :follow

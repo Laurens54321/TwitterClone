@@ -11,5 +11,14 @@ defmodule Twitterclone do
     base = 255
       |> :crypto.strong_rand_bytes()
       |> Base.encode16()
+    base
   end
+
+  def random_string_gen(len) do
+    base = len
+      |> :crypto.strong_rand_bytes()
+      |> Base.encode16()
+    base
+  end
+
 end

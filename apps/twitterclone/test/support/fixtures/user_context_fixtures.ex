@@ -11,10 +11,11 @@ defmodule Twitterclone.UserContextFixtures do
     {:ok, user} =
       attrs
       |> Enum.into(%{
-        email: "some email",
+        user_id: Twitterclone.random_string_gen(8),
         name: "some name",
-        passwordHash: "some passwordHash",
-        user_id: "some user_id"
+        email: Twitterclone.random_string_gen(8) <> "@gmail.com",
+        password: "some password",
+        role: "User"
       })
       |> Twitterclone.UserContext.create_user()
 
@@ -25,11 +26,14 @@ defmodule Twitterclone.UserContextFixtures do
   Generate a follower.
   """
   def follower_fixture(attrs \\ %{}) do
+    user1 = user_fixture()
+    user2 = user_fixture()
+
     {:ok, follower} =
       attrs
       |> Enum.into(%{
-        follower_id: "some follower_id",
-        user_id: "some user_id"
+        follower_id: user1.user_id,
+        user_id: user2.user_id
       })
       |> Twitterclone.UserContext.create_follower()
 

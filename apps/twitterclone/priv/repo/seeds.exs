@@ -47,23 +47,24 @@
 
 {:ok, _cs} =
   Twitterclone.TwatContext.create_twat(%{
-    "creationDate" => "2022-04-05 11:53:40",
     "text" => "First tweet!",
     "user_id" => "admin"})
 
 {:ok, _cs} =
   Twitterclone.TwatContext.create_twat(%{
-    "creationDate" => "2022-04-06 11:53:40",
     "text" => "Another tweet!",
     "user_id" => "admin"})
 
 {:ok, _cs} =
   Twitterclone.TwatContext.create_twat(%{
-    "creationDate" => "2022-04-09 11:53:40",
-    "text" => "Subtweet!",
-    "user_id" => "user",
-    "parent_twat" => 1})
+    "text" => "First tweet by user",
+    "user_id" => "user"})
 
+{:ok, _cs} =
+  Twitterclone.CommentContext.create_comment(%{
+    "text" => "Comment",
+    "user_id" => "user",
+    "twat_id" => 1})
 
 {:ok, _cs} =
   Twitterclone.UserContext.create_follower(%{

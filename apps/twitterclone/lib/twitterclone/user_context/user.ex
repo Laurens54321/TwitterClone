@@ -23,7 +23,7 @@ defmodule Twitterclone.UserContext.User do
                   join_through: Twitterclone.UserContext.Follower,
                   join_keys: [user_id: :user_id, follower_id: :user_id]
 
-    has_one :api_key, Twitterclone.UserContext.ApiKey
+    has_one :api_key, Twitterclone.UserContext.ApiKey, foreign_key: :user_id
 
 
 

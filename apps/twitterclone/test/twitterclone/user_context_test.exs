@@ -9,25 +9,31 @@ defmodule Twitterclone.UserContextTest do
     import Twitterclone.UserContextFixtures
 
     @invalid_attrs %{email: nil, name: nil, passwordHash: nil, user_id: nil}
+    @valid_attrs %{
+      user_id: Twitterclone.random_string_gen(8),
+      name: "some name",
+      email: Twitterclone.random_string_gen(8) <> "@gmail.com",
+      password: "some password",
+      role: "User"
+    }
 
     test "list_users/0 returns all users" do
       user = user_fixture()
-      assert UserContext.list_users() == [user]
+      assert tl(UserContext.list_users()).user_id == user.user_id
     end
 
     test "get_user!/1 returns the user with given id" do
       user = user_fixture()
-      assert UserContext.get_user!(user.id) == user
+      assert UserContext.get_user!(user.user_id).user_id == user.user_id
     end
 
     test "create_user/1 with valid data creates a user" do
-      valid_attrs = %{email: "some email", name: "some name", passwordHash: "some passwordHash", user_id: "some user_id"}
+      valid_attrs = @valid_attrs
 
       assert {:ok, %User{} = user} = UserContext.create_user(valid_attrs)
-      assert user.email == "some email"
-      assert user.name == "some name"
-      assert user.passwordHash == "some passwordHash"
-      assert user.user_id == "some user_id"
+      assert user.email == valid_attrs.email
+      assert user.name == valid_attrs.name
+      assert user.user_id == valid_attrs.user_id
     end
 
     test "create_user/1 with invalid data returns error changeset" do
@@ -36,32 +42,51 @@ defmodule Twitterclone.UserContextTest do
 
     test "update_user/2 with valid data updates the user" do
       user = user_fixture()
-      update_attrs = %{email: "some updated email", name: "some updated name", passwordHash: "some updated passwordHash", user_id: "some updated user_id"}
+      update_attrs = %{email: "updatedemail@gmail.com", name: "some updated name", password: "some updated passwordHash", user_id: "some updated user_id"}
 
       assert {:ok, %User{} = user} = UserContext.update_user(user, update_attrs)
-      assert user.email == "some updated email"
+      assert user.email == "updatedemail@gmail.com"
       assert user.name == "some updated name"
-      assert user.passwordHash == "some updated passwordHash"
       assert user.user_id == "some updated user_id"
     end
 
     test "update_user/2 with invalid data returns error changeset" do
       user = user_fixture()
       assert {:error, %Ecto.Changeset{}} = UserContext.update_user(user, @invalid_attrs)
-      assert user == UserContext.get_user!(user.id)
+      assert user.user_id == UserContext.get_user!(user.user_id).user_id
     end
 
     test "delete_user/1 deletes the user" do
       user = user_fixture()
       assert {:ok, %User{}} = UserContext.delete_user(user)
-      assert_raise Ecto.NoResultsError, fn -> UserContext.get_user!(user.id) end
+      assert_raise Ecto.NoResultsError, fn -> UserContext.get_user!(user.user_id) end
     end
 
     test "change_user/1 returns a user changeset" do
       user = user_fixture()
       assert %Ecto.Changeset{} = UserContext.change_user(user)
     end
+
+    test "create_user/1 with duplicate user_id returns error" do
+      valid_attrs = %{email: "updatedemail@gmail.com", name: "some name", password: "some passwordHash", user_id: "same_user_id"}
+      valid_attrs_ = %{email: "updatedemail@gmail.com_", name: "some name", password: "some passwordHash", user_id: "same_user_id"}
+
+      assert {:ok, %User{} = user} = UserContext.create_user(valid_attrs)
+      assert_raise Ecto.ConstraintError, fn -> UserContext.create_user(valid_attrs_) end
+    end
+
+    test "create_user/1 with duplicate email returns error" do
+      valid_attrs = %{email: "sameemail@gmail.com", name: "some name", password: "some passwordHash", user_id: "same_user_id"}
+      valid_attrs_ = %{email: "sameemail@gmail.com", name: "some name", password: "some passwordHash", user_id: "some user_id"}
+
+      assert {:ok, %User{} = user} = UserContext.create_user(valid_attrs)
+      assert_raise Ecto.ConstraintError, fn -> UserContext.create_user(valid_attrs_) end
+    end
+
   end
+
+
+
 
   describe "followers" do
     alias Twitterclone.UserContext.Follower
@@ -90,21 +115,6 @@ defmodule Twitterclone.UserContextTest do
 
     test "create_follower/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = UserContext.create_follower(@invalid_attrs)
-    end
-
-    test "update_follower/2 with valid data updates the follower" do
-      follower = follower_fixture()
-      update_attrs = %{follower_id: "some updated follower_id", user_id: "some updated user_id"}
-
-      assert {:ok, %Follower{} = follower} = UserContext.update_follower(follower, update_attrs)
-      assert follower.follower_id == "some updated follower_id"
-      assert follower.user_id == "some updated user_id"
-    end
-
-    test "update_follower/2 with invalid data returns error changeset" do
-      follower = follower_fixture()
-      assert {:error, %Ecto.Changeset{}} = UserContext.update_follower(follower, @invalid_attrs)
-      assert follower == UserContext.get_follower!(follower.id)
     end
 
     test "delete_follower/1 deletes the follower" do
