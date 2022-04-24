@@ -8,7 +8,6 @@ defmodule Twitterclone.CommentContextTest do
 
     import Twitterclone.CommentContextFixtures
     import Twitterclone.TwatContextFixtures
-    import Twitterclone.UserContextFixtures
 
     @invalid_attrs %{text: nil, user_id: nil, twat_id: nil}
 
@@ -24,7 +23,7 @@ defmodule Twitterclone.CommentContextTest do
 
     test "create_comment/1 with same user_id & valid data creates a comment" do
       twat = twat_fixture()
-      valid_attrs = %{text: "some text", user_id: twat.user_id, twat_id: twat.twat_id}
+      valid_attrs = %{text: "some text", user_id: twat.user_id, twat_id: twat.id}
 
       assert {:ok, %Comment{} = comment} = CommentContext.create_comment(valid_attrs)
       assert comment.text == "some text"
@@ -34,6 +33,11 @@ defmodule Twitterclone.CommentContextTest do
 
     test "create_comment/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = CommentContext.create_comment(@invalid_attrs)
+    end
+
+    test "create_comment/1 with non existent users returns error changeset" do
+      attrs = %{user_id: "non existent user", follower_id: "another non existing user"}
+      assert {:error, %Ecto.Changeset{}} = CommentContext.create_comment(attrs)
     end
 
     test "update_comment/2 with valid data updates the comment" do

@@ -18,6 +18,7 @@ defmodule Twitterclone.TwatContext.Twat do
     twat
     |> cast(attrs, [:text, :user_id])
     |> validate_required([:text, :user_id])
+    |> foreign_key_constraint(:user_id, name: :twats_user_id_fkey)
   end
 
 end

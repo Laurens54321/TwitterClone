@@ -19,7 +19,7 @@ defmodule Twitterclone.UserContextTest do
 
     test "list_users/0 returns all users" do
       user = user_fixture()
-      assert tl(UserContext.list_users()).user_id == user.user_id
+      assert hd(UserContext.list_users()).user_id == user.user_id
     end
 
     test "get_user!/1 returns the user with given id" do
@@ -71,15 +71,15 @@ defmodule Twitterclone.UserContextTest do
       valid_attrs = %{email: "updatedemail@gmail.com", name: "some name", password: "some passwordHash", user_id: "same_user_id"}
       valid_attrs_ = %{email: "updatedemail@gmail.com_", name: "some name", password: "some passwordHash", user_id: "same_user_id"}
 
-      assert {:ok, %User{} = user} = UserContext.create_user(valid_attrs)
+      assert {:ok, %User{}} = UserContext.create_user(valid_attrs)
       assert_raise Ecto.ConstraintError, fn -> UserContext.create_user(valid_attrs_) end
     end
 
     test "create_user/1 with duplicate email returns error" do
-      valid_attrs = %{email: "sameemail@gmail.com", name: "some name", password: "some passwordHash", user_id: "same_user_id"}
-      valid_attrs_ = %{email: "sameemail@gmail.com", name: "some name", password: "some passwordHash", user_id: "some user_id"}
+      valid_attrs = %{email: "sameemail@gmail.com", name: "some name", password: "some passwordHash", user_id: "some_user_id"}
+      valid_attrs_ = %{email: "sameemail@gmail.com", name: "some name", password: "some passwordHash", user_id: "somedifferent_user_id"}
 
-      assert {:ok, %User{} = user} = UserContext.create_user(valid_attrs)
+      assert {:ok, %User{}} = UserContext.create_user(valid_attrs)
       assert_raise Ecto.ConstraintError, fn -> UserContext.create_user(valid_attrs_) end
     end
 
@@ -106,11 +106,12 @@ defmodule Twitterclone.UserContextTest do
     end
 
     test "create_follower/1 with valid data creates a follower" do
-      valid_attrs = %{follower_id: "some follower_id", user_id: "some user_id"}
-
+      user1 = user_fixture()
+      user2 = user_fixture()
+      valid_attrs = %{follower_id: user1.user_id, user_id: user2.user_id}
       assert {:ok, %Follower{} = follower} = UserContext.create_follower(valid_attrs)
-      assert follower.follower_id == "some follower_id"
-      assert follower.user_id == "some user_id"
+      assert follower.follower_id == user1.user_id
+      assert follower.user_id == user2.user_id
     end
 
     test "create_follower/1 with invalid data returns error changeset" do

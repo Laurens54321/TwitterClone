@@ -9,7 +9,7 @@ defmodule Twitterclone.TwatContextTest do
     import Twitterclone.TwatContextFixtures
     import Twitterclone.UserContextFixtures
 
-    @invalid_attrs %{creationDate: nil, text: nil}
+    @invalid_attrs %{text: nil}
 
     test "list_twats/0 returns all twats" do
       twat = twat_fixture()
@@ -32,6 +32,12 @@ defmodule Twitterclone.TwatContextTest do
     test "create_twat/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = TwatContext.create_twat(@invalid_attrs)
     end
+
+    test "create_twat/1 with non existing user returns error changeset" do
+      attrs = %{text: "wow", user_id: "a non existing user"}
+      assert {:error, %Ecto.Changeset{}} = TwatContext.create_twat(attrs)
+    end
+
 
     test "update_twat/2 with valid data updates the twat" do
       twat = twat_fixture()
