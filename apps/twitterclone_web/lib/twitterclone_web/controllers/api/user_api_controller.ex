@@ -1,4 +1,4 @@
-defmodule TwittercloneWeb.UserRestController do
+defmodule TwittercloneWeb.UserAPIController do
   use TwittercloneWeb, :controller
 
   alias Twitterclone.UserContext
@@ -23,34 +23,38 @@ defmodule TwittercloneWeb.UserRestController do
   end
 
   def show(conn, %{"id" => user_id}) do
-    user = UserContext.get_user(user_id, [:twats])
+    user = UserContext.get_user(user_id)
     render(conn, "show.json", user: user)
   end
 
-  def edit(conn, %{"id" => id}) do
-    user = UserContext.get_user!(id)
-    changeset = UserContext.change_user(user)
-    roles = UserContext.get_acceptable_roles()
-    render(conn, "edit.html", user: user, changeset: changeset, acceptable_roles: roles)
+  def adminshow(conn, %{"id" => user_id}) do
+    user = UserContext.get_user(user_id)
+    render(conn, "adminshow.json", user: user)
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
-    user = UserContext.get_user!(id)
-
-    case UserContext.update_user(user, user_params) do
+    case UserContext.get_user!(id) do
       {:ok, user} ->
-        conn
-        |> put_flash(:info, "User updated successfully.")
-        |> redirect(to: Routes.user_path(conn, :show, user))
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", user: user, changeset: changeset)
+        case UserContext.update_user(user, user_params) do
+          {:ok, user} ->
+            conn
+            |> put_flash(:info, "User updated successfully.")
+            |> redirect(to: Routes.user_path(conn, :show, user))
+          {:error, %Ecto.Changeset{}} ->
+            send_resp(conn, 400, "Could not update user.")
+        end
+      nil ->
+        send_resp(conn, 400, "Could not find user with that id.")
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    user = UserContext.get_user!(id)
-    {:ok, _user} = UserContext.delete_user(user)
+    case UserContext.get_user!(id) do
+      {:ok, user} ->
+        UserContext.delete_user(user)
+      nil ->
+        send_resp(conn, 400, "Could not find user with that id.")
+      end
 
     conn
     |> put_flash(:info, "User deleted successfully.")

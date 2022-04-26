@@ -9,11 +9,15 @@ defmodule TwittercloneWeb.UserController do
     render(conn, "index.html", users: users)
   end
 
-  def new(conn, _params) do
-    changeset = UserContext.change_user(%User{})
-    roles = UserContext.get_acceptable_roles()
+  def new(conn, args) do
+    changeset = processchangeset(args)
+    current_user = Guardian.Plug.current_resource(conn)
+    roles = UserContext.get_acceptable_roles(current_user)
     render(conn, "new.html", changeset: changeset, acceptable_roles: roles)
   end
+
+  defp processchangeset(%{"changeset" => changeset}), do: changeset
+  defp processchangeset(%{}), do: UserContext.change_user(%User{})
 
   def create(conn, %{"user" => user_params}) do
     case UserContext.create_user(user_params) do
@@ -23,7 +27,7 @@ defmodule TwittercloneWeb.UserController do
         |> redirect(to: Routes.profile_path(conn, :profile, user.user_id))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        redirect(conn, to: Routes.user_path(conn, :new, changeset))
     end
   end
 

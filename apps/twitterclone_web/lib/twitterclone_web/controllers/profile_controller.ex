@@ -7,7 +7,8 @@ defmodule TwittercloneWeb.ProfileController do
 
   def myprofile(conn, _args) do
     current_user = Guardian.Plug.current_resource(conn)
-    redirect(conn, to: Routes.profile_path(conn, :profile, current_user.user_id))
+    user = UserContext.get_by_userid(current_user.user_id, [:api_key, twats: [:user]])
+    render(conn, "myprofile.html", user: user, twats: user.twats)
   end
 
   def feed(conn, _args) do
@@ -21,9 +22,10 @@ defmodule TwittercloneWeb.ProfileController do
   end
 
   def profile(conn, %{"user_id" => user_id}) do
-    user = UserContext.get_by_userid(user_id, [:twats, :followers, twats: [:user]])
+    user = UserContext.get_by_userid(user_id, [:twats, :followers, :api_key, twats: [:user]])
     current_user = Guardian.Plug.current_resource(conn)
-    if current_user == nil or current_user.user_id == user.user_id, do: render(conn, "profile.html", user: user, twats: user.twats)
+    if current_user.user_id == user.user_id, do: redirect(conn, to: Routes.profile_path(conn, :myprofile))
+    if current_user == nil, do: render(conn, "profile.html", user: user, twats: user.twats)
     following = current_user in user.followers
     render(conn, "profile.html", user: user, twats: user.twats, follow_button: getfollowbutton(following))
   end

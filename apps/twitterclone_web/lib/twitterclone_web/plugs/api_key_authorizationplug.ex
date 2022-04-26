@@ -1,14 +1,13 @@
-defmodule TwittercloneWeb.Plugs.ApiKeyAuthorization do
+defmodule TwittercloneWeb.Plugs.ApiKeyAuthorizationPlug do
   import Plug.Conn
   alias Twitterclone.UserContext
 
-  def init(_args) do
-  end
+  def init(opts), do: opts
 
-  def call(conn, _args) do
+  def call(conn, _params) do
     key = conn
-      |> get_req_header("api-key")
-      |> parse_key()
+      |> get_req_header("api-key-twatter")
+      |> get_key()
 
     if UserContext.api_key_exists?(key) do
       conn
@@ -19,6 +18,6 @@ defmodule TwittercloneWeb.Plugs.ApiKeyAuthorization do
     end
   end
 
-  defp parse_key([]), do: nil
-  defp parse_key([key]), do: key
+  defp get_key([]), do: nil
+  defp get_key([key]), do: key
 end

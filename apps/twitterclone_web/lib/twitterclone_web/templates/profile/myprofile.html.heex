@@ -1,10 +1,6 @@
 <div>
 
-  <h1>Profile</h1>
-
-  <%= if assigns[:follow_button] do %> <!-- trick to check if nil -->
-    <%= render @follow_button, conn: @conn, current_user: @current_user, user: @user %>
-  <% end %>
+  <h1>My Profile</h1>
 
   <ul>
     <li>
@@ -16,6 +12,20 @@
       <strong>Email:</strong>
       <%= @user.email %>
     </li>
+
+    <li>
+      <strong>Passwordhash:</strong>
+      <%= @user.passwordHash %>
+    </li>
+
+      <li>
+        <strong>API Key:</strong>
+        <%= api_key(@user) %>
+      </li>
+
+
+    
+
 
   </ul>
 

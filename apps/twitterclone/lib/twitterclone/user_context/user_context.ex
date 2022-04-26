@@ -107,6 +107,7 @@ defmodule Twitterclone.UserContext do
   end
 
   defdelegate get_acceptable_roles(), to: User
+  defdelegate get_acceptable_roles(current_user), to: User
 
   def authenticate_user(user_id, plain_text_password) do
     case Repo.get_by(User, user_id: user_id) do
@@ -138,7 +139,7 @@ defmodule Twitterclone.UserContext do
     user = Repo.preload(user, :api_key)
     case user.api_key do
       nil ->
-        %ApiKey{user_id: user.id}
+        %ApiKey{user_id: user.user_id}
       api_key ->
         api_key
     end

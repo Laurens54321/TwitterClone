@@ -14,6 +14,11 @@ defmodule TwittercloneWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :api_auth do
+    plug :accepts, ["json"]
+    plug ProjectWeb.Plugs.ApiKeyAuthorizationPlug
+  end
+
   scope "/", TwittercloneWeb do
     pipe_through [:browser, :auth]
 
@@ -38,6 +43,7 @@ defmodule TwittercloneWeb.Router do
     post "/twat", ProfileController, :createtwat
     post "/comment/:twat_id", ProfileController, :createcomment
     get "/feed", ProfileController, :feed
+    get "/gen_api_key", APIController, :generate
 
     post "/follow/:user_id/:follower_id", FollowerController, :follow
     post "/unfollow/:user_id/:follower_id", FollowerController, :unfollow
@@ -57,6 +63,11 @@ defmodule TwittercloneWeb.Router do
   scope "/api", TwittercloneWeb do
     pipe_through [:api]
     resources "/users", UserRestController
+  end
+
+  scope "/api/admin", TwittercloneWeb do
+    pipe_through [:api, :api_auth]
+    get "/users/:user_id", UserRestController, :adminshow
   end
 
   pipeline :auth do

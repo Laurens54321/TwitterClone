@@ -32,6 +32,18 @@ defmodule Twitterclone.UserContext.User do
 
 
   def get_acceptable_roles, do: @acceptable_roles
+  def get_acceptable_roles(nil), do: [List.last @acceptable_roles]
+
+  def get_acceptable_roles(%Twitterclone.UserContext.User{} = user) do
+    case user.role do
+      "User" ->
+        Enum.take(@acceptable_roles, -1)
+      "Manager" ->
+        Enum.take(@acceptable_roles, -2)
+      "Admin" ->
+        @acceptable_roles
+    end
+  end
 
   @doc false
   def changeset(user, attrs) do
@@ -44,7 +56,7 @@ defmodule Twitterclone.UserContext.User do
         message: "Username already in use.")
     |> unique_constraint(:email, name: :unique_email_index,
         message: "E-mail already in use.")
-    |> validate_confirmation(:password, message: :password_confirmation_fail)
+    |> validate_confirmation(:password, message: "Password confirmation does not match password")
     |> put_password_hash()
   end
 
