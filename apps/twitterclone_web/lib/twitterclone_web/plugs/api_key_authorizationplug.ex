@@ -1,6 +1,8 @@
 defmodule TwittercloneWeb.Plugs.ApiKeyAuthorizationPlug do
   import Plug.Conn
   alias Twitterclone.UserContext
+  require Logger
+
 
   def init(opts), do: opts
 
@@ -9,11 +11,12 @@ defmodule TwittercloneWeb.Plugs.ApiKeyAuthorizationPlug do
       |> get_req_header("api-key-twatter")
       |> get_key()
 
-    if UserContext.api_key_exists?(key) do
+
+    if UserContext.api_key_exists?(%{key: key}) do
       conn
     else
       conn
-        |> send_resp(:unauthorized, "Invalid API key")
+        |> send_resp(:unauthorized, "Invalid or no API key")
         |> halt()
     end
   end

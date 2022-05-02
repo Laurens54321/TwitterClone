@@ -28,8 +28,8 @@ defmodule TwittercloneWeb.UserAPIController do
   end
 
   def adminshow(conn, %{"id" => user_id}) do
-    user = UserContext.get_user(user_id)
-    render(conn, "adminshow.json", user: user)
+    user = UserContext.get_user(user_id, [:api_key])
+    render(conn, "adminshow.json", user: user, api_key: user.api_key)
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do

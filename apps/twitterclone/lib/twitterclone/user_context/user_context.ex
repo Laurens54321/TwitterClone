@@ -130,9 +130,11 @@ defmodule Twitterclone.UserContext do
 
   ### API KEY ###
 
-  def api_key_exists?(key) do
+  def api_key_exists?(%{key: nil}), do: false
+
+  def api_key_exists?(%{key: key}) do
     query = from(u in ApiKey, where: like(u.key, ^key))
-    Repo.all(query)
+    Repo.one!(query)
   end
 
   def gen_api_key(%User{} = user) do

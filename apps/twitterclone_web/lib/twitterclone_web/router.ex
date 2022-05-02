@@ -16,7 +16,7 @@ defmodule TwittercloneWeb.Router do
 
   pipeline :api_auth do
     plug :accepts, ["json"]
-    plug ProjectWeb.Plugs.ApiKeyAuthorizationPlug
+    plug TwittercloneWeb.Plugs.ApiKeyAuthorizationPlug
   end
 
   scope "/", TwittercloneWeb do
@@ -62,12 +62,16 @@ defmodule TwittercloneWeb.Router do
 
   scope "/api", TwittercloneWeb do
     pipe_through [:api]
-    resources "/users", UserRestController
+    resources "/users", UserAPIController, except: [:update]
+
+    pipe_through [:api_auth]
+    post "/users/update/:id", UserAPIController, :update
+    get "/users+/:id", UserAPIController, :adminshow
+
   end
 
   scope "/api/admin", TwittercloneWeb do
-    pipe_through [:api, :api_auth]
-    get "/users/:user_id", UserRestController, :adminshow
+
   end
 
   pipeline :auth do
