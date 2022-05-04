@@ -56,6 +56,18 @@
       </div>
       <%= @inner_content%>
     </div>
+
+    <div class="languageoption" >
+      <%= link "nl", to: Routes.page_path(@conn, :index, locale: "nl")%>
+      /
+      <%= link "en", to: Routes.page_path(@conn, :index, locale: "en")%>
+    </div>
+
+    
+    <div class="languageoption" >
+      
+    </div>
+
   </body>
 </html>
 
