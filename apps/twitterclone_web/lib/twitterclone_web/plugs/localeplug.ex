@@ -7,6 +7,7 @@ defmodule TwittercloneWeb.Plugs.Locale do
   def init(default), do: default
 
   def call(conn, _options) do
+    conn = assign(conn, :available_locales, @locales)
     case fetch_locale_from(conn) do
       nil ->
         conn #No locale is set or found in the cookies

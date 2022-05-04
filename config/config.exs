@@ -58,6 +58,10 @@ config :twitterclone_web, TwittercloneWeb.Guardian,
   issuer: "twitterclone_web",
   secret_key: "lZKl6KBsDwhY+5YkBMCipCpMtIFk4n3JUx71WvOVj68yxUUCvW7Iq75wKsH9ktK7"
 
+config :twitterclone_web, TwittercloneWeb.Gettext,
+  locales: ~w(en nl), # ja stands for Japanese.
+  default_locale: "en"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

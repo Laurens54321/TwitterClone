@@ -21,4 +21,8 @@ defmodule TwittercloneWeb.Gettext do
   See the [Gettext Docs](https://hexdocs.pm/gettext) for detailed usage.
   """
   use Gettext, otp_app: :twitterclone_web
+
+  def known_locales do
+    Gettext.known_locales(TwitterCloneWeb.Gettext)
+  end
 end

@@ -47,6 +47,17 @@
     <%= if @current_user do %>
       <%= button "Twat", to: Routes.profile_path(@conn, :newtwat), method: :get, class: "sidebar__tweet"%>
     <% end %>
+
+    <div class="filler" >
+
+    </div>
+
+    <div class="languageoption" >
+      <%= for locale <- @available_locales do %>
+        <%= link locale, to: Routes.page_path(@conn, :index, locale: locale)%>
+      <% end %>
+    </div>
+
     </div>
     <!-- sidebar ends -->
 
@@ -57,16 +68,10 @@
       <%= @inner_content%>
     </div>
 
-    <div class="languageoption" >
-      <%= link "nl", to: Routes.page_path(@conn, :index, locale: "nl")%>
-      /
-      <%= link "en", to: Routes.page_path(@conn, :index, locale: "en")%>
-    </div>
+    
 
     
-    <div class="languageoption" >
-      
-    </div>
+    
 
   </body>
 </html>
