@@ -24,24 +24,24 @@
     <i class="fab fa-twitter"></i>
     <div class="sidebarOption">
         <span class="material-icons"> home </span>
-        <%= link "Feed", to: Routes.profile_path(@conn, :feed)%>
+        <%= link gettext("Feed"), to: Routes.profile_path(@conn, :feed)%>
     </div>
 
     <div class="sidebarOption">
         <span class="material-icons"> perm_identity </span>
-        <%= link "Profile", to: Routes.profile_path(@conn, :myprofile)%>
+        <%= link gettext("Profile"), to: Routes.profile_path(@conn, :myprofile)%>
     </div>
     
 
     <div class="sidebarOption">
         <span class="material-icons"> list_alt </span>
-        <%= link "Users", to: Routes.user_path(@conn, :index)%>
+        <%= link gettext("Users"), to: Routes.user_path(@conn, :index)%>
     </div>
 
 
     <div class="sidebarOption">
         <span class="material-icons"> more_horiz </span>
-        <%= link "Home", to: Routes.page_path(@conn, :index)%>
+        <%= link gettext("Home"), to: Routes.page_path(@conn, :index)%>
     </div>
 
     <%= if @current_user do %>
