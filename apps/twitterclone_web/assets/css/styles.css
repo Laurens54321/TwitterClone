@@ -3,6 +3,19 @@
   justify-content: space-around;
 }
 
+.profilebar {
+  display: flex;
+  justify-content: space-around;
+  border: 1px solid var(--twitter-background);
+  padding: 5px 5px;
+  margin: 10px 5px;
+}
+
+.followercount {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+}
 
 
 /*

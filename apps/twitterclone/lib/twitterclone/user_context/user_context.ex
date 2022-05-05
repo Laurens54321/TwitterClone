@@ -149,6 +149,10 @@ defmodule Twitterclone.UserContext do
     |> Repo.insert_or_update()
   end
 
+  def hasrole(nil, _roles), do: false
+  def hasrole(%User{} = user, roles) do
+    Enum.member?(roles, user.role)
+  end
 
   ### FOLLOWER  ###
 

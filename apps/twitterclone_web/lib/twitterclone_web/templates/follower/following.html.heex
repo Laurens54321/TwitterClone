@@ -1,0 +1,5 @@
+<h2>Following</h2>
+
+<%= for follower <- @list do %>
+    <%= render TwittercloneWeb.FollowerView, "follower.html", conn: @conn, user: Twitterclone.UserContext.get_user follower.user_id  %>
+<% end %>

@@ -38,9 +38,14 @@ defmodule TwittercloneWeb.UserController do
 
   def edit(conn, %{"id" => id}) do
     user = UserContext.get_user!(id)
-    changeset = UserContext.change_user(user)
-    roles = UserContext.get_acceptable_roles()
-    render(conn, "edit.html", user: user, changeset: changeset, acceptable_roles: roles)
+    current_user = Guardian.Plug.current_resource(conn)
+    if isAuthorized(current_user, user) do
+      changeset = UserContext.change_user(user)
+      roles = UserContext.get_acceptable_roles()
+      render(conn, "edit.html", user: user, changeset: changeset, acceptable_roles: roles)
+    else
+      redirect(conn, to: Routes.page_path(conn, :unauthorized))
+    end
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
@@ -66,5 +71,18 @@ defmodule TwittercloneWeb.UserController do
     |> redirect(to: Routes.user_path(conn, :index))
   end
 
+
+
+  defp isAuthorized(%User{} = current_user, user) do
+    cond do
+      UserContext.hasrole(current_user, ["Admin", "Manager"]) ->
+        true
+      user.user_id == current_user.user_id ->
+        true
+      true -> false
+    end
+  end
+
+  defp isAuthorized(_var, _user), do: false
 
 end

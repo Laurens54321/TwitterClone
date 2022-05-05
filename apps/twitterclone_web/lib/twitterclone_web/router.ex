@@ -32,8 +32,11 @@ defmodule TwittercloneWeb.Router do
     get "/twat/get/:id", TwatController, :get
 
     get "/profile/:user_id", ProfileController, :profile
+    get "/following/:user_id", FollowerController, :following
+    get "/followers/:user_id", FollowerController, :followers
 
     get "/", PageController, :index
+    get "/unauthorized", PageController, :unauthorized
   end
 
   scope "/", TwittercloneWeb do

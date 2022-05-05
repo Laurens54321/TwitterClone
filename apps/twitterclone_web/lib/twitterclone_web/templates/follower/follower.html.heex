@@ -1,0 +1,15 @@
+<%= link to: Routes.profile_path(@conn, :profile, @user.user_id), 
+        method: :get, class: "btn " do %>
+        <div class="post">
+            <div class="post__body">
+            <div class="post__header">
+                <div class="post__headerText">
+                <h3>
+                    <%= @user.name %> 
+                    <span class="post__headerSpecial">@<%= @user.user_id %></span>
+                </h3>
+                </div>
+            </div>            
+            </div>
+        </div>
+    <% end %>

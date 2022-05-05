@@ -24,10 +24,15 @@ defmodule TwittercloneWeb.ProfileController do
   def profile(conn, %{"user_id" => user_id}) do
     user = UserContext.get_by_userid(user_id, [:twats, :followers, :api_key, twats: [:user]])
     current_user = Guardian.Plug.current_resource(conn)
-    if current_user.user_id == user.user_id, do: redirect(conn, to: Routes.profile_path(conn, :myprofile))
-    if current_user == nil, do: render(conn, "profile.html", user: user, twats: user.twats)
-    following = current_user in user.followers
-    render(conn, "profile.html", user: user, twats: user.twats, follow_button: getfollowbutton(following))
+    cond do
+      current_user == nil ->
+        render(conn, "profile.html", user: user, twats: user.twats)
+      current_user.user_id == user.user_id ->
+        redirect(conn, to: Routes.profile_path(conn, :myprofile))
+      true ->
+        following = current_user in user.followers
+        render(conn, "profile.html", user: user, twats: user.twats, follow_button: getfollowbutton(following))
+    end
   end
 
   defp getfollowbutton(isFollowing) do

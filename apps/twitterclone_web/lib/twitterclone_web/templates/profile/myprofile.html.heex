@@ -22,12 +22,19 @@
         <strong>API Key:</strong>
         <%= api_key(@user) %>
       </li>
-
-
-    
-
-
   </ul>
+
+  <div class="profilebar" >
+    <span class="followercount" > <h2> Following </h2> 
+    <%= button length(Twitterclone.UserContext.get_following(@user.user_id)), 
+      to:  Routes.follower_path(@conn, :following, @user.user_id), method: :get %>
+    </span>
+
+    <span class="followercount" > <h2> Followers </h2> 
+    <%= button length(Twitterclone.UserContext.get_followers(@user.user_id)), 
+      to: Routes.follower_path(@conn, :followers, @user.user_id), method: :get %>
+    </span>
+  </div>
 
 </div>
 
