@@ -70,3 +70,13 @@
   Twitterclone.UserContext.create_follower(%{
     "user_id" => "admin",
     "follower_id" => "user"})
+
+{:ok, _cs} =
+  Twitterclone.UserContext.create_follower(%{
+    "user_id" => "manager",
+    "follower_id" => "user"})
+
+{:ok, _cs} =
+  Twitterclone.UserContext.create_follower(%{
+    "user_id" => "4",
+    "follower_id" => "user"})

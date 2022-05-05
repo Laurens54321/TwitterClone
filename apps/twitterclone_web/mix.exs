@@ -51,7 +51,8 @@ defmodule TwittercloneWeb.MixProject do
       {:twitterclone, in_umbrella: true},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:guardian, "~> 2.0"}
+      {:guardian, "~> 2.0"},
+      {:navigation_history, "~> 0.3"}
     ]
   end
 

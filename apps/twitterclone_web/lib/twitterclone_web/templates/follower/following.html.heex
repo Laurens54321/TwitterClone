@@ -3,3 +3,5 @@
 <%= for follower <- @list do %>
     <%= render TwittercloneWeb.FollowerView, "follower.html", conn: @conn, user: Twitterclone.UserContext.get_user follower.user_id  %>
 <% end %>
+
+<span><%= link gettext("Back"), to: NavigationHistory.last_path(@conn, 1) %></span>

@@ -8,6 +8,7 @@ defmodule TwittercloneWeb.Router do
     plug :put_root_layout, {TwittercloneWeb.LayoutView, :navbar}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug NavigationHistory.Tracker
     plug TwittercloneWeb.Plugs.Locale
   end
 
