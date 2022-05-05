@@ -3,26 +3,34 @@
   <h1><%= gettext "My Profile" %> </h1>
 
   <ul>
+
     <li>
-      <strong><%= @user.name %></strong>
-      @<%= @user.user_id %>
+      <strong>Name:</strong>
+      <p> <%= @user.name %> </p>
+    </li>
+    <li>
+      <strong>Username:</strong>
+      <p> @ <%= @user.user_id %> </p>
     </li>
 
     <li>
       <strong>Email:</strong>
-      <%= @user.email %>
+      <p><%= @user.email %> </p>
     </li>
 
     <li>
       <strong>Passwordhash:</strong>
-      <%= @user.passwordHash %>
+      <p> <%= @user.passwordHash %> </p>
     </li>
 
-      <li>
-        <strong>API Key:</strong>
-        <%= api_key(@user) %>
-      </li>
+    <li>
+      <strong>API Key:</strong>
+      <p> <%= api_key(@user) %> </p>
+    </li>
   </ul>
+
+  <%= button "Generate API Key", 
+      to:  Routes.api_path(@conn, :generate), method: :get %>
 
   <div class="profilebar" >
     <span class="followercount" > <h2> Following </h2> 

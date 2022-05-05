@@ -9,10 +9,10 @@ defmodule Twitterclone do
   require Logger
 
   def key_gen() do
-    base = 255
+    base = 63
       |> :crypto.strong_rand_bytes()
       |> Base.encode16()
-      |> binary_part(0, 255)
+      |> binary_part(0, 63)
     Logger.info  "Generating API key: " <> base
     base
   end

@@ -20,43 +20,43 @@
 
     <!-- sidebar starts -->
     <div class="sidebar">
-    <i class="fab fa-twitter"></i>
-    <div class="sidebarOption">
-        <span class="material-icons"> home </span>
-        <%= link gettext("Feed"), to: Routes.profile_path(@conn, :feed)%>
-    </div>
+      <i class="fab fa-twitter"></i>
+      <div class="sidebarOption">
+          <span class="material-icons"> home </span>
+          <%= link gettext("Feed"), to: Routes.profile_path(@conn, :feed)%>
+      </div>
 
-    <div class="sidebarOption">
-        <span class="material-icons"> perm_identity </span>
-        <%= link gettext("Profile"), to: Routes.profile_path(@conn, :myprofile)%>
-    </div>
-    
+      <div class="sidebarOption">
+          <span class="material-icons"> perm_identity </span>
+          <%= link gettext("Profile"), to: Routes.profile_path(@conn, :myprofile)%>
+      </div>
+      
 
-    <div class="sidebarOption">
-        <span class="material-icons"> list_alt </span>
-        <%= link gettext("Users"), to: Routes.user_path(@conn, :index)%>
-    </div>
+      <div class="sidebarOption">
+          <span class="material-icons"> list_alt </span>
+          <%= link gettext("Users"), to: Routes.user_path(@conn, :index)%>
+      </div>
 
 
-    <div class="sidebarOption">
-        <span class="material-icons"> more_horiz </span>
-        <%= link gettext("Home"), to: Routes.page_path(@conn, :index)%>
-    </div>
+      <div class="sidebarOption">
+          <span class="material-icons"> more_horiz </span>
+          <%= link gettext("Home"), to: Routes.page_path(@conn, :index)%>
+      </div>
 
-    <%= if @current_user do %>
-      <%= button "Twat", to: Routes.profile_path(@conn, :newtwat), method: :get, class: "sidebar__tweet"%>
-    <% end %>
-
-    <div class="filler" >
-
-    </div>
-
-    <div class="languageoption" >
-      <%= for locale <- @available_locales do %>
-        <%= link locale, to: Routes.page_path(@conn, :index, locale: locale)%>
+      <%= if @current_user do %>
+        <%= button "Twat", to: Routes.profile_path(@conn, :newtwat), method: :get, class: "sidebar__tweet"%>
       <% end %>
-    </div>
 
+      <div class="filler" ></div>
+
+      <div>
+        <p class="languageoptionheader">language options</p>
+        <div class="languageoptions" >
+          <%= for locale <- @available_locales do %>
+            <%= link locale, to: "#{NavigationHistory.last_path(@conn)}?locale=#{locale}"%>
+          <% end %>
+        </div>
+      </div>
     </div>
     <!-- sidebar ends -->
 
