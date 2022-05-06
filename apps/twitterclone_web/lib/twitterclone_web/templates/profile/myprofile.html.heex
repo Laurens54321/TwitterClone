@@ -29,8 +29,11 @@
     </li>
   </ul>
 
-  <%= button "Generate API Key", 
+  <%= button gettext("Generate API Key"), 
       to:  Routes.api_path(@conn, :generate), method: :get %>
+
+  <%= button gettext("Edit Profile"), 
+      to:  Routes.user_path(@conn, :edit, @user.user_id), method: :get %>
 
   <div class="profilebar" >
     <span class="followercount" > <h2> Following </h2> 
@@ -46,8 +49,6 @@
 
 </div>
 
-
-<span><%= link gettext("Edit"), to: Routes.user_path(@conn, :edit, @user.user_id) %></span> |
 <span><%= link gettext("Back"), to: NavigationHistory.last_path(@conn, 1) %></span>
 
 <div>

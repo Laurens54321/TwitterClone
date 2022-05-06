@@ -4,6 +4,9 @@ defmodule TwittercloneWeb.UserController do
   alias Twitterclone.UserContext
   alias Twitterclone.UserContext.User
 
+
+  action_fallback TwittercloneWeb.FallbackController
+
   def index(conn, _params) do
     users = UserContext.list_users()
     render(conn, "index.html", users: users)
@@ -32,33 +35,34 @@ defmodule TwittercloneWeb.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    user = UserContext.get_user(id)
-    render(conn, "show.html", user: user)
+    with {:ok, %User{} = user} <- UserContext.get_by_userid(id) do
+      render(conn, "show.html", user: user)
+    end
   end
 
   def edit(conn, %{"id" => id}) do
-    user = UserContext.get_user!(id)
-    current_user = Guardian.Plug.current_resource(conn)
-    if isAuthorized(current_user, user) do
-      changeset = UserContext.change_user(user)
-      roles = UserContext.get_acceptable_roles()
-      render(conn, "edit.html", user: user, changeset: changeset, acceptable_roles: roles)
-    else
-      redirect(conn, to: Routes.page_path(conn, :unauthorized))
+    with {:ok, %User{} = user} <- UserContext.get_by_userid(id) do
+      if isAuthorized(conn, user) do
+        changeset = UserContext.change_user(user)
+        roles = UserContext.get_acceptable_roles()
+        render(conn, "edit.html", user: user, changeset: changeset, acceptable_roles: roles)
+      else
+        redirect(conn, to: Routes.page_path(conn, :unauthorized))
+      end
     end
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
-    user = UserContext.get_user!(id)
+    with {:ok, %User{} = user} <- UserContext.get_by_userid(id) do
+      case UserContext.update_user(user, user_params) do
+        {:ok, user} ->
+          conn
+          |> put_flash(:info, "User updated successfully.")
+          |> redirect(to: Routes.user_path(conn, :show, user))
 
-    case UserContext.update_user(user, user_params) do
-      {:ok, user} ->
-        conn
-        |> put_flash(:info, "User updated successfully.")
-        |> redirect(to: Routes.user_path(conn, :show, user))
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", user: user, changeset: changeset)
+        {:error, %Ecto.Changeset{} = changeset} ->
+          render(conn, "edit.html", user: user, changeset: changeset)
+      end
     end
   end
 
@@ -71,9 +75,8 @@ defmodule TwittercloneWeb.UserController do
     |> redirect(to: Routes.user_path(conn, :index))
   end
 
-
-
-  defp isAuthorized(%User{} = current_user, user) do
+  def isAuthorized(conn, %User{} = user) do
+    current_user = Guardian.Plug.current_resource(conn)
     cond do
       UserContext.hasrole(current_user, ["Admin", "Manager"]) ->
         true
@@ -83,6 +86,8 @@ defmodule TwittercloneWeb.UserController do
     end
   end
 
-  defp isAuthorized(_var, _user), do: false
+  def isAuthorized(_conn, _params), do: false
+
+
 
 end

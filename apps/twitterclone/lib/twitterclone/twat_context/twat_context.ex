@@ -38,8 +38,10 @@ defmodule Twitterclone.TwatContext do
   def get_twat!(id), do: Repo.get!(Twat, id)
 
   def get_twat(id, args \\ []) do
-      Repo.get(Twat, id)
-      |> Repo.preload(args)
+    case Repo.get(Twat, id) do
+      nil -> {:error, :not_found}
+      twat -> {:ok, Repo.preload(twat, args)}
+    end
   end
 
   @doc """

@@ -1,8 +1,9 @@
-defmodule TwittercloneWeb.CommentController do
+defmodule TwittercloneWeb.CommentAPIController do
   use TwittercloneWeb, :controller
 
   alias Twitterclone.CommentContext
   alias Twitterclone.CommentContext.Comment
+
 
   action_fallback TwittercloneWeb.FallbackController
 
@@ -12,13 +13,22 @@ defmodule TwittercloneWeb.CommentController do
   end
 
   def create(conn, %{"comment" => comment_params}) do
-    with {:ok, %Comment{} = comment} <- CommentContext.create_comment(comment_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.comment_path(conn, :show, comment))
-      |> render("show.json", comment: comment)
+    if isAuthorized(conn, comment_params) do
+      with {:ok, %Comment{} = comment} <- CommentContext.create_comment(comment_params) do
+        conn
+        |> put_status(:created)
+        |> put_resp_header("location", Routes.comment_api_path(conn, :show, comment))
+        |> render("show.json", comment: comment)
+      end
     end
+
   end
+
+  defp isAuthorized(conn, %{"user_id" => user_id}) do
+    current_user = Guardian.Plug.current_resource(conn)
+    if current_user.user_id == user_id, do: true, else: false
+  end
+  defp isAuthorized(_conn, _params), do: false
 
   def show(conn, %{"id" => id}) do
     comment = CommentContext.get_comment!(id)

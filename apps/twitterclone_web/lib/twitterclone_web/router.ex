@@ -30,8 +30,7 @@ defmodule TwittercloneWeb.Router do
 
 
     resources "/users", UserController
-    get "/twat/get/:id", TwatController, :get
-
+    get "/twat/:id", TwatController, :show
     get "/profile/:user_id", ProfileController, :profile
     get "/following/:user_id", FollowerController, :following
     get "/followers/:user_id", FollowerController, :followers
@@ -68,6 +67,7 @@ defmodule TwittercloneWeb.Router do
   scope "/api", TwittercloneWeb do
     pipe_through [:api]
     resources "/users", UserAPIController, except: [:update]
+    resources "/comments", CommentAPIController, except: [:update, :create]
 
     pipe_through [:api_auth]
     post "/users/update/:id", UserAPIController, :update

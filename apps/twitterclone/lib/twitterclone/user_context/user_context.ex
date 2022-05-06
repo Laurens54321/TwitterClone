@@ -31,14 +31,20 @@ defmodule Twitterclone.UserContext do
   def get_user!(id), do: Repo.get!(User, id)
 
   def get_user(user_id, preloads \\ []) do
-    Repo.get(User, user_id)
-    |> Repo.preload(preloads)
+    case Repo.get(User, user_id) do
+      nil -> {:error, :not_found}
+      user ->
+        Repo.preload(user, preloads)
+    end
   end
 
   def get_by_userid(user_id, preloads \\ []) do
     query = from(u in User, where: like(u.user_id, ^user_id))
-    Repo.one(query)
-      |> Repo.preload(preloads)
+    case Repo.one(query) do
+      nil -> {:error, :not_found}
+      user -> {:ok, Repo.preload(user, preloads)}
+    end
+
   end
 
   @doc """
