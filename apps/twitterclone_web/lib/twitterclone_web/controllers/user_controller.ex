@@ -42,13 +42,9 @@ defmodule TwittercloneWeb.UserController do
 
   def edit(conn, %{"id" => id}) do
     with {:ok, %User{} = user} <- UserContext.get_by_userid(id) do
-      if isAuthorized(conn, user) do
-        changeset = UserContext.change_user(user)
-        roles = UserContext.get_acceptable_roles()
-        render(conn, "edit.html", user: user, changeset: changeset, acceptable_roles: roles)
-      else
-        redirect(conn, to: Routes.page_path(conn, :unauthorized))
-      end
+      changeset = UserContext.change_user(user)
+      roles = UserContext.get_acceptable_roles()
+      render(conn, "edit.html", user: user, changeset: changeset, acceptable_roles: roles)
     end
   end
 
@@ -58,10 +54,11 @@ defmodule TwittercloneWeb.UserController do
         {:ok, user} ->
           conn
           |> put_flash(:info, "User updated successfully.")
-          |> redirect(to: Routes.user_path(conn, :show, user))
+          |> redirect(to: Routes.profile_path(conn, :profile, user.user_id))
 
         {:error, %Ecto.Changeset{} = changeset} ->
-          render(conn, "edit.html", user: user, changeset: changeset)
+          roles = UserContext.get_acceptable_roles()
+          render(conn, "edit.html", user: user, changeset: changeset, acceptable_roles: roles)
       end
     end
   end

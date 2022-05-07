@@ -18,11 +18,10 @@
 
       <td>
         <span><%= link gettext("Show"), to: Routes.profile_path(@conn, :profile, user.user_id) %></span>
-        <%= if Twitterclone.UserContext.hasrole(@current_user, ["Admin", "Manager"]) do %>
+       
           <span><%= link gettext("Edit"), to: Routes.user_path(@conn, :edit, user.user_id) %></span>
           <span><%= link gettext("Delete"), to: Routes.user_path(@conn, :delete, user.user_id), method: :delete, data: [confirm: gettext "Are you sure?"] %></span>  
-        <% end %>
-
+        
       </td>
     </tr>
 <% end %>

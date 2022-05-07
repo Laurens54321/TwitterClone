@@ -30,7 +30,7 @@ defmodule TwittercloneWeb.Router do
 
 
     resources "/users", UserController
-    get "/twat/:id", TwatController, :show
+    get "/twats/:id", TwatController, :show
     get "/profile/:user_id", ProfileController, :profile
     get "/following/:user_id", FollowerController, :following
     get "/followers/:user_id", FollowerController, :followers
@@ -60,7 +60,7 @@ defmodule TwittercloneWeb.Router do
 
 
 
-    resources "/twats", TwatController, except: [:new, :edit]
+    resources "/twats", TwatController, except: [:show, :new, :edit]
 
   end
 
@@ -82,12 +82,8 @@ defmodule TwittercloneWeb.Router do
   pipeline :auth do
     plug TwittercloneWeb.Pipeline
     plug TwittercloneWeb.Plugs.CurrentUserPlug
+    plug TwittercloneWeb.Plugs.Protection
   end
-
-  # modified AuthorizationPlug to make this unnecesary
-  # pipeline :ensure_auth do
-  #   plug Guardian.Plug.EnsureAuthenticated
-  # end
 
   pipeline :allowed_for_users do
     plug TwittercloneWeb.Plugs.AuthorizationPlug, ["Admin", "Manager", "User"]
@@ -100,6 +96,11 @@ defmodule TwittercloneWeb.Router do
   pipeline :allowed_for_admins do
     plug TwittercloneWeb.Plugs.AuthorizationPlug, ["Admin"]
   end
+
+    # modified AuthorizationPlug to make this unnecesary
+  # pipeline :ensure_auth do
+  #   plug Guardian.Plug.EnsureAuthenticated
+  # end
 
   # Other scopes may use custom stacks.
   # scope "/api", TwittercloneWeb do

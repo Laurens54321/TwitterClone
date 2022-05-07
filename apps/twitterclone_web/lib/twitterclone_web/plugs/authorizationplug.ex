@@ -1,6 +1,7 @@
 defmodule TwittercloneWeb.Plugs.AuthorizationPlug do
   import Plug.Conn
   alias Twitterclone.UserContext.User
+  alias Twitterclone.TwatContext.Twat
   alias Phoenix.Controller
 
   def init(options), do: options

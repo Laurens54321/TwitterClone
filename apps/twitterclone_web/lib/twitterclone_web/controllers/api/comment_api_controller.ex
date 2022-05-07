@@ -16,9 +16,9 @@ defmodule TwittercloneWeb.CommentAPIController do
     if isAuthorized(conn, comment_params) do
       with {:ok, %Comment{} = comment} <- CommentContext.create_comment(comment_params) do
         conn
-        |> put_status(:created)
-        |> put_resp_header("location", Routes.comment_api_path(conn, :show, comment))
-        |> render("show.json", comment: comment)
+          |> put_status(:created)
+          |> put_resp_header("location", Routes.comment_api_path(conn, :show, comment))
+          |> render("show.json", comment: comment)
       end
     end
 
