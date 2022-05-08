@@ -20,7 +20,17 @@
             <div class="post__footer">
                 <span class="post__headerSpecial">@<%= @twat.inserted_at %></span>
             </div>
-            
+
+            <div class="post_buttons">
+                <%= if @twat.user_id == Guardian.Plug.current_resource(@conn).user_id do %>
+                    <%= button gettext("Edit"), 
+                        to: Routes.twat_path(@conn, :edit, @twat.id), method: :get %>
+                    <%= button gettext("Delete"), 
+                        to: "/twats/#{@twat.id}", method: :delete %>
+                <% end %>
+            </div>
+
+
             </div>
         </div>
     <% end %>

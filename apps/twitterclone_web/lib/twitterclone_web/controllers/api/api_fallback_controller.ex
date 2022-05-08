@@ -1,29 +1,30 @@
-defmodule TwittercloneWeb.FallbackController do
+defmodule TwittercloneWeb.APIFallbackController do
   @moduledoc """
   Translates controller action results into valid `Plug.Conn` responses.
 
   See `Phoenix.Controller.action_fallback/1` for more details.
   """
-
   use TwittercloneWeb, :controller
 
+  # This clause handles errors returned by Ecto's insert/update/delete.
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
     |> put_status(:unprocessable_entity)
-    |> put_flash(:info, "Changeset error")
-    |> render("index.html", changeset: changeset)
+    |> put_view(TwittercloneWeb.ChangesetView)
+    |> render("error.json", changeset: changeset)
   end
 
   def call(conn, {:error, :not_found}) do
     conn
     |> put_status(:not_found)
-    |> redirect(to: Routes.page_path(conn, :error, 404, "Item not Found"))
+    |> put_view(TwittercloneWeb.ErrorView)
+    |> render(:"404")
   end
 
   def call(conn, {:error, :unauthorized}) do
     conn
-    |> redirect(to: Routes.page_path(conn, :unauthorized))
+    |> put_status(403)
+    |> put_view(TwittercloneWeb.ErrorView)
+    |> render(:"403")
   end
-
-
 end

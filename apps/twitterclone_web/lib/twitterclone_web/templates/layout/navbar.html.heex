@@ -43,7 +43,17 @@
           <%= link gettext("Home"), to: Routes.page_path(@conn, :index)%>
       </div>
 
-      <%= if @current_user do %>
+      
+
+      <%= if assigns[:current_user] do %>
+        <%= if @current_user.role == "Admin" do %>
+          <div class="sidebarOption">
+              <span class="material-icons"> bookmark_border </span>
+              <%= link gettext("Twats"), to: Routes.twat_path(@conn, :index)%>
+          </div>
+        <% end %>
+        
+
         <%= button "Twat", to: Routes.profile_path(@conn, :newtwat), method: :get, class: "sidebar__tweet"%>
       <% end %>
 

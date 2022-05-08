@@ -19,7 +19,7 @@ defmodule TwittercloneWeb.UserController do
     render(conn, "new.html", changeset: changeset, acceptable_roles: roles)
   end
 
-  defp processchangeset(%{"changeset" => changeset}), do: changeset
+  defp processchangeset(%Ecto.Changeset{} = changeset), do: changeset
   defp processchangeset(%{}), do: UserContext.change_user(%User{})
 
   def create(conn, %{"user" => user_params}) do
@@ -30,7 +30,7 @@ defmodule TwittercloneWeb.UserController do
         |> redirect(to: Routes.profile_path(conn, :profile, user.user_id))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        redirect(conn, to: Routes.user_path(conn, :new, changeset))
+        new(conn,changeset)
     end
   end
 

@@ -4,7 +4,7 @@ defmodule Twitterclone.Repo.Migrations.CreateTwats do
   def change do
     create table(:twats) do
       add :text, :string
-      add :user_id, references(:users, type: :string,  column: :user_id)
+      add :user_id, references(:users, type: :string,  column: :user_id, on_delete: :delete_all)
 
       timestamps()
     end

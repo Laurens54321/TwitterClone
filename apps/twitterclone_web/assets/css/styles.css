@@ -30,6 +30,12 @@
   font-size: 2.5rem;
 }
 
+.post_buttons button {
+  justify-content: right;
+  background-color: var(--twitter-color);
+  border: none;
+  margin: 10px 0px;
+}
 
 /*
   Twitter clone stylesheet 

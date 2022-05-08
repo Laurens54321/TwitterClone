@@ -4,6 +4,8 @@ defmodule TwittercloneWeb.Plugs.Protection do
 
 
   alias Twitterclone.UserContext.User
+  alias Twitterclone.TwatContext.Twat
+  import Logger
 
   @privileged_roles ["Admin", "Manager"]
 
@@ -21,7 +23,7 @@ defmodule TwittercloneWeb.Plugs.Protection do
 
   def call(conn, _args), do: conn
 
-  defp control_user(conn = %{guardian_default_resource: %User{}}), do: control_element conn
+  defp control_user(conn = %{private: %{guardian_default_resource: %User{}}}), do: control_element conn
   defp control_user(conn), do: grant_access(conn, false)
 
   defp control_element(%{private: %{guardian_default_resource: %User{} = current_user}, path_info: ["users", user_id]} = conn) do
@@ -30,12 +32,16 @@ defmodule TwittercloneWeb.Plugs.Protection do
   end
 
   defp control_element(%{private: %{guardian_default_resource: %User{} = current_user}, path_info: ["twats", twat_id]} = conn) do
-    user_id = Twitterclone.TwatContext.get_by_userid(twat_id).user_id
-    if user_id == current_user.user_id, do: conn
-    grant_access(conn, current_user.role in @privileged_roles)
+    with {:ok, %Twat{} = twat} <- Twitterclone.TwatContext.get_twat(twat_id) do
+        if twat.user_id == current_user.user_id, do: conn
+        grant_access(conn, current_user.role in @privileged_roles)
+    end
   end
 
-  defp control_element(conn), do: conn
+  defp control_element(conn) do
+    debug "DEFAULT CONTROL ELEMENT"
+    conn
+  end
 
   def grant_access(conn, true), do: conn
 

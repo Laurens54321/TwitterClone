@@ -8,7 +8,7 @@ defmodule Twitterclone.TwatContext.Twat do
     field :text, :string
     belongs_to :user, User, foreign_key: :user_id, references: :user_id, type: :string
 
-    has_many :comments, Twitterclone.CommentContext.Comment
+    has_many :comments, Twitterclone.CommentContext.Comment, on_delete: :delete_all
 
     timestamps()
   end

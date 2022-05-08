@@ -37,16 +37,24 @@ defmodule TwittercloneWeb.Router do
 
     get "/", PageController, :index
     get "/unauthorized", PageController, :unauthorized
+    get "/error/:errorcode/:error", PageController, :error
   end
 
   scope "/", TwittercloneWeb do
     pipe_through [:browser, :auth,  :allowed_for_users]
 
     get "/profile", ProfileController, :myprofile
+    get "/feed", ProfileController, :feed
     get "/twat", ProfileController, :newtwat
     post "/twat", ProfileController, :createtwat
+
+    get "/twats/:id/edit", TwatController, :edit
+    patch "/twats/:id", TwatController, :update
+    delete "/twats/:id", TwatController, :delete
+
+
     post "/comment/:twat_id", ProfileController, :createcomment
-    get "/feed", ProfileController, :feed
+
     get "/gen_api_key", APIController, :generate
 
     post "/follow/:user_id/:follower_id", FollowerController, :follow
@@ -57,10 +65,7 @@ defmodule TwittercloneWeb.Router do
 
   scope "/", TwittercloneWeb do
     pipe_through [:browser, :auth,  :allowed_for_admins]
-
-
-
-    resources "/twats", TwatController, except: [:show, :new, :edit]
+    get "/twats", TwatController, :index
 
   end
 

@@ -13,12 +13,14 @@ defmodule Twitterclone.TwatContext do
 
   ## Examples
 
-      iex> list_twats()
+      iex> list_twats(preloads)
       [%Twat{}, ...]
 
   """
-  def list_twats do
-    Repo.all(Twat)
+  def list_twats(preloads \\ []) do
+    Twat
+      |> Repo.all()
+      |> Repo.preload(preloads)
   end
 
   @doc """

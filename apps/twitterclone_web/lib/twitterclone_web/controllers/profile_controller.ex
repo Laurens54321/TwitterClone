@@ -2,7 +2,7 @@ defmodule TwittercloneWeb.ProfileController do
   use TwittercloneWeb, :controller
 
   alias Twitterclone.UserContext
-  alias Twitterclone.UserContext.User
+  #alias Twitterclone.UserContext.User
   alias Twitterclone.TwatContext
   alias Twitterclone.TwatContext.Twat
 

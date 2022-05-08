@@ -26,10 +26,13 @@ defmodule TwittercloneWeb.TwatAPIController do
   end
 
   def delete(conn, %{"id" => id}) do
-    twat = TwatContext.get_twat!(id)
-
-    with {:ok, %Twat{}} <- TwatContext.delete_twat(twat) do
-      send_resp(conn, :no_content, "")
+    case TwatContext.get_twat!(id) do
+      {:ok, %Twat{} = twat} ->
+        with {:ok, %Twat{}} <- TwatContext.delete_twat(twat) do
+          send_resp(conn, :no_content, "")
+        end
+      {:error, :not_found}
     end
+
   end
 end

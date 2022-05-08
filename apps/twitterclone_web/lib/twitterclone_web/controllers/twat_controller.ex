@@ -9,17 +9,8 @@ defmodule TwittercloneWeb.TwatController do
   action_fallback TwittercloneWeb.FallbackController
 
   def index(conn, _params) do
-    twats = TwatContext.list_twats()
-    render(conn, "index.json", twats: twats)
-  end
-
-  def create(conn, %{"twat" => twat_params}) do
-    with {:ok, %Twat{} = twat} <- TwatContext.create_twat(twat_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.twat_path(conn, :show, twat))
-      |> render("show.json", twat: twat)
-    end
+    twats = TwatContext.list_twats([:user])
+    render(conn, "index.html", twats: twats)
   end
 
   def show(conn, %{"id" => id}) do
@@ -29,11 +20,32 @@ defmodule TwittercloneWeb.TwatController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    twat = TwatContext.get_twat!(id)
+  def edit(conn, %{"id" => id}) do
+    with {:ok, %Twat{} = twat} <- TwatContext.get_twat(id) do
+      changeset = TwatContext.change_twat(twat)
+      render(conn, "edit.html", changeset: changeset, twat: twat)
+    end
+  end
 
-    with {:ok, %Twat{}} <- TwatContext.delete_twat(twat) do
-      send_resp(conn, :no_content, "")
+  def update(conn, %{"id" => id, "twat" => twat_params}) do
+    with {:ok, %Twat{} = twat} <- TwatContext.get_twat(id) do
+      case TwatContext.update_twat(twat, twat_params) do
+        {:ok, twat} ->
+          conn
+          |> put_flash(:info, "Twat updated successfully.")
+          |> redirect(to: Routes.twat_path(conn, :show, twat))
+
+        {:error, %Ecto.Changeset{} = changeset} ->
+          render(conn, "edit.html", twat: twat, changeset: changeset)
+      end
+    end
+  end
+
+  def delete(conn, %{"id" => id}) do
+    with {:ok, %Twat{} = twat} <- TwatContext.get_twat(id) do
+      with {:ok, %Twat{}} <- TwatContext.delete_twat(twat) do
+        redirect(conn, to: NavigationHistory.last_path(conn))
+      end
     end
   end
 end

@@ -1,0 +1,5 @@
+<h2><%= gettext "Twat List" %></h2>
+
+<%= for twat <- @twats do %>
+    <%= render TwittercloneWeb.TwatView , "twat.html", conn: @conn, twat: twat %>
+<% end %>

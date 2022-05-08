@@ -12,7 +12,7 @@ defmodule TwittercloneWeb.Plugs.CurrentUserPlug do
     else
       "Current User: #{current_user.user_id}, #{current_user.role}"
     end
-    Logger.debug msg
+    debug msg
     assign(conn, :current_user, current_user)
   end
 end
