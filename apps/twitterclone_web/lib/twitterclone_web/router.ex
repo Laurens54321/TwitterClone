@@ -80,10 +80,6 @@ defmodule TwittercloneWeb.Router do
 
   end
 
-  scope "/api/admin", TwittercloneWeb do
-
-  end
-
   pipeline :auth do
     plug TwittercloneWeb.Pipeline
     plug TwittercloneWeb.Plugs.CurrentUserPlug

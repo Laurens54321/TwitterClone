@@ -32,9 +32,13 @@ defmodule TwittercloneWeb.Plugs.Protection do
   end
 
   defp control_element(%{private: %{guardian_default_resource: %User{} = current_user}, path_info: ["twats", twat_id]} = conn) do
-    with {:ok, %Twat{} = twat} <- Twitterclone.TwatContext.get_twat(twat_id) do
-        if twat.user_id == current_user.user_id, do: conn
-        grant_access(conn, current_user.role in @privileged_roles)
+    with {:ok, %Twat{} = twat} <- Twitterclone.TwatContext.get_twat(twat_id, [:user]) do
+        if twat.user == current_user do
+          grant_access(conn, true)
+        else
+          debug "whut, twat: " <> twat.user_id <> ", user: " <> current_user.user_id
+          grant_access(conn, current_user.role in @privileged_roles)
+        end
     end
   end
 

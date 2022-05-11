@@ -10,10 +10,6 @@ defmodule TwittercloneWeb.UserAPIView do
     %{data: render_one(user, UserAPIView, "user.json", as: :user)}
   end
 
-  def render("adminshow.json", %{user: user}) do
-    %{data: render_one(user, UserAPIView, "adminuser.json", as: :user)}
-  end
-
   def render("user.json", %{user: user}) do
     %{
       user_id: user.user_id,
@@ -21,6 +17,10 @@ defmodule TwittercloneWeb.UserAPIView do
       email: user.email,
       role: user.role
     }
+  end
+
+  def render("adminshow.json", %{user: user}) do
+    %{data: render_one(user, UserAPIView, "adminuser.json", as: :user)}
   end
 
   def render("adminuser.json", %{user: user, api_key: apikey }) do

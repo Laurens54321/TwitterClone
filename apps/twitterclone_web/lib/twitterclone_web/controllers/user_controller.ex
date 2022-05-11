@@ -71,20 +71,4 @@ defmodule TwittercloneWeb.UserController do
     |> put_flash(:info, "User deleted successfully.")
     |> redirect(to: Routes.user_path(conn, :index))
   end
-
-  def isAuthorized(conn, %User{} = user) do
-    current_user = Guardian.Plug.current_resource(conn)
-    cond do
-      UserContext.hasrole(current_user, ["Admin", "Manager"]) ->
-        true
-      user.user_id == current_user.user_id ->
-        true
-      true -> false
-    end
-  end
-
-  def isAuthorized(_conn, _params), do: false
-
-
-
 end

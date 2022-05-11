@@ -1,6 +1,6 @@
 defmodule TwittercloneWeb.TwatView do
   use TwittercloneWeb, :view
-  alias TwittercloneWeb.TwatView
+
 
   def render("index.json", %{twats: twats}) do
     %{data: render_many(twats, TwatView, "twat.json")}
