@@ -5,6 +5,7 @@ defmodule TwittercloneWeb.ProfileController do
   #alias Twitterclone.UserContext.User
   alias Twitterclone.TwatContext
   alias Twitterclone.TwatContext.Twat
+  alias Twitterclone.UserContext.Follower
 
   action_fallback TwittercloneWeb.FallbackController
 
@@ -17,10 +18,7 @@ defmodule TwittercloneWeb.ProfileController do
   def feed(conn, _args) do
     current_user = Guardian.Plug.current_resource(conn)
     following = UserContext.get_following(current_user.user_id)
-    if following == [] do
-      render(conn, "feed.html", twats: [])
-    end
-    twats = List.flatten(TwatContext.get_by_userid_list(following, [:user]))
+    [twats] = TwatContext.get_by_userid_list(following, [:user])
     render(conn, "feed.html", twats: twats)
   end
 
@@ -48,7 +46,8 @@ defmodule TwittercloneWeb.ProfileController do
   end
 
   def newtwat(conn, _params) do
-    changeset = TwatContext.change_twat(%Twat{})
+    current_user = Guardian.Plug.current_resource(conn)
+    changeset = TwatContext.change_twat(%Twat{}, %{user_id: current_user.user_id})
     render(conn, "twat.html", changeset: changeset)
   end
 
@@ -69,5 +68,26 @@ defmodule TwittercloneWeb.ProfileController do
       redirect(conn, to: Routes.twat_path(conn, :show, twat_id))
   end
 
+  def follow(conn, %{"user_id" => user_id, "follower_id" => follower_id}) do
+    with true <- Guardian.Plug.current_resource(conn).user_id == follower_id do
+        with {:ok, %Follower{}} <- UserContext.create_follower(%{user_id: user_id, follower_id: follower_id}) do
+          conn
+          |> redirect(to: Routes.profile_path(conn, :profile, user_id))
+        end
+      else
+        {:error, _} -> {:error, :unauthorized}
+        false -> {:error, :unauthorized}
+      end
+  end
 
+  def unfollow(conn, %{"user_id" => user_id, "follower_id" => follower_id}) do
+    with true <- Guardian.Plug.current_resource(conn).user_id == follower_id do
+      with {:ok, %Follower{}} <- UserContext.delete_follower(UserContext.get_follower_record(user_id, follower_id)) do
+        conn
+        |> redirect(to: Routes.profile_path(conn, :profile, user_id))
+      end
+    else
+      false -> {:error, :unauthorized}
+    end
+  end
 end

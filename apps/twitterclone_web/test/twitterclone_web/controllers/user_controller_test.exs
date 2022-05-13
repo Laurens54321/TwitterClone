@@ -3,8 +3,8 @@ defmodule TwittercloneWeb.UserControllerTest do
 
   import Twitterclone.UserContextFixtures
 
-  @create_attrs %{email: "some email", name: "some name", passwordHash: "some passwordHash", user_id: "some user_id"}
-  @update_attrs %{email: "some updated email", name: "some updated name", passwordHash: "some updated passwordHash", user_id: "some updated user_id"}
+  @create_attrs %{email: "some@email.com", name: "some name", password: "some password", user_id: "some user_id"}
+  @update_attrs %{email: "some.updated@email.com", name: "some updated name", password: "some updated password", user_id: "some updated user_id"}
   @invalid_attrs %{email: nil, name: nil, passwordHash: nil, user_id: nil}
 
   describe "index" do

@@ -16,7 +16,7 @@
 <% end %>
 
 <%= for subtwat <- @twat.comments do %>
-    <%= render TwittercloneWeb.TwatView, "twat.html", conn: @conn, twat: subtwat %>
+    <%= render TwittercloneWeb.TwatView, "comment.html", conn: @conn, twat: subtwat %>
 <% end %>
 
 <%= link gettext("Back"), to: NavigationHistory.last_path(@conn, 1) %>

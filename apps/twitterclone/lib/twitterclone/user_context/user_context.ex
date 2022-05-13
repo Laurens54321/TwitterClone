@@ -188,7 +188,10 @@ defmodule Twitterclone.UserContext do
 
   def get_follower_record(user_id, follower_id) do
     query = from(u in Follower, where: like(u.user_id, ^user_id) and like(u.follower_id, ^follower_id))
-    Repo.one(query)
+    case Repo.one(query) do
+      %Follower{} = follower -> follower
+      nil -> {:error, :not_found}
+    end
   end
 
   def create_follower(attrs \\ %{}) do

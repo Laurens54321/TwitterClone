@@ -5,6 +5,7 @@ defmodule Twitterclone.TwatContext do
 
   import Ecto.Query, warn: false
   alias Twitterclone.Repo
+  import Logger
 
   alias Twitterclone.TwatContext.Twat
 
@@ -122,9 +123,14 @@ defmodule Twitterclone.TwatContext do
 
   def get_by_userid_list(users, args \\ []) do
     twats = []
-    for user <- users do
-      twats ++ get_by_userid(user.user_id, args)
+    case users do
+      [_ | _] ->
+        for user <- users do
+          for twat <- get_by_userid(user.user_id, args) do
+            twats ++ twat
+          end
+        end
+      _ -> []
     end
-
   end
 end

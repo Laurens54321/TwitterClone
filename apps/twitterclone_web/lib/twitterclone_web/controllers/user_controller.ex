@@ -22,7 +22,14 @@ defmodule TwittercloneWeb.UserController do
   defp processchangeset(%Ecto.Changeset{} = changeset), do: changeset
   defp processchangeset(%{}), do: UserContext.change_user(%User{})
 
+  defp controlchangesetroles?(%{"role" => role}, acceptable_roles) do
+    role in acceptable_roles
+  end
+
   def create(conn, %{"user" => user_params}) do
+    current_user = Guardian.Plug.current_resource(conn)
+    roles = UserContext.get_acceptable_roles(current_user)
+    if not controlchangesetroles?(user_params, roles), do: {:error, "unauthorized"}
     case UserContext.create_user(user_params) do
       {:ok, user} ->
         conn

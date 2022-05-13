@@ -32,6 +32,7 @@ defmodule TwittercloneWeb.Router do
     resources "/users", UserController
     get "/twats/:id", TwatController, :show
     get "/profile/:user_id", ProfileController, :profile
+    get "/follower/:id", FollowerController, :show
     get "/following/:user_id", FollowerController, :following
     get "/followers/:user_id", FollowerController, :followers
 
@@ -57,9 +58,9 @@ defmodule TwittercloneWeb.Router do
 
     get "/gen_api_key", APIController, :generate
 
-    post "/follow/:user_id/:follower_id", FollowerController, :follow
-    post "/unfollow/:user_id/:follower_id", FollowerController, :unfollow
-    resources "/follower", FollowerController
+    post "/follow/:user_id/:follower_id", ProfileController, :follow
+    post "/unfollow/:user_id/:follower_id", ProfileController, :unfollow
+
 
   end
 

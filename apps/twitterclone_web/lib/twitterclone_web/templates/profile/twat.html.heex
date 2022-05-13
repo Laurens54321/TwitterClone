@@ -8,7 +8,7 @@
         </div>
     <% end %>
     <div class ="tweetBox">
-        <%= label f, @current_user.name %>
+        <%= label f, :user_id %>
 
         <%= label f, :text %>
         <%= text_input f, :text, class: "tweetBox" %>
