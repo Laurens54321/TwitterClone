@@ -29,3 +29,9 @@ user: user, password: t
 user: admin, password: t
 user: manager, password: t
 ```
+
+
+Api Key:
+```
+x-api-key
+```

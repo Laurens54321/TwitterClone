@@ -52,6 +52,8 @@ defmodule Twitterclone.UserContext.User do
     |> validate_required([:user_id, :name, :email, :password, :role])
     |> validate_inclusion(:role, @acceptable_roles)
     |> validate_format(:email, ~r/@/)
+    |> unique_constraint(:user_id, name: :users_pkey,
+        message: "Username already in use.")
     |> unique_constraint(:user_id, name: :unique_user_id_index,
         message: "Username already in use.")
     |> unique_constraint(:email, name: :unique_email_index,

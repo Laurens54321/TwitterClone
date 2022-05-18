@@ -34,7 +34,7 @@ defmodule Twitterclone.UserContext do
     case Repo.get(User, user_id) do
       nil -> {:error, :not_found}
       user ->
-        Repo.preload(user, preloads)
+        {:ok, Repo.preload(user, preloads)}
     end
   end
 
@@ -134,13 +134,17 @@ defmodule Twitterclone.UserContext do
     Repo.preload(user, [{:following, :twats}])
   end
 
+  def preload_key(user) do
+    Repo.preload user, :api_key
+  end
+
   ### API KEY ###
 
-  def api_key_exists?(%{key: nil}), do: false
+  def api_key_exists(%{key: nil}), do: false
 
-  def api_key_exists?(%{key: key}) do
+  def api_key_exists(%{key: key}) do
     query = from(u in ApiKey, where: like(u.key, ^key))
-    Repo.one!(query)
+    Repo.one(query)
   end
 
   def gen_api_key(%User{} = user) do

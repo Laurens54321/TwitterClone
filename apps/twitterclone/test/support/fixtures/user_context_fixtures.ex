@@ -18,6 +18,7 @@ defmodule Twitterclone.UserContextFixtures do
         role: "User"
       })
       |> Twitterclone.UserContext.create_user()
+    Twitterclone.UserContext.gen_api_key(user)
 
     user
   end

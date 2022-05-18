@@ -9,8 +9,8 @@ defmodule TwittercloneWeb.Guardian do
 
   def resource_from_claims(%{"sub" => id}) do
     case UserContext.get_user(id) do
-      %UserContext.User{} = u -> {:ok, u}
-      nil -> {:error, :resource_not_found}
+      {:ok, %UserContext.User{} = u} -> {:ok, u}
+      _ -> {:error, :resource_not_found}
     end
   end
 end
