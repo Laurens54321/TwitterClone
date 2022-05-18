@@ -26,6 +26,7 @@ defmodule TwittercloneWeb.UserAPIController do
   end
 
   def adminshow(conn, %{"id" => user_id}) do
+    if user_id != conn.assigns.current_api_user.user_id, do: {:error, :unauthorized}
     with {:ok, user} <- UserContext.get_user(user_id, [:api_key]) do
       render(conn, "adminshow.json", user: user, api_key: user.api_key)
     end
@@ -44,7 +45,7 @@ defmodule TwittercloneWeb.UserAPIController do
   end
 
   def delete(conn, %{"id" => id}) do
-    if id != conn.assigns.current_api_user.userid, do: {:error, :unauthorized}
+    if id != conn.assigns.current_api_user.user_id, do: {:error, :unauthorized}
     with {:ok, user} <- UserContext.get_user(id) do
       UserContext.delete_user(user)
       conn

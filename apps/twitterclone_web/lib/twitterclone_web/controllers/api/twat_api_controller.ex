@@ -4,7 +4,7 @@ defmodule TwittercloneWeb.TwatAPIController do
   alias Twitterclone.TwatContext
   alias Twitterclone.TwatContext.Twat
 
-  action_fallback TwittercloneWeb.FallbackController
+  action_fallback TwittercloneWeb.APIFallbackController
 
   def index(conn, _params) do
     twats = TwatContext.list_twats()
@@ -12,12 +12,17 @@ defmodule TwittercloneWeb.TwatAPIController do
   end
 
   def create(conn, %{"twat" => twat_params}) do
-    with {:ok, %Twat{} = twat} <- TwatContext.create_twat(twat_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.twat_path(conn, :show, twat))
-      |> render("show.json", twat: twat)
+    if twat_params["user_id"] == conn.assigns.current_api_user.user_id do
+      with {:ok, %Twat{} = twat} <- TwatContext.create_twat(twat_params) do
+        conn
+        |> put_status(:created)
+        |> put_resp_header("location", Routes.twat_path(conn, :show, twat))
+        |> render("show.json", twat: twat)
+      end
+    else
+      {:error, :unauthorized}
     end
+
   end
 
   def show(conn, %{"id" => id}) do
@@ -26,12 +31,11 @@ defmodule TwittercloneWeb.TwatAPIController do
   end
 
   def delete(conn, %{"id" => id}) do
-    case TwatContext.get_twat!(id) do
-      {:ok, %Twat{} = twat} ->
-        with {:ok, %Twat{}} <- TwatContext.delete_twat(twat) do
-          send_resp(conn, :no_content, "")
-        end
-      {:error, :not_found}
+    with {:ok, %Twat{} = twat} <- TwatContext.get_twat(id) do
+      if twat.user_id == conn.assigns.current_api_user.user_id, do: {:error, :unauthorized}
+      with {:ok, %Twat{}} <- TwatContext.delete_twat(twat) do
+        send_resp(conn, 202, "")
+      end
     end
 
   end

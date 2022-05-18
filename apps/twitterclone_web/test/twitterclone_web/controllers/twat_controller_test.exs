@@ -6,14 +6,14 @@ defmodule TwittercloneWeb.TwatControllerTest do
   alias Twitterclone.TwatContext.Twat
 
   @create_attrs %{
-    creationDate: ~D[2022-03-17],
+    insert_at: ~D[2022-03-17],
     text: "some text"
   }
   @update_attrs %{
-    creationDate: ~D[2022-03-18],
+    insert_at: ~D[2022-03-18],
     text: "some updated text"
   }
-  @invalid_attrs %{creationDate: nil, text: nil}
+  @invalid_attrs %{insert_at: nil, text: nil}
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
@@ -35,7 +35,7 @@ defmodule TwittercloneWeb.TwatControllerTest do
 
       assert %{
                "id" => ^id,
-               "creationDate" => "2022-03-17",
+               "insert_at" => "2022-03-17",
                "text" => "some text"
              } = json_response(conn, 200)["data"]
     end
@@ -57,7 +57,7 @@ defmodule TwittercloneWeb.TwatControllerTest do
 
       assert %{
                "id" => ^id,
-               "creationDate" => "2022-03-18",
+               "insert_at" => "2022-03-18",
                "text" => "some updated text"
              } = json_response(conn, 200)["data"]
     end

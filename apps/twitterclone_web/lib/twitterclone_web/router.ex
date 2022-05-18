@@ -73,12 +73,20 @@ defmodule TwittercloneWeb.Router do
   scope "/api", TwittercloneWeb do
     pipe_through [:api]
     resources "/users", UserAPIController, except: [:update, :delete]
-    resources "/comments", CommentAPIController, except: [:update, :create]
+    get "/twats", TwatAPIController, :index
+    get "/twats/:id", TwatAPIController, :show
+    resources "/comments", CommentAPIController, except: [:update, :create, :delete]
 
     pipe_through [:api_auth]
     put "/users/:id", UserAPIController, :update
     delete "/users/:id", UserAPIController, :delete
     get "/users+/:id", UserAPIController, :adminshow
+
+    post "/twats", TwatAPIController, :create
+    delete "/twats/:id", TwatAPIController, :delete
+
+    post "/comments", CommentAPIController, :create
+    delete "/comments/:id", CommentAPIController, :delete
 
   end
 

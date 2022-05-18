@@ -3,11 +3,11 @@ defmodule TwittercloneWeb.UserAPIView do
   alias TwittercloneWeb.UserAPIView
 
   def render("index.json", %{users: users}) do
-    %{data: render_many(users, UserAPIView, "user.json", as: :user)}
+    render_many(users, UserAPIView, "user.json", as: :user)
   end
 
   def render("show.json", %{user: user}) do
-    %{data: render_one(user, UserAPIView, "user.json", as: :user)}
+    render_one(user, UserAPIView, "user.json", as: :user)
   end
 
   def render("user.json", %{user: user}) do
@@ -20,7 +20,7 @@ defmodule TwittercloneWeb.UserAPIView do
   end
 
   def render("adminshow.json", %{user: user}) do
-    %{data: render_one(user, UserAPIView, "adminuser.json", as: :user)}
+   render_one(user, UserAPIView, "adminuser.json", as: :user)
   end
 
   def render("adminuser.json", %{user: user, api_key: apikey }) do

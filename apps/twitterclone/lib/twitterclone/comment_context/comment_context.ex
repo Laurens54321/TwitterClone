@@ -37,10 +37,14 @@ defmodule Twitterclone.CommentContext do
   """
   def get_comment!(id), do: Repo.get!(Comment, id)
 
-  def get_comment_by_twatid(twat_id, args \\ %{}) do
-    recording_query = from(t in Comment, where: like(t.twat_id, ^twat_id), preload: ^args)
-    Repo.all(recording_query)
+  def get_comment(id, args \\ []) do
+    case Repo.get(Comment, id) do
+      nil -> {:error, :not_found}
+      comment -> {:ok, Repo.preload(comment, args)}
+    end
   end
+
+
 
   @doc """
   Creates a comment.
