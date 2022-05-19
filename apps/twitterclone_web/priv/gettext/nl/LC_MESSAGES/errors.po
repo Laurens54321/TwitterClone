@@ -12,34 +12,34 @@ msgstr ""
 "Plural-Forms: nplurals=2\n"
 
 msgid "can't be blank"
-msgstr ""
+msgstr "mag niet leeg zijn"
 
 msgid "has already been taken"
-msgstr ""
+msgstr "is al genomen"
 
 msgid "is invalid"
-msgstr ""
+msgstr "is niet geldig"
 
 msgid "must be accepted"
-msgstr ""
+msgstr "moet geaccepteerd zijn"
 
 msgid "has invalid format"
-msgstr ""
+msgstr "heeft fout formaat"
 
 msgid "has an invalid entry"
-msgstr ""
+msgstr "heeft foute entry"
 
 msgid "is reserved"
-msgstr ""
+msgstr "is gereserveerd"
 
 msgid "does not match confirmation"
-msgstr ""
+msgstr "is niet hetzelfde"
 
 msgid "is still associated with this entry"
-msgstr ""
+msgstr "is al geassocieerd"
 
 msgid "are still associated with this entry"
-msgstr ""
+msgstr "zijn al geassocieerd"
 
 msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"

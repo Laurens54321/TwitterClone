@@ -60,10 +60,10 @@
       <div class="filler" ></div>
 
       <div>
-        <p class="languageoptionheader">language options</p>
+        <p class="languageoptionheader"> <% gettext("language options") %> language options </p> <!-- idk why gettext isnt working -->
         <div class="languageoptions" >
           <%= for locale <- @available_locales do %>
-            <%= link locale, to: "#{NavigationHistory.last_path(@conn)}?locale=#{locale}"%>
+            <%= link locale, to: "#{@conn.request_path}?locale=#{locale}"%>
           <% end %>
         </div>
       </div>

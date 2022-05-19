@@ -13,7 +13,6 @@ defmodule TwittercloneWeb.Plugs.ApiKeyAuthorizationPlug do
       |> get_req_header("x-api-key")
       |> get_key()
 
-
     with %ApiKey{user_id: user_id} <- UserContext.api_key_exists(%{key: key}) do
       {:ok, user} = UserContext.get_by_userid(user_id)
       Logger.debug "User key: #{user.user_id}"
