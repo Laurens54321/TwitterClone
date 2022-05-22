@@ -6,6 +6,7 @@ defmodule Twitterclone.TwatContext do
   import Ecto.Query, warn: false
   alias Twitterclone.Repo
 
+  alias Twitterclone.UserContext.Follower
   alias Twitterclone.TwatContext.Twat
 
   @doc """
@@ -121,15 +122,9 @@ defmodule Twitterclone.TwatContext do
   end
 
   def get_by_userid_list(users, args \\ []) do
-    twats = []
-    case users do
-      [_ | _] ->
-        for user <- users do
-          for twat <- get_by_userid(user.user_id, args) do
-            twats ++ twat
-          end
-        end
-      _ -> [[]]
+    twats = for %Follower{} = follower <- users do
+      get_by_userid(follower.user_id, args)
     end
+    List.flatten(twats)
   end
 end

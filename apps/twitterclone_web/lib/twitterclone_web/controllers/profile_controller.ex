@@ -18,7 +18,7 @@ defmodule TwittercloneWeb.ProfileController do
   def feed(conn, _args) do
     current_user = Guardian.Plug.current_resource(conn)
     following = UserContext.get_following(current_user.user_id)
-    [twats] = TwatContext.get_by_userid_list(following, [:user])
+    twats = TwatContext.get_by_userid_list(following, [:user])
     render(conn, "feed.html", twats: twats)
   end
 
