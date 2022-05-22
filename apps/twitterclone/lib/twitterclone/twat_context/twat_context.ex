@@ -129,7 +129,7 @@ defmodule Twitterclone.TwatContext do
             twats ++ twat
           end
         end
-      _ -> []
+      _ -> [[]]
     end
   end
 end
