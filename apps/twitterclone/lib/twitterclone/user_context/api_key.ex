@@ -14,5 +14,6 @@ defmodule Twitterclone.UserContext.ApiKey do
     api_key
     |> cast(attrs, [:key, :user_id])
     |> validate_required([:key, :user_id])
+    |> foreign_key_constraint(:user_id, name: :twats_user_id_fkey)
   end
 end

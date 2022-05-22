@@ -5,6 +5,7 @@ defmodule Twitterclone.UserContext do
 
   import Ecto.Query, warn: false
   alias Twitterclone.Repo
+  require Logger
 
   alias Twitterclone.UserContext.User
   alias Twitterclone.UserContext.ApiKey
@@ -77,11 +78,25 @@ defmodule Twitterclone.UserContext do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_user(%User{} = user, attrs) do
-    user
-    |> User.changeset(attrs)
-    |> Repo.update()
+
+  def update_user(%User{} = user, %{"role" => edit_role} = attrs) do
+    if (edit_role in get_acceptable_roles(user)) do
+      user
+        |> User.changeset(attrs)
+        |> Repo.update()
+    else
+      {:error, :unauthorized}
+    end
+
   end
+
+  def update_user(%User{} = user, attrs) do
+    IO.inspect(attrs)
+    user
+      |> User.changeset(attrs)
+      |> Repo.update()
+  end
+
 
   @doc """
   Deletes a user.
@@ -113,7 +128,7 @@ defmodule Twitterclone.UserContext do
   end
 
   defdelegate get_acceptable_roles(), to: User
-  defdelegate get_acceptable_roles(current_user), to: User
+  defdelegate get_acceptable_roles(user), to: User
 
   def authenticate_user(user_id, plain_text_password) do
     case Repo.get_by(User, user_id: user_id) do
@@ -128,6 +143,12 @@ defmodule Twitterclone.UserContext do
           {:error, :invalid_credentials}
         end
     end
+  end
+
+  def create_api_key(attrs \\ %{}) do
+    %ApiKey{}
+      |> ApiKey.changeset(attrs)
+      |> Repo.insert()
   end
 
   def preload_feed(user) do

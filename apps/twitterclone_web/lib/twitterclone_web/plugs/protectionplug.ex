@@ -27,8 +27,11 @@ defmodule TwittercloneWeb.Plugs.Protection do
   defp control_user(conn), do: grant_access(conn, false)
 
   defp control_element(%{private: %{guardian_default_resource: %User{} = current_user}, path_info: ["users", user_id]} = conn) do # /users/:id
-    if user_id == current_user.user_id, do: conn
-    grant_access(conn, current_user.role in @privileged_roles)
+    if user_id == current_user.user_id do
+      grant_access(conn, true)
+    else
+      grant_access(conn, current_user.role in @privileged_roles)
+    end
   end
 
   defp control_element(%{private: %{guardian_default_resource: %User{} = current_user}, path_info: ["twats", twat_id]} = conn) do # /twats/:id

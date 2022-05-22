@@ -1,4 +1,10 @@
-<h1>Edit User</h1>
+<h1><% gettext "Edit User" %></h1>
+
+<%= if assigns[:error] do %>
+    <div class="alert alert-danger">
+      <p> <%= @error %></p>
+    </div>
+  <% end %>
 
 <%= render "form.html", action: Routes.user_path(@conn, :update, @user.user_id), changeset: @changeset, acceptable_roles: @acceptable_roles, method: "PATCH" %>
 

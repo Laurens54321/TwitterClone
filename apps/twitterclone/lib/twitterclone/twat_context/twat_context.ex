@@ -5,7 +5,6 @@ defmodule Twitterclone.TwatContext do
 
   import Ecto.Query, warn: false
   alias Twitterclone.Repo
-  import Logger
 
   alias Twitterclone.TwatContext.Twat
 

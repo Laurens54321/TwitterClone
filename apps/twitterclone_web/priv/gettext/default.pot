@@ -161,3 +161,8 @@ msgstr ""
 #: lib/twitterclone_web/templates/session/new.html.heex:1
 msgid "Login Page"
 msgstr ""
+
+#, elixir-autogen, elixir-format
+#: lib/twitterclone_web/templates/user/edit.html.heex:1
+msgid "Edit User"
+msgstr ""

@@ -1,6 +1,7 @@
 defmodule Twitterclone.UserContext.User do
   use Ecto.Schema
   import Ecto.Changeset
+  require Logger
 
   @acceptable_roles ["Admin", "Manager", "User"]
 
@@ -34,8 +35,10 @@ defmodule Twitterclone.UserContext.User do
   def get_acceptable_roles, do: @acceptable_roles
   def get_acceptable_roles(nil), do: [List.last @acceptable_roles]
 
-  def get_acceptable_roles(%Twitterclone.UserContext.User{} = user) do
-    case user.role do
+  def get_acceptable_roles(%Twitterclone.UserContext.User{} = user), do: get_acceptable_roles(user.role)
+
+  def get_acceptable_roles(role) do
+    case role do
       "User" ->
         Enum.take(@acceptable_roles, -1)
       "Manager" ->
@@ -63,8 +66,8 @@ defmodule Twitterclone.UserContext.User do
   end
 
   defp put_password_hash(
-         %Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset
-       ) do
+    %Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset
+  ) do
     change(changeset, passwordHash: Pbkdf2.hash_pwd_salt(password))
   end
 

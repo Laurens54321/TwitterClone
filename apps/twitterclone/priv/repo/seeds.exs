@@ -80,3 +80,8 @@
   Twitterclone.UserContext.create_follower(%{
     "user_id" => "4",
     "follower_id" => "user"})
+
+{:ok, _cs} =
+  Twitterclone.UserContext.create_api_key(%{
+    "user_id" => "user",
+    "key" => "E99E446982E747F649A8A5B26ACB79F761649DD58D25A80D133D2E6D1E79350"})

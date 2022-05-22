@@ -29,15 +29,18 @@ defmodule TwittercloneWeb.UserController do
   def create(conn, %{"user" => user_params}) do
     current_user = Guardian.Plug.current_resource(conn)
     roles = UserContext.get_acceptable_roles(current_user)
-    if not controlchangesetroles?(user_params, roles), do: {:error, "unauthorized"}
-    case UserContext.create_user(user_params) do
-      {:ok, user} ->
-        conn
-        |> put_flash(:info, "User created successfully.")
-        |> redirect(to: Routes.profile_path(conn, :profile, user.user_id))
+    if not controlchangesetroles?(user_params, roles) do
+      {:error, "unauthorized"}
+    else
+      case UserContext.create_user(user_params) do
+        {:ok, user} ->
+          conn
+          |> put_flash(:info, "User created successfully.")
+          |> redirect(to: Routes.profile_path(conn, :profile, user.user_id))
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        new(conn,changeset)
+        {:error, %Ecto.Changeset{} = changeset} ->
+          new(conn,changeset)
+      end
     end
   end
 
@@ -50,7 +53,7 @@ defmodule TwittercloneWeb.UserController do
   def edit(conn, %{"id" => id}) do
     with {:ok, %User{} = user} <- UserContext.get_by_userid(id) do
       changeset = UserContext.change_user(user)
-      roles = UserContext.get_acceptable_roles()
+      roles = UserContext.get_acceptable_roles(user)
       render(conn, "edit.html", user: user, changeset: changeset, acceptable_roles: roles)
     end
   end
@@ -64,8 +67,13 @@ defmodule TwittercloneWeb.UserController do
           |> redirect(to: Routes.profile_path(conn, :profile, user.user_id))
 
         {:error, %Ecto.Changeset{} = changeset} ->
-          roles = UserContext.get_acceptable_roles()
+          roles = UserContext.get_acceptable_roles(user)
           render(conn, "edit.html", user: user, changeset: changeset, acceptable_roles: roles)
+
+        {:error, :unauthorized} ->
+            conn
+              |> put_flash(:error, "You cannot do that u cheeky bastard")
+              |> redirect(to: Routes.user_path(conn, :edit, user.user_id))
       end
     end
   end

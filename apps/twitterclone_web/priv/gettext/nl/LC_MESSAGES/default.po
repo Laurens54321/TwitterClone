@@ -162,3 +162,8 @@ msgstr "taal opties"
 #: lib/twitterclone_web/templates/session/new.html.heex:1
 msgid "Login Page"
 msgstr "Login Pagina"
+
+#, elixir-autogen, elixir-format, fuzzy
+#: lib/twitterclone_web/templates/user/edit.html.heex:1
+msgid "Edit User"
+msgstr "Bewerk"
