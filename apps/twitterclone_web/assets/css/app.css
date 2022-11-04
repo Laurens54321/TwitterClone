@@ -1,6 +1,30 @@
 /* This file is for your main application CSS */
 @import "./phoenix.css";
 
+#chat-container {
+  display: flex;
+  border: 1px solic #cccccc;
+  padding: 1em;
+  margin: -1em 1em 1em -1em;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 500px;
+
+}
+
+#chat-messages {
+  flex-grow: 1;
+}
+
+body {
+  background-color: #0d1117;
+  color: white;
+}
+
+a  { 
+  color: #bdc1c6 !important;
+}
+
 /* Alerts and form errors used by phx.new */
 .alert {
   padding: 15px;

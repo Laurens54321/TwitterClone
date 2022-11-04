@@ -20,7 +20,7 @@
 
     <!-- sidebar starts -->
     <div class="sidebar">
-      <i class="fab fa-twitter"></i>
+      <!-- <i class="fab fa-twitter"></i> -->
       <div class="sidebarOption">
           <span class="material-icons"> home </span>
           <%= link gettext("Feed"), to: Routes.profile_path(@conn, :feed)%>
@@ -43,6 +43,10 @@
           <%= link gettext("Home"), to: Routes.page_path(@conn, :index)%>
       </div>
 
+      <div class="sidebarOption">
+        <span class="material-icons"> more_horiz </span>
+        <%= link "Rooms", to: Routes.room_path(@conn, :new)%>
+    </div>
       
 
       <%= if assigns[:current_user] do %>
@@ -57,9 +61,16 @@
         <%= button "Twat", to: Routes.profile_path(@conn, :newtwat), method: :get, class: "sidebar__tweet"%>
       <% end %>
 
-      <div class="filler" ></div>
+      <%= if assigns[:current_user] do %>
+          <%= for room <- @current_user.rooms do %>
+            <div class="sidebarOption">
+              <span class="material-icons"> more_horiz </span>
+              <%= link room.name , to: "/rooms/#{room.id}"%>
+            </div>
+          <% end %>
+      <% end %>
 
-      <div>
+      <div class="languageoptionsdiv">
         <p class="languageoptionheader"> <% gettext("language options") %> language options </p> <!-- idk why gettext isnt working -->
         <div class="languageoptions" >
           <%= for locale <- @available_locales do %>

@@ -52,7 +52,8 @@ defmodule TwittercloneWeb.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:guardian, "~> 2.0"},
-      {:navigation_history, "~> 0.3"}
+      {:navigation_history, "~> 0.3"},
+      {:uuid, "~> 1.1.8"}
     ]
   end
 

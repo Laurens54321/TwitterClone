@@ -39,6 +39,10 @@ defmodule TwittercloneWeb.Router do
     get "/", PageController, :index
     get "/unauthorized", PageController, :unauthorized
     get "/error/:errorcode/:error", PageController, :error
+
+
+    live "/live", LiveController
+
   end
 
   scope "/", TwittercloneWeb do
@@ -61,7 +65,10 @@ defmodule TwittercloneWeb.Router do
     post "/follow/:user_id/:follower_id", ProfileController, :follow
     post "/unfollow/:user_id/:follower_id", ProfileController, :unfollow
 
+    get "/room/new", RoomController, :new
+    post "/room/create", RoomController, :create
 
+    live "/rooms/:room_id", LiveRoom
   end
 
   scope "/", TwittercloneWeb do
@@ -98,6 +105,7 @@ defmodule TwittercloneWeb.Router do
 
   pipeline :allowed_for_users do
     plug TwittercloneWeb.Plugs.AuthorizationPlug, ["Admin", "Manager", "User"]
+    plug TwittercloneWeb.Plugs.LiveRedirectPlug
   end
 
   pipeline :allowed_for_managers do

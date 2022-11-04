@@ -2,6 +2,8 @@ defmodule TwittercloneWeb.Plugs.CurrentUserPlug do
   import Plug.Conn
   import Logger
 
+  alias Twitterclone.UserContext
+
   def init(opts), do: opts
 
   @spec call(Plug.Conn.t(), any) :: Plug.Conn.t()
@@ -13,6 +15,7 @@ defmodule TwittercloneWeb.Plugs.CurrentUserPlug do
       "Current User: #{current_user.user_id}, #{current_user.role}"
     end
     debug msg
+    current_user = Twitterclone.Repo.preload(current_user, [:rooms])
     assign(conn, :current_user, current_user)
   end
 end

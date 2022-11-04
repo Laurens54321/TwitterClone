@@ -1,3 +1,8 @@
+.languageoptionsdiv{
+  position: absolute;
+  bottom: 0;
+}
+
 .languageoptionheader {
   font-weight: 600;
   font-size: 12px;
@@ -48,9 +53,11 @@
   box-sizing: border-box;
 }
 
+
+
 body {
-  --twitter-color: #50b7f5;
-  --twitter-background: #e6ecf0;
+  --twitter-color: #222d3d;
+  --twitter-background: #384963;
 }
 
 .sidebarOption {
@@ -72,7 +79,7 @@ body {
 
 .sidebarOption:hover {
   background-color: var(--twitter-background);
-  border-radius: 30px;
+  border-radius: 20px;
   color: var(--twitter-color);
   transition: color 100ms ease-out;
 }
@@ -96,16 +103,16 @@ body {
   display: flex;
   height: 100vh;
   max-width: 1300px;
-  margin-left: auto;
-  margin-right: auto;
+  
   padding: 0 10px;
 }
 
 .sidebar {
-  border-right: 1px solid var(--twitter-background);
-  flex: 0.2;
+  border-right: 1px solid var(--twitter-background); 
+  /* flex: 0.2;
+  margin: 1em -1em 1em -1em; */
 
-  min-width: 250px;
+  width: 250px;
   margin-top: 20px;
   padding-left: 20px;
   padding-right: 20px;
@@ -119,24 +126,32 @@ body {
 /* feed */
 .feed {
   flex: 0.5;
-  border-right: 1px solid var(--twitter-background);
+  /* border-right: 1px solid var(--twitter-background); */
   min-width: fit-content;
   overflow-y: scroll;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .feed__header {
   position: sticky;
-  top: 0;
-  background-color: white;
+  top: 20;
+  background-color: var(--twitter-background);
   z-index: 100;
-  border: 1px solid var(--twitter-background);
+  border: 1px solid black;
   padding: 15px 20px;
+  margin: 20px;
+  border-radius: 20px;
   text-align: center;
+  line-height: 40px;
 }
 
 .feed__header h2 {
   font-size: 20px;
   font-weight: 800;
+  vertical-align: middle;
+  margin: 0;
+  height: 40px;
 }
 
 .feed::-webkit-scrollbar {

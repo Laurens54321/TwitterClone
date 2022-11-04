@@ -26,6 +26,11 @@ defmodule Twitterclone.UserContext.User do
 
     has_one :api_key, Twitterclone.UserContext.ApiKey, foreign_key: :user_id
 
+    many_to_many :rooms,
+                 Twitterclone.RoomContext.Room,
+                 join_through: Twitterclone.RoomContext.RoomConnection,
+                 join_keys: [user_id: :user_id, room_id: :id]
+
 
 
     timestamps()

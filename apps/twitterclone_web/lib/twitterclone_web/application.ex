@@ -11,7 +11,8 @@ defmodule TwittercloneWeb.Application do
       # Start the Telemetry supervisor
       TwittercloneWeb.Telemetry,
       # Start the Endpoint (http/https)
-      TwittercloneWeb.Endpoint
+      TwittercloneWeb.Endpoint,
+      TwittercloneWeb.Presence,
       # Start a worker by calling: TwittercloneWeb.Worker.start_link(arg)
       # {TwittercloneWeb.Worker, arg}
     ]
