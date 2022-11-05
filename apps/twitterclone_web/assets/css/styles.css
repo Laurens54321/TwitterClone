@@ -1,3 +1,50 @@
+.sidebarRoom {
+  height: 64px;
+}
+
+.sidebarRoom p {
+  display: table-cell;
+  vertical-align: middle;
+  width: inherit;
+  text-align: center;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.indexpagebutton {
+  color: var(--main-color);
+  background-color: var(--main-background);
+  border-radius: 20px;
+  width: 200px;
+  height: 64px;
+  display: table;
+  float: left;
+  margin: 10px;
+}
+
+.indexpagebutton .material-icons,
+.fa-twitter {
+  padding: 20px 15px;
+}
+
+.indexpagebutton a {
+  display: table-cell;
+  vertical-align: middle;
+  width: inherit;
+  text-align: center;
+}
+
+.indexpagebutton:hover {
+  background-color: var(--main-background);
+  border-radius: 20px;
+  color: var(--main-color);
+  transition: color 100ms ease-out;
+}
+
+.indexpagebutton.active {
+  color: var(--main-color);
+}
+
 .languageoptionsdiv{
   position: absolute;
   bottom: 0;
@@ -20,7 +67,7 @@
 .profilebar {
   display: flex;
   justify-content: space-around;
-  border: 1px solid var(--twitter-background);
+  border: 1px solid var(--main-background);
   padding: 5px 5px;
   margin: 10px 0px;
 }
@@ -37,7 +84,7 @@
 
 .post_buttons button {
   justify-content: right;
-  background-color: var(--twitter-color);
+  background-color: var(--main-color);
   border: none;
   margin: 10px 0px;
 }
@@ -56,14 +103,17 @@
 
 
 body {
-  --twitter-color: #222d3d;
-  --twitter-background: #384963;
+  --main-color: #222d3d;
+  --main-background: #384963;
 }
 
 .sidebarOption {
+  background-color: var(--main-color);
+  border-radius: 20px;
   display: flex;
   align-items: center;
   cursor: pointer;
+  margin-bottom: 5px;
 }
 
 .sidebarOption .material-icons,
@@ -78,37 +128,37 @@ body {
 }
 
 .sidebarOption:hover {
-  background-color: var(--twitter-background);
+  background-color: var(--main-background);
   border-radius: 20px;
-  color: var(--twitter-color);
+  color: var(--main-color);
   transition: color 100ms ease-out;
 }
 
 .sidebarOption.active {
-  color: var(--twitter-color);
+  color: var(--main-color);
 }
 
 .sidebar__tweet {
   width: 100%;
-  background-color: var(--twitter-color);
+  background-color: var(--main-color);
   border: none;
   color: white;
   font-weight: 900;
   border-radius: 30px;
   height: 50px;
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 body {
   display: flex;
   height: 100vh;
-  max-width: 1300px;
   
   padding: 0 10px;
 }
 
 .sidebar {
-  border-right: 1px solid var(--twitter-background); 
+  border-right: 1px solid var(--main-background); 
   /* flex: 0.2;
   margin: 1em -1em 1em -1em; */
 
@@ -119,31 +169,31 @@ body {
 }
 
 .fa-twitter {
-  color: var(--twitter-color);
+  color: var(--main-color);
   font-size: 30px;
 }
 
 /* feed */
 .feed {
   flex: 0.5;
-  /* border-right: 1px solid var(--twitter-background); */
+  /* border-right: 1px solid var(--main-background); */
   min-width: fit-content;
   overflow-y: scroll;
   margin-left: auto;
   margin-right: auto;
+  max-width: 60%;
 }
 
 .feed__header {
   position: sticky;
   top: 20;
-  background-color: var(--twitter-background);
+  background-color: var(--main-background);
   z-index: 100;
   border: 1px solid black;
   padding: 15px 20px;
   margin: 20px;
   border-radius: 20px;
   text-align: center;
-  line-height: 40px;
 }
 
 .feed__header h2 {
@@ -151,7 +201,6 @@ body {
   font-weight: 800;
   vertical-align: middle;
   margin: 0;
-  height: 40px;
 }
 
 .feed::-webkit-scrollbar {
@@ -171,7 +220,7 @@ body {
 
 .tweetBox {
   padding-bottom: 10px;
-  border-bottom: 8px solid var(--twitter-background);
+  border-bottom: 8px solid var(--main-background);
   padding-right: 10px;
 }
 
@@ -194,7 +243,7 @@ body {
 }
 
 .tweetBox__tweetButton {
-  background-color: var(--twitter-color);
+  background-color: var(--main-color);
   border: none;
   color: white;
   font-weight: 900;
@@ -215,7 +264,7 @@ body {
 .post {
   display: flex;
   align-items: flex-start;
-  border-bottom: 1px solid var(--twitter-background);
+  border-bottom: 1px solid var(--main-background);
   padding-bottom: 10px;
 }
 
@@ -233,7 +282,7 @@ body {
 
 .post__badge {
   font-size: 14px !important;
-  color: var(--twitter-color);
+  color: var(--main-color);
   margin-right: 5px;
 }
 
@@ -270,7 +319,7 @@ body {
 .widgets__input {
   display: flex;
   align-items: center;
-  background-color: var(--twitter-background);
+  background-color: var(--main-background);
   padding: 10px;
   border-radius: 20px;
   margin-top: 10px;
@@ -279,7 +328,7 @@ body {
 
 .widgets__input input {
   border: none;
-  background-color: var(--twitter-background);
+  background-color: var(--main-background);
 }
 
 .widgets__searchIcon {

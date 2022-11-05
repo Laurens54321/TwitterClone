@@ -21,40 +21,56 @@
     <!-- sidebar starts -->
     <div class="sidebar">
       <!-- <i class="fab fa-twitter"></i> -->
+      <%= link to: Routes.profile_path(@conn, :feed) do %>
       <div class="sidebarOption">
           <span class="material-icons"> home </span>
-          <%= link gettext("Feed"), to: Routes.profile_path(@conn, :feed)%>
+          <%= gettext("Feed") %>
       </div>
+      <% end %> 
 
+      <%= link to: Routes.profile_path(@conn, :myprofile) do %>
       <div class="sidebarOption">
           <span class="material-icons"> perm_identity </span>
-          <%= link gettext("Profile"), to: Routes.profile_path(@conn, :myprofile)%>
+          <%= gettext("Profile")%>
       </div>
+      <% end %> 
       
-
+      <%= link to: Routes.user_path(@conn, :index) do %>
       <div class="sidebarOption">
           <span class="material-icons"> list_alt </span>
-          <%= link gettext("Users"), to: Routes.user_path(@conn, :index)%>
+          <%=  gettext("Users")%>
       </div>
+      <% end %> 
 
-
+      <%= link to: Routes.page_path(@conn, :index) do %>
       <div class="sidebarOption">
           <span class="material-icons"> more_horiz </span>
-          <%= link gettext("Home"), to: Routes.page_path(@conn, :index)%>
+          <%= gettext("Home") %>
       </div>
+      <% end %> 
 
-      <div class="sidebarOption">
-        <span class="material-icons"> more_horiz </span>
-        <%= link "Rooms", to: Routes.room_path(@conn, :new)%>
-    </div>
-      
+      <%= link to: Routes.room_path(@conn, :new) do %>
+        <div class="sidebarOption">
+          <span class="material-icons"> more_horiz </span>
+          Rooms
+        </div>
+      <% end %>      
 
       <%= if assigns[:current_user] do %>
         <%= if @current_user.role == "Admin" do %>
-          <div class="sidebarOption">
-              <span class="material-icons"> bookmark_border </span>
-              <%= link gettext("Twats"), to: Routes.twat_path(@conn, :index)%>
-          </div>
+          <%= link to: Routes.twat_path(@conn, :index) do %>
+            <div class="sidebarOption">
+                <span class="material-icons"> bookmark_border </span>
+                <%= gettext("Twats")%>
+            </div>
+          <% end %>
+
+          <%= link to: Routes.live_dashboard_path(@conn, :home) do %>
+            <div class="sidebarOption">
+                <span class="material-icons"> bookmark_border </span>
+                <p>Dashboard</p> 
+            </div>
+          <% end %>
         <% end %>
         
 
@@ -63,10 +79,11 @@
 
       <%= if assigns[:current_user] do %>
           <%= for room <- @current_user.rooms do %>
-            <div class="sidebarOption">
-              <span class="material-icons"> more_horiz </span>
-              <%= link room.name , to: "/rooms/#{room.id}"%>
-            </div>
+            <%= link to: "/rooms/#{room.id}" do %>
+              <div class="sidebarOption sidebarRoom">
+                <p><%= room.name%></p> 
+              </div>
+            <% end %>
           <% end %>
       <% end %>
 

@@ -588,7 +588,6 @@ pre {
 
 .container {
   margin: 0 auto;
-  max-width: 80rem;
   padding: 0 2rem;
   position: relative;
   width: 100%;
@@ -600,8 +599,8 @@ select {
 /* Phoenix promo and logo */
 .phx-hero {
   text-align: center;
-  border-bottom: 1px solid #e3e3e3;
-  background: #eee;
+  /* border-bottom: 1px solid #e3e3e3; */
+  background: #222d3d;
   border-radius: 6px;
   padding: 3em 3em 1em;
   margin-bottom: 3rem;

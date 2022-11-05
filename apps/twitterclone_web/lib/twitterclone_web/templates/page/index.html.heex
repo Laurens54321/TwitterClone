@@ -11,21 +11,28 @@
 
 <ul class="nav nav-pills pull-right">
   <%= if @current_user do %>
-    <p>Hello  <%= @current_user.user_id %>! email: <%= @current_user.email %> </p>
+    <p>Hello  <%= @current_user.user_id %>!</p>
     <p>Role:  <%= @current_user.role %> </p>
-    <li><%= link gettext("Sign out"), to: Routes.session_path(@conn, :logout)%></li>
-    <li><%= link gettext("Profile"), to: Routes.profile_path(@conn, :profile, @current_user.user_id)%></li>
+    <div class="indexpagebutton">
+       <%= link gettext("Sign out"), to: Routes.session_path(@conn, :logout) %>
+    </div>
+    
+    <div class="indexpagebutton">
+      <%= link gettext("Profile"), to: Routes.profile_path(@conn, :profile, @current_user.user_id) %>
+    </div>
+  
   <% else %>
-    <li><%= link gettext("Register"), to: Routes.user_path(@conn, :new) %></li>
-    <li><%= link gettext("Sign in"), to: Routes.session_path(@conn, :new) %></li>
+    <div class="indexpagebutton">
+      <%= link gettext("Sign in"), to: Routes.session_path(@conn, :new) %>
+    </div>
+    
+    <div class="indexpagebutton">
+      <%= link gettext("Register"), to: Routes.user_path(@conn, :new) %>
+    </div>
   <% end %>
 </ul>
 
-<section class="row">
-  <article class="column">
 
-  </article>
-  <article class="column">
 
-  </article>
-</section>
+
+

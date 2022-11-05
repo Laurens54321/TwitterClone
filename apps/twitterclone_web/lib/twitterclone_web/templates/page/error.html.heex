@@ -1,0 +1,13 @@
+<%= if assigns[:error] do %>
+    <div class="alert alert-danger">
+        <p> <%= @error %></p>
+    </div>
+<% end %> 
+
+<div class="indexpagebutton">
+    <%= link gettext("Home"), to: Routes.page_path(@conn, :index) %>
+</div>
+
+<div class="indexpagebutton">
+    <%= link gettext("Back"), to: NavigationHistory.last_path(@conn) %>
+</div>

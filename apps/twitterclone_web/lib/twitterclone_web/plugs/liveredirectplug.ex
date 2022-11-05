@@ -14,7 +14,11 @@ defmodule TwittercloneWeb.Plugs.LiveRedirectPlug do
     current_user = Guardian.Plug.current_resource(conn)
     case RoomContext.is_user_in_room(current_user.user_id, room_id) do
       true -> conn
-      false -> redirect(conn, to: "/")
+      false ->
+          debug "LiveRoomRedirect plug Halt"
+          conn
+          |> redirect(to: "/unauthorized")
+          |> halt
     end
   end
 

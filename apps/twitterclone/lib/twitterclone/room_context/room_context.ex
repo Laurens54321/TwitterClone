@@ -44,7 +44,7 @@ defmodule Twitterclone.RoomContext do
   end
 
   def is_user_in_room(user_id, room_id) do
-    query = from(u in RoomConnection, where: like(u.user_id, ^user_id) and u.id == ^room_id)
+    query = from(u in RoomConnection, where: like(u.user_id, ^user_id) and u.room_id == ^room_id)
     case Repo.all(query) do
       nil -> false
       Ecto.QueryError -> {:error, :queryError}

@@ -1,6 +1,8 @@
 defmodule TwittercloneWeb.Router do
   use TwittercloneWeb, :router
 
+  import Phoenix.LiveDashboard.Router
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -75,6 +77,8 @@ defmodule TwittercloneWeb.Router do
     pipe_through [:browser, :auth,  :allowed_for_admins]
     get "/twats", TwatController, :index
 
+    live_dashboard "/dashboard", metrics: TwittercloneWeb.Telemetry
+
   end
 
   scope "/api", TwittercloneWeb do
@@ -134,12 +138,12 @@ defmodule TwittercloneWeb.Router do
   # you can use Plug.BasicAuth to set up some basic authentication
   # as long as you are also using SSL (which you should anyway).
   if Mix.env() in [:dev, :test] do
-    import Phoenix.LiveDashboard.Router
+
 
     scope "/" do
       pipe_through :browser
 
-      live_dashboard "/dashboard", metrics: TwittercloneWeb.Telemetry
+
     end
   end
 
