@@ -1,0 +1,8 @@
+<div class="p-5 h-fit mt-2 bg-dark text-deepdark  rounded-lg shadow-md hover:text-textclr focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4">
+    <%= link to: @link do %>
+        <span class="sr-only">
+            <%= @text %>
+        </span>
+        <svg class='w-12 h-16 dark:text-black' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d={@d}>></path></svg>
+    <% end %>
+</div>

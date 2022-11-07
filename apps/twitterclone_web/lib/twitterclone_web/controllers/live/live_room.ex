@@ -8,17 +8,16 @@ defmodule TwittercloneWeb.LiveRoom do
   @impl true
   def mount(%{"room_id" => room_id}, session, socket) do
     {:ok, user, _idk} = Guardian.resource_from_token(TwittercloneWeb.Guardian, session["guardian_default_token"])
-    #if (RoomContext.is_user_in_room(user.user_id, room_id))
-
-    messages = RoomContext.get_messages(room_id)
+    {:ok, room} = RoomContext.get_room(room_id, [:messages])
     topic = "room" <> room_id
     if connected?(socket), do: TwittercloneWeb.Endpoint.subscribe(topic)
+    #RoomContext.remove_newmsg(room_id, user.user_id)
     TwittercloneWeb.Presence.track(self(), topic, user.user_id, %{})
     {:ok, assign(socket,
-            room_id: room_id,
+            room: room,
             topic: topic,
             messageForm: "",
-            messages: messages,
+            messages: room.messages,
             user: user.user_id
             )}
 
@@ -26,10 +25,11 @@ defmodule TwittercloneWeb.LiveRoom do
 
   @impl true
   def handle_event("submit_message", %{"chat" => %{"message" => message}}, socket) do
-    Logger.info("click")
     user_id = socket.assigns.user
-    room_id = socket.assigns.room_id
+    room_id = socket.assigns.room.id
     {:ok, newmsg} = RoomContext.create_message(user_id, room_id, message)
+    #RoomContext.add_newmsg(room_id, user_id)
+
     TwittercloneWeb.Endpoint.broadcast(socket.assigns.topic, "new-message", newmsg)
     {:noreply, assign(socket, messageForm: "")}
   end
@@ -41,6 +41,7 @@ defmodule TwittercloneWeb.LiveRoom do
 
   @impl true
   def handle_info(%{event: "new-message", payload: message}, socket) do
+    Logger.info "new-msg"
     {:noreply, assign(socket, messages: [message])}
   end
 

@@ -9,12 +9,12 @@ defmodule TwittercloneWeb.TwatController do
   action_fallback TwittercloneWeb.FallbackController
 
   def index(conn, _params) do
-    twats = TwatContext.list_twats([:user])
+    twats = TwatContext.list_twats([:user, :comments])
     render(conn, "index.html", twats: twats)
   end
 
   def show(conn, %{"id" => id}) do
-    with {:ok, twat} <- TwatContext.get_twat(id, [:user, :comments, comments: [:user]]) do
+    with {:ok, twat} <- TwatContext.get_twat(id, [:user, :comments, comments: [:user, :comments]]) do
       changeset = CommentContext.change_comment(%Comment{})
       render(conn, "twatpage.html", twat: twat, changeset: changeset)
     end

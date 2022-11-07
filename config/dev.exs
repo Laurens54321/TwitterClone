@@ -25,7 +25,8 @@ config :twitterclone_web, TwittercloneWeb.Endpoint,
   secret_key_base: "ymO6+xQLPk/MMWW91OUi5Qjq59ccT4cIA3m0m1AXuLsA1eIBXQoeFbv6t/G/Dql4",
   watchers: [
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
 
 # ## SSL Support

@@ -8,9 +8,12 @@ defmodule Twitterclone.RoomContext.Room do
   schema "rooms" do
     field :name, :string
 
-    has_many :connection, Twitterclone.RoomContext.RoomConnection, on_delete: :nothing
-    has_many :message, Twitterclone.RoomContext.Message
-    field :user_ids, {:array, :string}, virtual: true
+    many_to_many :users,
+                 Twitterclone.UserContext.User,
+                 join_through: Twitterclone.RoomContext.RoomConnection,
+                 join_keys: [room_id: :id, user_id: :user_id]
+    has_many :messages, Twitterclone.RoomContext.Message
+    field :newmsg, {:array, :string}
 
 
     timestamps()
@@ -19,7 +22,7 @@ defmodule Twitterclone.RoomContext.Room do
   @doc false
   def changeset(talk, attrs) do
     talk
-    |> cast(attrs, [:name])
+    |> cast(attrs, [:name, :newmsg])
     |> validate_required([:name])
   end
 end

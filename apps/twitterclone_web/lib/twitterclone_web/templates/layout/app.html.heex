@@ -1,4 +1,11 @@
-<main class="container">
+<main class="container h-screen">
+  
+  <%= if assigns[:title] do %>
+    <div class="bg-lightdark m-5 p-5 text-5xl text-center text-textclr font-extrabold rounded-2xl shadow-lg">
+      <h2><%= @conn.assigns.title %></h2>
+    </div>
+  <% end %>
+
   <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
   <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
   <%= @inner_content %>

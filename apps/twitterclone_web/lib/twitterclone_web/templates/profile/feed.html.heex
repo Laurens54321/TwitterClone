@@ -1,5 +1,22 @@
-<h2><%= gettext "Feed" %></h2>
+<div class="m-5 p-5 bg-deepdark rounded-xl grid grid-cols-4 gap-4" >
+    <p class="col-span-4 text-center">Rooms</p>
+    <%= for room <- @rooms do %>
+            <%= link to: Routes.live_path(@conn, TwittercloneWeb.LiveRoom, room.id), method: :get do %>
+                <div class="p-5 bg-lightdark rounded-xl text-textclr grid grid-cols-4 gap-2 ">
+                    <p class="col-span-2"><%= room.name %></p>
+                    <%= if 0 != TwittercloneWeb.ProfileView.getMessageCount room  do %>
+                        <p class="col-span-2 text-right"><%= List.last(room.messages).updated_at  %></p> 
+                        <p class="text-darktextclr col-span-3 pl-6"><%= List.last(room.messages).text %></p>
+                        <p class="text-darktextclr col-span-1 text-right">By: <%= List.last(room.messages).user_id %></p>
+                    <% end %>
+                </div>
+            <% end %>
+    <% end %>
+</div>
 
-<%= for twat <- @twats do %>
-    <%= render TwittercloneWeb.TwatView, "twat.html", conn: @conn, twat: twat %>
-<% end %>
+
+<div class="flex flex-col justify-items-center" >
+    <%= for twat <- @twats do %>
+        <%= render TwittercloneWeb.TwatView, "twat.html", conn: @conn, twat: twat %>
+    <% end %>
+</div>

@@ -6,8 +6,6 @@ defmodule Twitterclone.RoomContext.RoomConnection do
   schema "roomconnections" do
     belongs_to :user, Twitterclone.UserContext.User, foreign_key: :user_id, references: :user_id, type: :string
     belongs_to :room, Twitterclone.RoomContext.Room
-
-    timestamps()
   end
 
   @doc false

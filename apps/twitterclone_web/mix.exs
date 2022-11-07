@@ -53,7 +53,9 @@ defmodule TwittercloneWeb.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:guardian, "~> 2.0"},
       {:navigation_history, "~> 0.3"},
-      {:uuid, "~> 1.1.8"}
+      {:uuid, "~> 1.1.8"},
+      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
+      {:timex, "~> 3.0"},
     ]
   end
 
@@ -64,7 +66,7 @@ defmodule TwittercloneWeb.MixProject do
     [
       setup: ["deps.get"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.deploy": ["esbuild default --minify", "phx.digest"]
+      "assets.deploy": [ "tailwind default --minify", "esbuild default --minify", "phx.digest"]
     ]
   end
 end

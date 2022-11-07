@@ -73,6 +73,29 @@ defmodule Twitterclone.RoomContext do
     Room.changeset(room, attrs)
   end
 
+  def add_newmsg(room_id, sender_id) do
+    {:ok, room} = get_room(room_id, [:users])
+    user_ids = for user <- room.users, do: user.user_id
+    IO.inspect user_ids
+    user_ids = Enum.filter(user_ids, fn x -> x != sender_id end)
+
+    IO.inspect user_ids
+
+    room
+    |> Room.changeset(%{newmsg: user_ids})
+    |> Repo.update()
+  end
+
+  def remove_newmsg(room_id, sender_id) do
+    {:ok, room} = get_room(room_id)
+    user_ids = Enum.filter(room.newmsg, fn x -> x != sender_id end)
+    IO.inspect user_ids
+
+    room
+    |> Room.changeset(%{newmsg: user_ids})
+    |> Repo.update()
+  end
+
   defp create_connection(user_id, room_id) do
     %RoomConnection{}
       |>RoomConnection.changeset(%{user_id: user_id, room_id: room_id})

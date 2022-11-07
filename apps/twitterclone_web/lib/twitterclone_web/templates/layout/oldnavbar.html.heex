@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <%= csrf_meta_tag() %>
+    <%= live_title_tag assigns[:page_title] || "Twitterclone", suffix: " · Phoenix Framework" %>
+    <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+      crossorigin="anonymous"
+    />
+    <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
+  </head>
+  <body>
+
+    <!-- sidebar starts -->
+    <div class="sidebar">
+      <!-- <i class="fab fa-twitter"></i> -->
+      <%= link to: Routes.profile_path(@conn, :feed) do %>
+      <div class="sidebarOption">
+          <span class="material-icons"> home </span>
+          <%= gettext("Feed") %>
+      </div>
+      <% end %> 
+
+      <%= link to: Routes.profile_path(@conn, :myprofile) do %>
+      <div class="sidebarOption">
+          <span class="material-icons"> perm_identity </span>
+          <%= gettext("Profile")%>
+      </div>
+      <% end %> 
+      
+      <%= link to: Routes.user_path(@conn, :index) do %>
+      <div class="sidebarOption">
+          <span class="material-icons"> list_alt </span>
+          <%=  gettext("Users")%>
+      </div>
+      <% end %> 
+
+      <%= link to: Routes.page_path(@conn, :index) do %>
+      <div class="sidebarOption">
+          <span class="material-icons"> more_horiz </span>
+          <%= gettext("Home") %>
+      </div>
+      <% end %> 
+
+      <%= link to: Routes.room_path(@conn, :new) do %>
+        <div class="sidebarOption">
+          <span class="material-icons"> more_horiz </span>
+          Rooms
+        </div>
+      <% end %>      
+
+      <%= if assigns[:current_user] do %>
+        <%= if @current_user.role == "Admin" do %>
+          <%= link to: Routes.twat_path(@conn, :index) do %>
+            <div class="sidebarOption">
+                <span class="material-icons"> bookmark_border </span>
+                <%= gettext("Twats")%>
+            </div>
+          <% end %>
+
+          <%= link to: Routes.live_dashboard_path(@conn, :home) do %>
+            <div class="sidebarOption">
+                <span class="material-icons"> bookmark_border </span>
+                Dashboard
+            </div>
+          <% end %>
+        <% end %>
+        
+
+        <%= button "Twat", to: Routes.profile_path(@conn, :newtwat), method: :get, class: "sidebar__tweet"%>
+      <% end %>
+
+      <%= if assigns[:current_user] do %>
+          <%= for room <- @current_user.rooms do %>
+            <%= link to: "/rooms/#{room.id}" do %>
+              <div class="sidebarOption sidebarRoom">
+                <%= if Enum.member?(room.newmsg, @current_user.user_id) do %>
+                  <b> <p><%= room.name%>   !!</p> </b> 
+                <% else %>
+                  <p><%= room.name%></p> 
+                <% end %>
+              </div>
+            <% end %>
+          <% end %>
+      <% end %>
+
+      <div class="languageoptionsdiv">
+        <p class="languageoptionheader"> <% gettext("language options") %> language options </p> <!-- idk why gettext isnt working -->
+        <div class="languageoptions" >
+          <%= for locale <- @available_locales do %>
+            <%= link locale, to: "#{@conn.request_path}?locale=#{locale}"%>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- sidebar ends -->
+
+    <div class="feed">
+      <div class="feed__header">
+        <h2>Twatter</h2>
+      </div>
+      <div style="margin: 10px 5px;">
+        <%= @inner_content%>
+      </div>
+     
+    </div>
+
+    
+
+    
+    
+
+  </body>
+</html>
+
+<!--
+
+<div class="sidebarOption">
+        <span class="material-icons"> search </span>
+        <h2>Explore</h2>
+    </div>
+
+    <div class="sidebarOption">
+        <span class="material-icons"> notifications_none </span>
+        <h2>Notifications</h2>
+    </div>
+
+    <div class="sidebarOption">
+        <span class="material-icons"> mail_outline </span>
+        <h2>Messages</h2>
+    </div>
+
+    <div class="sidebarOption">
+        <span class="material-icons"> bookmark_border </span>
+        <h2>Bookmarks</h2>
+    </div>
+
+
+
+    -->

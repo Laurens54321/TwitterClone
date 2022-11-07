@@ -1,37 +1,37 @@
-<!-- post starts -->
-    <%= link to: Routes.twat_path(@conn, :show, @twat.id), 
-        method: :get, class: "btn " do %>
-        <div class="post">
-            <div class="post__avatar"> </div>
-
-            <div class="post__body">
-            <div class="post__header">
-                <div class="post__headerText">
-                <h3>
-                    <%= @twat.user.name %> 
-                    <span class="post__headerSpecial">@<%= @twat.user_id %></span>
-                </h3>
+<div class="rounded-xl p-3 m-5 basis-2 sm:basis-1 md:basis-2 lg:basis-3 xl:basis-4 2xl:basis-5 bg-lightdark ring-1 ring-slate-900/5 shadow-lg max-w-5xl ">
+    <%= link to: Routes.twat_path(@conn, :show, @twat.id), method: :get, class: "" do %>
+        <div class="flex p-5 justify-items-center space-y-2">
+            <div class="">
+                <div class="">
+                    <div class="flex flex-nowrap mb-2">
+                        <p class="font-extrabold"><%= @twat.user.name %> </p>                            
+                        <p class="pl-3">@<%= @twat.user_id %></p>
+                    </div>
+                    <div class="">
+                        <%= @twat.text %>
+                    </div>
                 </div>
-                <div class="post__headerDescription">
-                <%= @twat.text %>
-                </div>
-            </div>
-            
-            <div class="post__footer">
-                <span class="post__headerSpecial">@<%= @twat.inserted_at %></span>
-            </div>
 
-            <div class="post_buttons">
-                <%= if TwittercloneWeb.TwatView.isMyTwat?(@conn, @twat)  do %>
-                    <%= button gettext("Edit"), 
-                        to: Routes.twat_path(@conn, :edit, @twat.id), method: :get %>
-                    <%= button gettext("Delete"), 
-                        to: "/twats/#{@twat.id}", method: :delete %>
+                <div class=" text-darktextclr mt-2">
+                    <span class="">@<%= @twat.inserted_at %></span>
+                </div>
+
+                <%= if TwittercloneWeb.TwatView.isMyTwat?(@conn, @twat) do %>
+                    <div class="mt-5 flex justify-items-center space-x-5">
+                        <%= button gettext("Edit"), to: Routes.twat_path(@conn, :edit, @twat.id), method: :get, class: "p-3" %>
+                        <%= button gettext("Delete"), to: "/twats/#{@twat.id}" , method: :delete, class: "p-3" %>
+                    </div>
+                <% end %>
+
+                <%= if 0 != TwittercloneWeb.TwatView.getCommentCount @twat   do %>
+                <div class="mt-5 flex flex-nowrap">
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M9,22A1,1 0 0,1 8,21V18H4A2,2 0 0,1 2,16V4C2,2.89 2.9,2 4,2H20A2,2 0 0,1 22,4V16A2,2 0 0,1 20,18H13.9L10.2,21.71C10,21.9 9.75,22 9.5,22V22H9Z" />
+                    </svg>
+                    <p class="pl-5"> <%= getCommentCount @twat %></p>
+                </div>
                 <% end %>
             </div>
-
-
-            </div>
         </div>
-    <% end %>
-<!-- post ends -->
+        <% end %>
+</div>

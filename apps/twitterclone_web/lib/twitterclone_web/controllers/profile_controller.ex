@@ -6,33 +6,35 @@ defmodule TwittercloneWeb.ProfileController do
   alias Twitterclone.TwatContext
   alias Twitterclone.TwatContext.Twat
   alias Twitterclone.UserContext.Follower
+  alias Twitterclone.RoomContext
 
   action_fallback TwittercloneWeb.FallbackController
 
   def myprofile(conn, _args) do
     current_user = Guardian.Plug.current_resource(conn)
-    {:ok, user} = UserContext.get_by_userid(current_user.user_id, [:api_key, twats: [:user]])
-    render(conn, "myprofile.html", user: user, twats: user.twats)
+    {:ok, user} = UserContext.get_by_userid(current_user.user_id, [:api_key, twats: [:user, :comments]])
+    render(conn, "myprofile.html", user: user, twats: user.twats, title: "My Profile")
   end
 
   def feed(conn, _args) do
     current_user = Guardian.Plug.current_resource(conn)
     following = UserContext.get_following(current_user.user_id)
-    twats = TwatContext.get_by_userid_list(following, [:user])
-    render(conn, "feed.html", twats: twats)
+    twats = TwatContext.get_by_userid_list(following, [:user, :comments])
+    rooms = RoomContext.get_by_userid(current_user.user_id, [:messages])
+    render(conn, "feed.html", twats: twats, title: "Feed", rooms: rooms)
   end
 
   def profile(conn, %{"user_id" => user_id}) do
-    with {:ok, user} <- UserContext.get_by_userid(user_id, [:twats, :followers, :api_key, twats: [:user]]) do
+    with {:ok, user} <- UserContext.get_by_userid(user_id, [:twats, :followers, :api_key, twats: [:user, :comments]]) do
       current_user = Guardian.Plug.current_resource(conn)
       cond do
         current_user == nil ->
-          render(conn, "profile.html", user: user, twats: user.twats)
+          render(conn, "profile.html", user: user, twats: user.twats, title: "Profile")
         current_user.user_id == user.user_id ->
           redirect(conn, to: Routes.profile_path(conn, :myprofile))
         true ->
           following = current_user in user.followers
-          render(conn, "profile.html", user: user, twats: user.twats, follow_button: getfollowbutton(following))
+          render(conn, "profile.html", user: user, twats: user.twats, follow_button: getfollowbutton(following), title: "Profile")
       end
     end
   end
@@ -48,7 +50,7 @@ defmodule TwittercloneWeb.ProfileController do
   def newtwat(conn, _params) do
     current_user = Guardian.Plug.current_resource(conn)
     changeset = TwatContext.change_twat(%Twat{}, %{user_id: current_user.user_id})
-    render(conn, "twat.html", changeset: changeset)
+    render(conn, "twat.html", changeset: changeset, title: "Twat Something!")
   end
 
   def createtwat(conn, %{"twat" => twat_params}) do
