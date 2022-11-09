@@ -6,9 +6,10 @@ defmodule Twitterclone.Repo.Migrations.CreateMessages do
       add :text, :string
       add :room_id, references(:rooms), null: false
       add :user_id, references(:users, type: :string,  column: :user_id)
-      add :message_id, references(:messages), null: true
+      add :replyto_id, references(:messages), null: true
 
       timestamps()
     end
+    create index(:messages, [:replyto_id])
   end
 end

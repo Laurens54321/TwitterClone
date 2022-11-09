@@ -6,16 +6,16 @@
 
     <div id="chat" class="flex flex-grow m-5 p-3  bg-gray-700 rounded-xl shadow-lg " >
 
-        <div id="scroll" class="grow overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch" phx-update="append">
+        <div id="scroll" class="p-3 grow overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch" phx-update="append">
 
             <%=for message <- @messages do %>
                 <%= if message.user_id == @user do  %>
                     <div id="<%= message.id %>" >
-                       <%= live_component MessageComponent, message: message, id: message.id, msgtype: :sent %>
+                       <%= live_component MessageComponent, message: message, id: message.id, msgtype: :sent, current_user: @user, showtime: Enum.member?(@showtimeids, message.id)  %>
                     </div>
                 <% else %>
                     <div id="<%= message.id %>" >
-                        <%= live_component MessageComponent, message: message, id: message.id, msgtype: :rec %>
+                        <%= live_component MessageComponent, message: message, id: message.id, msgtype: :rec, current_user: @user, showtime: Enum.member?(@showtimeids, message.id) %>
                     </div>
                 <% end %>
             <% end %>
@@ -37,7 +37,7 @@
                     </path>
                     </svg>
                 </button>
-                <p> Reply to <%= @replymsg.text %>  by  <%= @replymsg.user_id %> <p>
+                <p> Reply to <%= @replymsgtext %>  by  <%= @replymsguser %> <p>
             </div>
         <% end %>
 
@@ -50,25 +50,46 @@
 <script>
 
     const messages = document.getElementById('scroll');
-const chatform = document.getElementById('chat-area');
-const chatheader = document.getElementById('chatheader');
+    const chatform = document.getElementById('chat-area');
+    const chatheader = document.getElementById('chatheader');
 
 
 
-var calcHeight = function() {
-    let totalHeight = window.innerHeight;
-    let totalWidth = window.innerWidth;
+    var calcHeight = function() {
+        let totalHeight = window.innerHeight;
+        let totalWidth = window.innerWidth;
+        let currentScrollTop = messages.scrollTop
 
-    calc = totalHeight - (chatform.offsetHeight + chatheader.offsetHeight + 200);
-    messages.setAttribute("style",`height:${calc}px`);
-};
+        calc = totalHeight - (chatform.offsetHeight + chatheader.offsetHeight + 180);
+        messages.setAttribute("style",`height:${calc}px`);
 
-window.addEventListener("resize", calcHeight);
-window.addEventListener("onload", calcHeight);
+        console.log(messages.scrollHeight - messages.scrollTop)
+        console.log(messages.scrollHeight + " " +messages.scrollTop)
 
-const observer = new ResizeObserver(calcHeight);
-observer.observe(messages);
+        scrollToBottom('scroll')
 
-calcHeight();
+    };
+
+    function scrollToBottom(id){
+        var element = document.getElementById(id);
+        element.scrollTop = element.scrollHeight - element.clientHeight;
+    }
+
+    function gotomsg(id){
+        var element = document.getElementById(id);
+        element.scrollIntoView({
+            behavior: 'smooth'
+        });
+    }
+
+    window.addEventListener("resize", calcHeight);
+    window.addEventListener("onload", calcHeight);
+
+    document.addEventListener('phx:update', calcHeight);
+
+    const observer = new ResizeObserver(calcHeight);
+    observer.observe(messages);
+
+    calcHeight();
 
 </script>

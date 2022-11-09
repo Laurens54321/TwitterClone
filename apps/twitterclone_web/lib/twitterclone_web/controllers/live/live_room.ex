@@ -11,6 +11,9 @@ defmodule TwittercloneWeb.LiveRoom do
     {:ok, room} = RoomContext.get_room(room_id, [messages: [:replyto]])
     topic = "room" <> room_id
     if connected?(socket), do: TwittercloneWeb.Endpoint.subscribe(topic)
+    timeids = room.messages
+      |> Enum.chunk_every(2, 1, :discard)
+      |> Enum.map(fn [x, y] -> if(NaiveDateTime.diff(x.inserted_at, y.inserted_at) > 600, do: y.id) end) # show time if message is 600 sec apart = 10 min
     #RoomContext.remove_newmsg(room_id, user.user_id)
     TwittercloneWeb.Presence.track(self(), topic, user.user_id, %{})
     {:ok, assign(socket,
@@ -19,18 +22,18 @@ defmodule TwittercloneWeb.LiveRoom do
             messageForm: "",
             messages: room.messages,
             user: user.user_id,
-            replymsg: []
+            replymsg: [],
+            showtimeids: timeids
             )}
-
   end
-
   @impl true
   def handle_event("submit_message", %{"chat" => %{"message" => message}}, socket) do
     user_id = socket.assigns.user
     room_id = socket.assigns.room.id
-    {:ok, newmsg} = RoomContext.create_message(user_id, room_id, message)
+    replymsg = socket.assigns.replymsg
+    {:ok, newmsg} = RoomContext.create_message(user_id, room_id, message, replymsg)
     TwittercloneWeb.Endpoint.broadcast(socket.assigns.topic, "new-message", newmsg)
-    {:noreply, assign(socket, messageForm: "")}
+    {:noreply, assign(socket, messageForm: "", replymsg: [])}
   end
 
   @impl true
@@ -38,19 +41,9 @@ defmodule TwittercloneWeb.LiveRoom do
     {:noreply, assign(socket, messageForm: message)}
   end
 
-  defp samereply([], id) do
-    false
-  end
-
-  defp samereply(replymsg, id) do
-    replymsg.id == id
-  end
-
   @impl true
-  def handle_event("click-message", %{"id" => id}, socket) do
-    if (samereply(socket.assigns.replymsg, id)), do: {:noreply, socket} # this line doesnt work
-    {:ok, msg} = RoomContext.get_message(id)
-    {:noreply, assign(socket, replymsg: msg)}
+  def handle_event("click-message", %{"id" => id, "message" => message, "userid" => userid}, socket) do
+    {:noreply, assign(socket, replymsg: id, replymsgtext: message, replymsguser: userid )}
   end
 
 

@@ -22,6 +22,7 @@ defmodule Twitterclone.RoomContext do
     Repo.get!(Room, id)
      |> Repo.preload(preloads)
   end
+
   def get_room(id, preloads \\ []) do
     case Repo.get(Room, id) do
       nil -> {:error, :not_found}
@@ -125,9 +126,15 @@ defmodule Twitterclone.RoomContext do
      |>Repo.insert()
   end
 
+  def create_message(user_id, room_id, text, []) do
+    %Message{}
+     |>Message.changeset(%{user_id: user_id, room_id: room_id, text: text })
+     |>Repo.insert()
+  end
+
   def create_message(user_id, room_id, text, replytomsgid) do
     %Message{}
-     |>Message.changeset(%{user_id: user_id, room_id: room_id, text: text, replyto: replytomsgid })
+     |>Message.changeset(%{user_id: user_id, room_id: room_id, text: text, replyto_id: replytomsgid })
      |>Repo.insert()
   end
 

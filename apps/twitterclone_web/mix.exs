@@ -55,7 +55,8 @@ defmodule TwittercloneWeb.MixProject do
       {:navigation_history, "~> 0.3"},
       {:uuid, "~> 1.1.8"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
-      {:timex, "~> 3.0"}
+      {:timex, "~> 3.0"},
+      {:utc_datetime, "~> 1.0"}
     ]
   end
 
