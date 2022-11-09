@@ -2,7 +2,6 @@ defmodule TwittercloneWeb.Plugs.CurrentUserPlug do
   import Plug.Conn
   import Logger
 
-  alias Twitterclone.UserContext
 
   def init(opts), do: opts
 

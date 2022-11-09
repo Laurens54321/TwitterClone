@@ -1,22 +1,26 @@
-<div class="m-5 p-5 bg-deepdark rounded-xl grid grid-cols-4 gap-4" >
-    <p class="col-span-4 text-center">Rooms</p>
+<div class="m-5 p-5 bg-deepdark rounded-xl grid grid-flow-row-dense lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4" >
+    <p class="lg:col-span-4 md:col-span-3 col-span-2 text-center">Rooms</p>
     <%= for room <- @rooms do %>
+        <div class="col-span-1" >
             <%= link to: Routes.live_path(@conn, TwittercloneWeb.LiveRoom, room.id), method: :get do %>
-                <div class="p-5 bg-lightdark rounded-xl text-textclr grid grid-cols-4 gap-2 ">
-                    <p class="col-span-2"><%= room.name %></p>
+                <div class="p-5 bg-lightdark rounded-xl text-textclr grid grid-cols-4 gap-2 truncate  ">
+                    <p class="col-span-2 "><%= room.name %></p>
                     <%= if 0 != TwittercloneWeb.ProfileView.getMessageCount room  do %>
-                        <p class="col-span-2 text-right"><%= List.last(room.messages).updated_at  %></p> 
+                        <p class="col-span-2 text-right"><%= List.last(room.messages).updated_at |> Timex.format!("%H:%M", :strftime) %></p> 
                         <p class="text-darktextclr col-span-3 pl-6"><%= List.last(room.messages).text %></p>
-                        <p class="text-darktextclr col-span-1 text-right">By: <%= List.last(room.messages).user_id %></p>
+                        <p class="text-darktextclr col-span-1 text-right md:text-left  w-fit ">By: <%= List.last(room.messages).user_id %></p>
                     <% end %>
                 </div>
-            <% end %>
+            <% end %>   
+        </div>      
     <% end %>
 </div>
 
 
-<div class="flex flex-col justify-items-center" >
+<div class="grid md:grid-cols-2 px-5 grid-cols-1 justify-center gap-5" >
     <%= for twat <- @twats do %>
-        <%= render TwittercloneWeb.TwatView, "twat.html", conn: @conn, twat: twat %>
+        <div class="col-span-1 " >
+            <%= render TwittercloneWeb.TwatView, "twat.html", conn: @conn, twat: twat %>
+        </div>
     <% end %>
 </div>

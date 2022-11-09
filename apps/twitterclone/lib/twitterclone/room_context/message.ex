@@ -9,8 +9,13 @@ defmodule Twitterclone.RoomContext.Message do
 
     belongs_to :room, Twitterclone.RoomContext.Room
     belongs_to :user, User, foreign_key: :user_id, references: :user_id, type: :string
+
+    belongs_to  :replyto, Twitterclone.RoomContext.Message, foreign_key: :message_id
+    has_many :replies, Twitterclone.RoomContext.Message, foreign_key: :message_id
+
     timestamps()
   end
+
 
   @doc false
   def changeset(message, attrs) do

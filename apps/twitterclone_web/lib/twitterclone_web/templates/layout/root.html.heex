@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <%= csrf_meta_tag() %>
-    <%= live_title_tag assigns[:page_title] || "Twitterclone" , suffix: " · Phoenix Framework" %>
+    <%= live_title_tag assigns[:page_title] || "PinkLighterChat" %>
       <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css" )} />
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
@@ -15,10 +15,10 @@
       <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js" )}></script>
 </head>
 
-<body>
+<body class="max-h-full max-w-full">
 
   <div x-data="setup()" x-init="$refs.loading.classList.add('hidden');" @resize.window="watchScreen()">
-    <div class="flex h-screen antialiased text-textclr bg-dark dark:text-light">
+    <div class="flex flex-row max-h-screen h-screen antialiased text-textclr bg-dark dark:text-light">
       <!-- Loading screen -->
       <div x-ref="loading"
         class="fixed inset-0 z-50 flex items-center justify-center text-2xl font-semibold text-white bg-indigo-400">
@@ -27,120 +27,134 @@
 
       <%= render TwittercloneWeb.LayoutView, "navbar.html" , conn: @conn %>
 
-        <div class="flex flex-col flex-1">
-          <header class="relative flex items-center justify-between flex-shrink-0 p-4 bg-dark border-zinc-800 ">
-            <form action="#" class="flex-1">
-              <!--  -->
+      <div class="grow flex flex-col">
+        <header class="hidden  sm:flex items-center  justify-between flex-shrink-0 p-2 bg-dark border-zinc-800 ">
+
+          <div class="flex-1 items-center flex-row-reverse  content-center my-2 p-3">
+            <!--
+            <form action="/search" class="row-span-2 col-span-2 p-auto" style="margin-bottom: 0" >
+              <input name="search"><br>
             </form>
-            <div class="items-center hidden space-x-4 ml-4 sm:flex">
+            -->
+          </div>
+          <div class=" flex-none items-center flex-row-reverse   hidden ml-4 sm:flex">
 
-              <%= if assigns[:current_user] do %>
-              <div class="flex ">
-                <p class="mx-5">
-                  <%= @current_user.user_id %>
-                </p>
-              </div>
-              <% end %>
+            
 
 
-              <button @click="isSettingsPanelOpen = true"
-                class="p-2 mx-4 text-textclr bg-white rounded-lg shadow-md hover:text-textclr focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4">
-                <span class="sr-only">Settings</span>
-                <svg aria-hidden="true" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
-                  viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </button>
+            
 
-              <!-- Github link -->
-              <a href="https://github.com/kamona-ui/dashboard-alpine" target="_blank"
-                class="p-2 text-white bg-black rounded-lg shadow-md hover:text-textclr focus:outline-none focus:ring focus:ring-black focus:ring-offset-gray-100 focus:ring-offset-2">
+            <!-- Github link -->
+              <a href="https://github.com/LaurensHons/TwitterClone" target="_blank"
+                class="p-2 mx-3 text-white bg-black rounded-lg shadow-md hover:text-textclr focus:outline-none focus:ring focus:ring-black focus:ring-offset-gray-100 focus:ring-offset-2">
                 <span class="sr-only">github link</span>
-                <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+                <svg aria-hidden="true" class="w-9 h-9" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24">
                   <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M12.026,2c-5.509,0-9.974,4.465-9.974,9.974c0,4.406,2.857,8.145,6.821,9.465 c0.499,0.09,0.679-0.217,0.679-0.481c0-0.237-0.008-0.865-0.011-1.696c-2.775,0.602-3.361-1.338-3.361-1.338 c-0.452-1.152-1.107-1.459-1.107-1.459c-0.905-0.619,0.069-0.605,0.069-0.605c1.002,0.07,1.527,1.028,1.527,1.028 c0.89,1.524,2.336,1.084,2.902,0.829c0.091-0.645,0.351-1.085,0.635-1.334c-2.214-0.251-4.542-1.107-4.542-4.93 c0-1.087,0.389-1.979,1.024-2.675c-0.101-0.253-0.446-1.268,0.099-2.64c0,0,0.837-0.269,2.742,1.021 c0.798-0.221,1.649-0.332,2.496-0.336c0.849,0.004,1.701,0.115,2.496,0.336c1.906-1.291,2.742-1.021,2.742-1.021 c0.545,1.372,0.203,2.387,0.099,2.64c0.64,0.696,1.024,1.587,1.024,2.675c0,3.833-2.33,4.675-4.552,4.922 c0.355,0.308,0.675,0.916,0.675,1.846c0,1.334-0.012,2.41-0.012,2.737c0,0.267,0.178,0.577,0.687,0.479 C19.146,20.115,22,16.379,22,11.974C22,6.465,17.535,2,12.026,2z">
                   </path>
                 </svg>
               </a>
-            </div>
 
-            <!-- Mobile sub header button -->
-            <button @click="isSubHeaderOpen = !isSubHeaderOpen"
-              class="p-2 text-textclr bg-white rounded-lg shadow-md sm:hidden hover:text-textclr focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4">
-              <span class="sr-only">More</span>
-
-              <svg aria-hidden="true" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
+            <button @click="isSettingsPanelOpen = true"
+              class=" px-2 m-3  text-textclr bg-black rounded-lg border-0 shadow-md hover:text-textclr focus:outline-none focus:ring ">
+              <span class="sr-only">Settings</span>
+              <svg aria-hidden="true" class="w-9 h-9" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </button>
 
-            <!-- Mobile sub header -->
-            <div x-transition:enter="transform transition-transform"
-              x-transition:enter-start="translate-y-full opacity-0" x-transition:enter-end="translate-y-0 opacity-100"
-              x-transition:leave="transform transition-transform" x-transition:leave-start="translate-y-0 opacity-100"
-              x-transition:leave-end="translate-y-full opacity-0" x-show="isSubHeaderOpen"
-              @click.away="isSubHeaderOpen = false"
-              class="absolute flex items-center justify-between p-2 bg-white rounded-md shadow-lg sm:hidden top-16 left-5 right-5">
-              <!-- Seetings button -->
-              <button @click="isSettingsPanelOpen = true; isSubHeaderOpen = false"
-                class="p-2 text-textclr bg-white rounded-lg shadow-md hover:text-textclr focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4">
-                <span class="sr-only">Settings</span>
-                <svg aria-hidden="true" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
-                  viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </button>
-              <!-- Messages button -->
-              <button @click="isSidebarOpen = true; currentSidebarTab = 'messagesTab'; isSubHeaderOpen = false"
-                class="p-2 text-textclr bg-white rounded-lg shadow-md hover:text-textclr focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4">
-                <span class="sr-only">Toggle message panel</span>
-                <svg aria-hidden="true" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
-                  viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                </svg>
-              </button>
-              <!-- Notifications button -->
-              <button @click="isSidebarOpen = true; currentSidebarTab = 'notificationsTab'; isSubHeaderOpen = false"
-                class="p-2 text-textclr bg-white rounded-lg shadow-md hover:text-textclr focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4">
-                <span class="sr-only">Toggle notifications panel</span>
-                <svg aria-hidden="true" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
-                  viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                </svg>
-              </button>
-              <!-- Github link -->
-              <a href="https://github.com/kamona-ui/dashboard-alpine" target="_blank"
-                class="p-2 text-white bg-black rounded-lg shadow-md hover:text-textclr focus:outline-none focus:ring focus:ring-black focus:ring-offset-gray-100 focus:ring-offset-2">
-                <span class="sr-only">github link</span>
-                <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24">
-                  <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M12.026,2c-5.509,0-9.974,4.465-9.974,9.974c0,4.406,2.857,8.145,6.821,9.465 c0.499,0.09,0.679-0.217,0.679-0.481c0-0.237-0.008-0.865-0.011-1.696c-2.775,0.602-3.361-1.338-3.361-1.338 c-0.452-1.152-1.107-1.459-1.107-1.459c-0.905-0.619,0.069-0.605,0.069-0.605c1.002,0.07,1.527,1.028,1.527,1.028 c0.89,1.524,2.336,1.084,2.902,0.829c0.091-0.645,0.351-1.085,0.635-1.334c-2.214-0.251-4.542-1.107-4.542-4.93 c0-1.087,0.389-1.979,1.024-2.675c-0.101-0.253-0.446-1.268,0.099-2.64c0,0,0.837-0.269,2.742,1.021 c0.798-0.221,1.649-0.332,2.496-0.336c0.849,0.004,1.701,0.115,2.496,0.336c1.906-1.291,2.742-1.021,2.742-1.021 c0.545,1.372,0.203,2.387,0.099,2.64c0.64,0.696,1.024,1.587,1.024,2.675c0,3.833-2.33,4.675-4.552,4.922 c0.355,0.308,0.675,0.916,0.675,1.846c0,1.334-0.012,2.41-0.012,2.737c0,0.267,0.178,0.577,0.687,0.479 C19.146,20.115,22,16.379,22,11.974C22,6.465,17.535,2,12.026,2z">
-                  </path>
-                </svg>
-              </a>
+            <%= if assigns[:current_user] do %>
+            <div class="flex ">
+              <p class="mx-5">
+                <%= @current_user.user_id %>
+              </p>
             </div>
-          </header>
-
-          <div class="flex flex-1">
-            <!-- Main -->
-            <main class="flex items-center justify-center flex-1 px-4 py-8">
-              <!-- Content -->
-              <%= @inner_content%>
-            </main>
+            <% end %>
           </div>
-        </div>
+
+          
+
+          <!-- Mobile sub header -->
+          <div x-transition:enter="transform transition-transform"
+            x-transition:enter-start="translate-y-full opacity-0" x-transition:enter-end="translate-y-0 opacity-100"
+            x-transition:leave="transform transition-transform" x-transition:leave-start="translate-y-0 opacity-100"
+            x-transition:leave-end="translate-y-full opacity-0" x-show="isSubHeaderOpen"
+            @click.away="isSubHeaderOpen = false"
+            class="absolute flex items-center justify-between p-2 bg-dark rounded-md shadow-lg sm:hidden top-16 left-5 right-5">
+            <!-- Seetings button -->
+            <button @click="isSettingsPanelOpen = true; isSubHeaderOpen = false"
+              class="p-2 text-textclr bg-white rounded-lg shadow-md hover:text-textclr focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4">
+              <span class="sr-only">Settings</span>
+              <svg aria-hidden="true" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </button>            
+          </div>
+        </header>
+
+        <main class="px-4 flex flex-grow">
+          <%= @inner_content%>
+        </main>
+          <!-- Mobile bottom bar -->
+          <nav aria-label="Options"
+          class="grow-none fixed inset-x-0 bottom-0 flex flex-row-reverse items-center bg-deepdark justify-between px-4 py-2 bg-drk sm:hidden shadow-t rounded-t-xl">
+          
+            <%= render TwittercloneWeb.LayoutView, "navbutton.html" , link: Routes.profile_path(@conn, :feed), text: 'Feed' ,d: 'M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z' %>
+
+            <%= render TwittercloneWeb.LayoutView, "navbutton.html" , link: Routes.profile_path(@conn, :myprofile),text: 'Profile' , d: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' %>
+
+            <%= render TwittercloneWeb.LayoutView, "navbutton.html" , link: Routes.room_path(@conn, :new), text: 'Rooms' ,d: 'M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207'    %>
+
+            <%= if @conn.assigns.current_user do %>
+
+            <button
+              @click="(isSidebarOpen && currentSidebarTab == 'roomsTab') ? isSidebarOpen = false : isSidebarOpen = true; currentSidebarTab = 'roomsTab'"
+              class="p-5 bg-dark h-fit transition-colors rounded-lg shadow-md   "
+              :class="(isSidebarOpen && currentSidebarTab == 'roomsTab') ? 'text-white bg-deepdark border-0' : 'text-textclr bg-dark border-2'">
+              <span class="sr-only">Toggle message panel</span>
+              <svg class='w-12 h-16 dark:text-black' fill='none' stroke='currentColor' viewBox='0 0 24 24'
+                xmlns='http://www.w3.org/2000/svg'>
+                <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2'
+                  d='M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z'>>
+                </path>
+              </svg>
+            </button>
+
+            <% end %>
+
+          <!-- Logo -->
+          <div class="text-5xl font-extrabold md:text-2xl">
+            <span class="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+              PLC
+            </span>
+          </div>
+
+          <!-- User avatar button -->
+          <div class="relative flex items-center flex-shrink-0 p-2" x-data="{ isOpen: false }">
+            
+            <div x-show="isOpen" @click.away="isOpen = false" @keydown.escape="isOpen = false" x-ref="userMenu" tabindex="-1"
+              class="absolute w-48 py-1 mt-2 origin-bottom-left bg-white rounded-md shadow-lg left-10 bottom-14 focus:outline-none"
+              role="menu" aria-orientation="vertical" aria-label="user menu">
+              <a href="#" class="block px-4 py-2 text-sm text-textclr hover:bg-gray-100" role="menuitem">Your Profile
+              </a>
+
+
+              <a href="#" class="block px-4 py-2 text-sm text-textclr hover:bg-gray-100" role="menuitem">Settings</a>
+
+              <a href="#" class="block px-4 py-2 text-sm text-textclr hover:bg-gray-100" role="menuitem">Sign out</a>
+            </div>
+          </div>
+        </nav>
+      </div>
     </div>
 
     <!-- Panels -->
@@ -162,7 +176,7 @@
 
 
 
-    <!-- Author links -->
+    <!-- Author links 
     <div class="fixed flex items-center space-x-4 bottom-20 right-5 sm:bottom-5">
       <a href="https://twitter.com/ak_kamona" target="_blank" class="transition-transform transform hover:scale-125">
         <span class="sr-only">Twitter</span>
@@ -182,7 +196,7 @@
           </path>
         </svg>
       </a>
-    </div>
+    </div> -->
   </div>
 
 

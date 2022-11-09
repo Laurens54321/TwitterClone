@@ -14,7 +14,7 @@ defmodule TwittercloneWeb.TwatController do
   end
 
   def show(conn, %{"id" => id}) do
-    with {:ok, twat} <- TwatContext.get_twat(id, [:user, :comments, comments: [:user, :comments]]) do
+    with {:ok, twat} <- TwatContext.get_twat(id, [:user, :comments, comments: [:user]]) do
       changeset = CommentContext.change_comment(%Comment{})
       render(conn, "twatpage.html", twat: twat, changeset: changeset)
     end

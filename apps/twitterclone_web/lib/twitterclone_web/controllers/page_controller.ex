@@ -5,6 +5,9 @@ defmodule TwittercloneWeb.PageController do
   def index(conn, _params) do
     render(conn, "index.html")
   end
+  def test(conn, _params) do
+    render(conn, "test.html")
+  end
   def unauthorized(conn, _params) do
     put_status(conn, 401)
     render(conn, "error.html", error: "You are not authorized to do that")

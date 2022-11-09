@@ -11,6 +11,11 @@ module.exports = {
     '../lib/*_web/**/*.html.leex'
   ],
   darkMode: 'class',
+  variants: {
+    extend: {
+        display: ["group-hover"],
+    },
+  },
   theme: {
     extend: {
       colors: {
@@ -18,25 +23,12 @@ module.exports = {
         'lightdark': '#3c3f45',
         'deepdark': '#202225',
         'textclr': '#bdc1c6',
-        'darktextclr': '#8c8f93'
+        'darktextclr': '#8c8f93',
+        'fancyclr': 'from-pink-500'
       },
     },
-    screens: {
-      'sm': '640px',
-      // => @media (min-width: 640px) { ... }
+    
 
-      'md': '768px',
-      // => @media (min-width: 768px) { ... }
-
-      'lg': '1024px',
-      // => @media (min-width: 1024px) { ... }
-
-      'xl': '1280px',
-      // => @media (min-width: 1280px) { ... }
-
-      '2xl': '1536px',
-      // => @media (min-width: 1536px) { ... }
-    }
   },
   plugins: [
     require('@tailwindcss/forms'),

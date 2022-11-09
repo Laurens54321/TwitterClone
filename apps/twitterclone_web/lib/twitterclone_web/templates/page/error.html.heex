@@ -1,13 +1,21 @@
-<%= if assigns[:error] do %>
-    <div class="alert alert-danger">
-        <p> <%= @error %></p>
+<div class="m-8">
+    <%= if assigns[:error] do %>
+        <div class="alert alert-danger">
+            <p> <%= @error %></p>
+        </div>
+    <% end %> 
+    <div class="bg-lightdark p-5 rounded-xl mt-10 shadow-xl grid grid-cols-2 gap-4 justify-items-stretch" >
+
+        <%= link to: Routes.page_path(@conn, :index) do %>
+            <div class="p-5 text-center bg-deepdark  rounded-xl">
+                <p><%= gettext("Home") %></p>
+            </div>
+        <% end %>
+        
+        <%= link to: NavigationHistory.last_path(@conn) do %>
+            <div class="p-5 text-center bg-deepdark  rounded-xl">
+                <p><%= gettext("Back") %></p>
+            </div>
+        <% end %>
     </div>
-<% end %> 
-
-<div class="indexpagebutton">
-    <%= link gettext("Home"), to: Routes.page_path(@conn, :index) %>
-</div>
-
-<div class="indexpagebutton">
-    <%= link gettext("Back"), to: NavigationHistory.last_path(@conn) %>
 </div>

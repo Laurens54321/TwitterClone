@@ -39,6 +39,7 @@ defmodule TwittercloneWeb.Router do
     get "/followers/:user_id", FollowerController, :followers
 
     get "/", PageController, :index
+    get "/test", PageController, :test
     get "/unauthorized", PageController, :unauthorized
     get "/error/:errorcode/:error", PageController, :error
 
@@ -69,6 +70,8 @@ defmodule TwittercloneWeb.Router do
 
     get "/room/new", RoomController, :new
     post "/room/create", RoomController, :create
+
+    get "/search", PageController, :search
 
     live "/rooms/:room_id", LiveRoom
   end

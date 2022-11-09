@@ -31,7 +31,7 @@ defmodule TwittercloneWeb.SessionController do
     conn
     |> put_flash(:info, "Welcome back!")
     |> Guardian.Plug.sign_in(user)
-    |> redirect(to: "/users")
+    |> redirect(to: Routes.profile_path(conn, :feed))
   end
 
   defp login_reply({:error, reason}, conn) do

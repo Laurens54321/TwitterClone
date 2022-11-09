@@ -1,39 +1,74 @@
-<div class="bg-lightdark m-5 p-5 text-3xl text-center text-textclr  rounded-2xl shadow-lg">
-    <p>Currently chatting in <strong> <%= @room.name %> </strong> as <strong> <%= @user %> </strong></p>
-</div>
+<div class="flex flex-col" >
 
-<div class="w-auto" >
+    <div id="chatheader" class="bg-lightdark m-5 p-5 flex-none text-3xl text-center text-textclr  rounded-2xl shadow-lg">
+        <p>Currently chatting in <strong> <%= @room.name %> </strong> as <strong> <%= @user %></strong></p>
+    </div>
 
-    <div id="maaainn" class="overflow-hidden">
-        <div id="msgbox" class="flex flex-col sm:w-max  overflow-auto w-3/4" phx-update="append">
-            <%=for message <- @room.messages do %>
+    <div id="chat" class="flex flex-grow m-5 p-3  bg-gray-700 rounded-xl shadow-lg " >
+
+        <div id="scroll" class="grow overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch" phx-update="append">
+
+            <%=for message <- @messages do %>
                 <%= if message.user_id == @user do  %>
-                    <div id="<%= message.id %>" class="msg msg-sent">
-                       <div class="flex flex-row-reverse" >
-                            <div class="m-1 py-2 px-5 rounded-lg bg-green-600 w-fit">
-                                <p id="<%= message.id %>"><%= message.text %></p>
-                                <p> <%= message.user_id %> </p>
-                            </div>
-                        </div>
+                    <div id="<%= message.id %>" >
+                       <%= live_component MessageComponent, message: message, id: message.id, msgtype: :sent %>
                     </div>
                 <% else %>
-                    <div id="<%= message.id %>" class="msg msg-received">
-                        <div class="" >
-                            <div class="m-1 py-2 px-5 rounded-lg bg-blue-600 w-fit">
-                                <p id="<%= message.id %>"><%= message.text %></p>
-                                <p> <%= message.user_id %> </p>
-                            </div>
-                        </div>
-
+                    <div id="<%= message.id %>" >
+                        <%= live_component MessageComponent, message: message, id: message.id, msgtype: :rec %>
                     </div>
                 <% end %>
             <% end %>
-        </div>
 
-        <div id="chat-area" class="fixed bottom-0">
-            <%= f = form_for :chat, "#", id: "chat-form", phx_submit: :submit_message, phx_change: :form_update %>
-                <%= text_input f, :message, value: @messageForm, placeholder: "Send message" %>
-            </form>
         </div>
     </div>
+
+
+
+    <div id="chat-area" class="p-5 flex-none bg-deepdark rounded-xl shadow-lg m-5  ">
+        <%= if @replymsg != [] do %>
+            <div class="flex flex-row mb-3" >
+                <button class="p-2 mr-2 bg-dark h-fit transition-colors rounded-md shadow-md" phx-click="cancel-reply">
+                    <span class="sr-only">Toggle message panel</span>
+                    <svg class='w-6 h-6 dark:text-black' fill='none' stroke='currentColor' viewBox='0 0 24 24'
+                    xmlns='http://www.w3.org/2000/svg'>
+                    <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2'
+                        d='M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2C6.47,2 2,6.47 2,12C2,17.53 6.47,22 12,22C17.53,22 22,17.53 22,12C22,6.47 17.53,2 12,2M14.59,8L12,10.59L9.41,8L8,9.41L10.59,12L8,14.59L9.41,16L12,13.41L14.59,16L16,14.59L13.41,12L16,9.41L14.59,8Z'>>
+                    </path>
+                    </svg>
+                </button>
+                <p> Reply to <%= @replymsg.text %>  by  <%= @replymsg.user_id %> <p>
+            </div>
+        <% end %>
+
+        <%= f = form_for :chat, "#", id: "chat-form", phx_submit: :submit_message, phx_change: :form_update %>
+            <%= text_input f, :message, value: @messageForm, placeholder: "Send message", class: "text-lg" %>
+        </form>
+    </div>
 </div>
+
+<script>
+
+    const messages = document.getElementById('scroll');
+const chatform = document.getElementById('chat-area');
+const chatheader = document.getElementById('chatheader');
+
+
+
+var calcHeight = function() {
+    let totalHeight = window.innerHeight;
+    let totalWidth = window.innerWidth;
+
+    calc = totalHeight - (chatform.offsetHeight + chatheader.offsetHeight + 200);
+    messages.setAttribute("style",`height:${calc}px`);
+};
+
+window.addEventListener("resize", calcHeight);
+window.addEventListener("onload", calcHeight);
+
+const observer = new ResizeObserver(calcHeight);
+observer.observe(messages);
+
+calcHeight();
+
+</script>

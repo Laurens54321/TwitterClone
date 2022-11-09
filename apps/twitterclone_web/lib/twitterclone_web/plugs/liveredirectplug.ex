@@ -4,7 +4,6 @@ defmodule TwittercloneWeb.Plugs.LiveRedirectPlug do
 
 
   alias Twitterclone.RoomContext
-  alias Twitterclone.TwatContext.Twat
   import Logger
 
 
