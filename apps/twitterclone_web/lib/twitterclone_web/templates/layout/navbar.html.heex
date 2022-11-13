@@ -41,25 +41,38 @@
         </svg>
       </button> -->
 
-      <%= render TwittercloneWeb.LayoutView, "navbutton.html" , link: Routes.profile_path(@conn, :feed), text: 'Feed',
-        d: 'M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z' %>
-
-        <%= link to: Routes.profile_path(@conn, :feed) do %>
-          <div class="p-3 w-20 h-fit mt-2 flex flex-col place-items-center bg-dark hover:text-deepdark rounded-lg shadow-md text-textclr focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4">
-            <div class=' justify-items-center p-auto'>
-              <span class="material-symbols-outlined" style="font-size: 40px; width: 40px">
-              account_circle
-              </span>
-            </div>
-            <p class="text-center text-base text-textclr">Profile</p>
+      <%= link to: Routes.profile_path(@conn, :feed) do %>
+        <div class="p-3  h-fit mt-2 flex flex-col place-items-center bg-dark hover:text-deepdark rounded-lg shadow-md text-textclr focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4">
+          <div class=' justify-items-center p-auto'>
+            <span class="material-symbols-outlined" style="font-size: 40px; width: 40px">
+            rss_feed
+            </span>
           </div>
-        <% end %>
+          <p class="text-center text-base text-textclr">Feed</p>
+        </div>
+      <% end %>
 
-      
+      <%= link to: Routes.profile_path(@conn, :myprofile) do %>
+        <div class="p-3  h-fit mt-2 flex flex-col place-items-center bg-dark hover:text-deepdark rounded-lg shadow-md text-textclr focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4">
+          <div class=' justify-items-center p-auto'>
+            <span class="material-symbols-outlined" style="font-size: 40px; width: 40px">
+            account_circle
+            </span>
+          </div>
+          <p class="text-center text-base text-textclr">Profile</p>
+        </div>
+      <% end %>
 
-      <%= render TwittercloneWeb.LayoutView, "navbutton.html" , link: "/live/room/new", text: 'Rooms',
-        d: 'M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207'
-      %>
+      <%= link to: "/twat" do %>
+        <div class="p-3  h-fit mt-2 flex flex-col place-items-center bg-dark hover:text-deepdark rounded-lg shadow-md text-textclr focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4">
+          <div class=' justify-items-center p-auto'>
+            <span class="material-symbols-outlined" style="font-size: 40px; width: 40px">
+            account_circle
+            </span>
+          </div>
+          <p class="text-center text-base text-textclr">Twat</p>
+        </div>
+      <% end %>
       
       <%= if @conn.assigns.current_user do %>
 

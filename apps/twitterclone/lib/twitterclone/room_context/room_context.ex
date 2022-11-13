@@ -171,4 +171,27 @@ defmodule Twitterclone.RoomContext do
     end
   end
 
+  def get_room_paginated(room_id, page, per_page \\ 30) do
+    offset_by = per_page * page
+    query = from(u in Twitterclone.RoomContext.Message,
+      where: u.room_id == ^room_id,
+
+      left_join: user in assoc(u, :user),
+      on: like(u.user_id, user.user_id),
+      left_join: replytomsg in assoc(u, :replyto),
+      on: u.replyto_id == replytomsg.id,
+
+      preload: [user: user],
+      preload: [replyto: replytomsg],
+
+      order_by: [desc: u.inserted_at],
+      limit: ^per_page,
+      offset: ^offset_by
+    )
+    case Repo.all(query) do
+      Ecto.QueryError -> {:error, :not_found}
+      msgs ->
+        {:ok, msgs}
+    end
+  end
 end

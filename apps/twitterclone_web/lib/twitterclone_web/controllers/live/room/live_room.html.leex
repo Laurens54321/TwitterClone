@@ -1,12 +1,13 @@
-<div class="flex flex-col" >
+<div class="flex flex-col min-h-0" >
 
     <div id="chatheader" class="bg-lightdark m-5 p-5 flex-none text-3xl text-center text-textclr  rounded-2xl shadow-lg">
         <p>Currently chatting in <strong> <%= @room.name %> </strong> as <strong> <%= @user %></strong></p>
     </div>
 
-    <div id="chat" class="flex flex-grow m-5 p-3 pl-0 bg-gray-700 rounded-xl shadow-lg " >
+    <div id="chat" class="flex flex-grow min-h-0 m-5 p-3 pl-0 bg-gray-700 rounded-xl shadow-lg " >
 
-        <div id="scroll" class="p-3 grow overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch" >
+        <div id="scroll" onload="scrollToBottom" phx-hook="InfiniteScroll"
+            class="p-3 min-h-0 grow overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch" >
             <%=for message <- @messages do %>
                 <%= if message.user_id == @user do  %>
                     <div id="<%= message.id %>" >
@@ -48,27 +49,9 @@
 
 <script>
 
-    const messages = document.getElementById('scroll');
-    const chatform = document.getElementById('chat-area');
-    const chatheader = document.getElementById('chatheader');
-
-    var calcHeight = function() {
-        let totalHeight = window.innerHeight;
-        let totalWidth = window.innerWidth;
-        let currentScrollTop = messages.scrollTop
-
-        calc = totalHeight - (chatform.offsetHeight + chatheader.offsetHeight + 180);
-        messages.setAttribute("style",`height:${calc}px`);
-
-        console.log(messages.scrollHeight - messages.scrollTop)
-        console.log(messages.scrollHeight + " " +messages.scrollTop)
-
-        scrollToBottom('scroll')
-
-    };
-
-    function scrollToBottom(id){
-        var element = document.getElementById(id);
+    function scrollToBottom(){
+        console.log("scrollbottom")
+        var element = document.getElementById('scroll');
         element.scrollTop = element.scrollHeight - element.clientHeight;
     }
 
@@ -79,14 +62,7 @@
         });
     }
 
-    window.addEventListener("resize", calcHeight);
-    window.addEventListener("onload", calcHeight);
 
-    document.addEventListener('phx:update', calcHeight);
-
-    const observer = new ResizeObserver(calcHeight);
-    observer.observe(messages);
-
-    calcHeight();
+    window.addEventListener("load", scrollToBottom);
 
 </script>

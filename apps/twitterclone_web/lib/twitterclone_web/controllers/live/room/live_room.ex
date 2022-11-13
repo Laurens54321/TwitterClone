@@ -8,10 +8,11 @@ defmodule TwittercloneWeb.LiveRoom do
   def mount(%{"room_id" => room_id}, session, socket) do
     {:ok, user, _idk} = Guardian.resource_from_token(TwittercloneWeb.Guardian, session["guardian_default_token"])
     {:ok, room} = RoomContext.get_room(room_id)
-    {:ok, messages} = RoomContext.get_room_messages(room.id)
+    {:ok, messages} = RoomContext.get_room_paginated(room.id, 0, 15)
+    messages = Enum.sort_by(messages, fn(p) -> p.inserted_at end)
     topic = "room" <> room_id
     if connected?(socket), do: TwittercloneWeb.Endpoint.subscribe(topic)
-    showids = sort_messages(messages)
+    showids = show_time(messages)
     #RoomContext.remove_newmsg(room_id, user.user_id)
     TwittercloneWeb.Presence.track(self(), topic, user.user_id, %{})
     {:ok, assign(socket,
@@ -21,16 +22,17 @@ defmodule TwittercloneWeb.LiveRoom do
             messages: messages,
             user: user.user_id,
             replymsg: [],
-            showtimeids: showids
+            showtimeids: showids,
+            page: 0
             )}
   end
 
-  defp sort_messages([]), do: []
+  defp show_time([]), do: []
 
-  defp sort_messages(messages) do
+  defp show_time(messages) do
     timeids = messages
         |> Enum.chunk_every(2, 1, :discard)
-        |> Enum.map(fn [x, y] -> if(NaiveDateTime.diff(x.inserted_at, y.inserted_at) > 600 || x.user_id != y.user_id , do: y.id) end) # show time if message is 600 sec apart = 10 min
+        |> Enum.map(fn [x, y] -> if(NaiveDateTime.diff(x.inserted_at, y.inserted_at) > 600 || x.user_id != y.user_id , do: x.id) end) # show time if message is 600 sec apart = 10 min
         |> Enum.filter(& !is_nil(&1))
       case timeids do
         [] -> [Enum.at(messages, 0).id]
@@ -67,13 +69,30 @@ defmodule TwittercloneWeb.LiveRoom do
   end
 
   @impl true
+  def handle_event("load-messages", _params, socket) do
+    assigns = socket.assigns
+    next_page = assigns.page + 1
+    room_id = socket.assigns.room.id
+    {:ok, messages} = RoomContext.get_room_paginated(room_id, next_page, 15)
+    {:noreply, socket
+      |> assign(page: next_page)
+      |> assign(messages: messages ++ socket.assigns.messages)
+    }
+  end
+
+  @impl true
   def handle_info(%{event: "new-message", payload: message}, socket) do
-    showids = sort_messages(socket.assigns.messages)
-    {:noreply, assign(socket, showtimeids: showids, messages: [message | socket.assigns.messages])}
+    showids = show_time(socket.assigns.messages)
+    {:noreply, assign(socket, showtimeids: showids, messages: socket.assigns.messages ++ [message])}
   end
 
   @impl true
   def handle_info(%{event: "presence_diff", payload: %{joins: _joins, leaves: _leaves}}, socket) do
     {:noreply, socket}
   end
+
+
+
+
+
 end
