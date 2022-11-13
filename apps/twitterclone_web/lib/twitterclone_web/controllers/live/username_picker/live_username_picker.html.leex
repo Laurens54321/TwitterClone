@@ -1,0 +1,34 @@
+<div class="bg-lightdark p-10 px-20 m-5 rounded-xl">
+    <p class="p-3 mb-3 text-center sm:text-left" > Choose a username </p>
+
+    <div class="" >
+        <%= f = form_for :username, "#", id: "username-form", phx_submit: :submit_username, phx_change: :form_update, class: "flex sm:flex-row flex-col mb-5" %>
+            <%= text_input f, :message, value: @usernameForm, placeholder: "Username", class: "text-lg" %>
+
+            <button  class="flex-none sm:w-1/4 bg-blue-600 sm:ml-5 ml-0 sm:my-0 my-5"> <p> Submit username </p> </button>
+        </form>
+
+
+        <%= if @error != [] do %>
+            <div class="bg-red-400 p-5 text-black rounded-xl mb-5" >
+                <p> <%= @error %> </p>
+            </div>
+        <% end %>
+
+        <%= if @message != [] do %>
+            <div class="bg-blue-300 p-5 text-black rounded-xl mb-5">
+                <p> <%= @message %> </p>
+            </div>
+        <% end %>
+
+        <%= if assigns[:blazeit] do %>
+            <div class="bg-green-300 p-5 text-black rounded-xl mb-5">
+                <p> <%= @blazeit %> </p>
+            </div>
+        <% end %>
+    </div>
+
+
+
+
+</div>

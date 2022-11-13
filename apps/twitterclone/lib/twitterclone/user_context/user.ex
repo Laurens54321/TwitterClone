@@ -12,7 +12,9 @@ defmodule Twitterclone.UserContext.User do
     field :password, :string, virtual: true
     field :passwordHash, :string
     field :role, :string, default: "User"
+    field :picture_url, :string, default: "/images/default_user_pic.png"
     has_many :twats, Twitterclone.TwatContext.Twat, foreign_key: :user_id
+    has_many :oauth_users, Twitterclone.UserContext.OauthUser, foreign_key: :user_id
     many_to_many  :following,
                   Twitterclone.UserContext.User,
                   join_through: Twitterclone.UserContext.Follower,
@@ -56,8 +58,8 @@ defmodule Twitterclone.UserContext.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:user_id, :name, :email, :password, :role])
-    |> validate_required([:user_id, :name, :email, :password, :role])
+    |> cast(attrs, [:user_id, :name, :email, :password, :role, :picture_url])
+    |> validate_required([:user_id, :name, :email, :role])
     |> validate_inclusion(:role, @acceptable_roles)
     |> validate_format(:email, ~r/@/)
     |> unique_constraint(:user_id, name: :users_pkey,

@@ -12,8 +12,14 @@ defmodule TwittercloneWeb.SessionController do
     if maybe_user do
       redirect(conn, to: "/")
     else
-      render(conn, "new.html", changeset: changeset, action: Routes.session_path(conn, :login))
+      oauth_google_url = ElixirAuthGoogle.generate_oauth_url(conn)
+      render(conn, "new.html", changeset: changeset, action: Routes.session_path(conn, :login), oauth_google_url: oauth_google_url)
     end
+  end
+
+  def login_sub(%{private:  %{:plug_session => %{"sub_token" => sub_token}}} = conn, _args) do
+    UserContext.authenticate_user_sub(sub_token)
+    |> login_reply(conn)
   end
 
   def login(conn, %{"user" => %{"user_id" => user_id, "password" => password}}) do
@@ -37,6 +43,12 @@ defmodule TwittercloneWeb.SessionController do
   defp login_reply({:error, reason}, conn) do
     conn
     |> put_flash(:error, to_string(reason))
-    |> new(%{})
+    |> redirect(to: Routes.session_path(conn, :new))
+  end
+
+  defp login_reply({:create, :not_found}, conn) do
+    conn
+    |> put_flash(:info, "Choose a username to continue")
+    |> redirect(to: "/live/username_picker")
   end
 end

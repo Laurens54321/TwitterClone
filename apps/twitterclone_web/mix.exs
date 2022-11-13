@@ -56,7 +56,8 @@ defmodule TwittercloneWeb.MixProject do
       {:uuid, "~> 1.1.8"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
       {:timex, "~> 3.0"},
-      {:utc_datetime, "~> 1.0"}
+      {:utc_datetime, "~> 1.0"},
+      {:elixir_auth_google, "~> 1.6.3"}
     ]
   end
 

@@ -8,7 +8,7 @@
   <%= csrf_meta_tag() %>
     <%= live_title_tag assigns[:page_title] || "PinkLighterChat" %>
       <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css" )} />
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
         integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
         crossorigin="anonymous" />
@@ -56,23 +56,20 @@
                 </svg>
               </a>
 
-            <button @click="isSettingsPanelOpen = true"
-              class=" px-2 m-3  text-textclr bg-black rounded-lg border-0 shadow-md hover:text-textclr focus:outline-none focus:ring ">
-              <span class="sr-only">Settings</span>
-              <svg aria-hidden="true" class="w-9 h-9" xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-            </button>
+              <!-- Profile link -->
+              <%= if assigns[:current_user] do %>
+                <a href={Routes.profile_path(@conn, :myprofile)}
+                  class="p-2 mx-3 text-white bg-deepdark rounded-lg shadow-md hover:text-textclr focus:outline-none focus:ring focus:ring-black focus:ring-offset-gray-100 focus:ring-offset-2">
+                  <span class="sr-only">profile link</span>
+                  <img src={@current_user.picture_url} alt="Profile" class="rounded-xl" style="width:2.25rem;height:2.25rem;">
+                </a>
+              <% end %>
+
+            
 
             <%= if assigns[:current_user] do %>
-            <div class="flex ">
-              <p class="mx-5">
-                <%= @current_user.user_id %>
-              </p>
+            <div class="flex bg-lightdark mr-5 p-3 rounded-xl shadow-xl">
+              <p class=""> @<%= @current_user.user_id %> </p>
             </div>
             <% end %>
           </div>

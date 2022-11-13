@@ -9,6 +9,7 @@ defmodule Twitterclone.UserContext do
 
   alias Twitterclone.UserContext.User
   alias Twitterclone.UserContext.ApiKey
+  alias Twitterclone.UserContext.OauthUser
 
 
   def list_users do
@@ -145,6 +146,18 @@ defmodule Twitterclone.UserContext do
     end
   end
 
+  def search_users(search_phrase) do
+    start_character = String.slice(search_phrase, 0..1)
+
+    from(
+      p in User,
+      where: ilike(p.name, ^"#{start_character}%"),
+      where: fragment("SIMILARITY(?, ?) > 0",  p.name, ^search_phrase),
+      order_by: fragment("LEVENSHTEIN(?, ?)", p.name, ^search_phrase)
+    )
+    |> Repo.all()
+  end
+
   def create_api_key(attrs \\ %{}) do
     %ApiKey{}
       |> ApiKey.changeset(attrs)
@@ -239,4 +252,39 @@ defmodule Twitterclone.UserContext do
     Follower.changeset(follower, attrs)
   end
 
+  def get_oauth_users(user_id) do
+    query = from(u in OauthUser, where: like(u.user_id, ^user_id))
+    case Repo.all(query) do
+      nil -> {:error, :not_found}
+      oauthusers -> {:ok, oauthusers}
+    end
+  end
+
+  def get_oauth_user_bysub(sub_token, preloads \\ []) do
+    query = from(u in OauthUser, where: like(u.sub_token, ^sub_token))
+    case Repo.one(query) do
+      nil -> {:error, :not_found}
+      oauthuser -> {:ok, Repo.preload(oauthuser, preloads)}
+    end
+  end
+
+  def create_oauth_user(attrs \\ %{}) do
+    %OauthUser{}
+    |> OauthUser.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_oauthUser(%OauthUser{} = oauthUser, attrs) do
+    oauthUser
+    |> OauthUser.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def authenticate_user_sub(sub_token) do
+    query = from(u in User, join: oauth in assoc(u, :oauth_users), where: like(oauth.sub_token, ^sub_token))
+    case Repo.one(query) do
+      nil -> {:create, :not_found}
+      user -> {:ok, user}
+    end
+  end
 end

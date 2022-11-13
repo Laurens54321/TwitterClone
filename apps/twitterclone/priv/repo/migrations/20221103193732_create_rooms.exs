@@ -10,7 +10,7 @@ defmodule Twitterclone.Repo.Migrations.CreateRooms do
     end
 
     create table(:roomconnections) do
-      add :user_id, references(:users, type: :string,  column: :user_id), null: false
+      add :user_id, references(:users, type: :string,  column: :user_id, on_delete: :delete_all), null: false
       add :room_id, references(:rooms), null: false
     end
   end

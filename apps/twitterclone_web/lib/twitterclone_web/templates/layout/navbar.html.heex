@@ -1,13 +1,12 @@
 <!-- Sidebar -->
 <div class="flex flex-shrink-0 transition-all ">
-  
-  
+
+
 
   <!-- Left mini bar -->
   <nav aria-label="Options"
     class="z-20 flex-col items-center flex-shrink-0 hidden w-30 py-4 bg-deepdark border-r-2 border-zinc-800 shadow-md sm:flex "
-    :class="(isSidebarOpen) ? '' : 'rounded-tr-3xl rounded-br-3xl'"
-    >
+    :class="(isSidebarOpen) ? '' : 'rounded-tr-3xl rounded-br-3xl'">
     <!-- Logo -->
     <div class="flex-shrink-0 py-4">
       <div class="text-4xl font-extrabold ">
@@ -42,12 +41,26 @@
         </svg>
       </button> -->
 
-      <%= render TwittercloneWeb.LayoutView, "navbutton.html" , link: Routes.profile_path(@conn, :feed), text: 'Feed' ,d: 'M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z' %>
+      <%= render TwittercloneWeb.LayoutView, "navbutton.html" , link: Routes.profile_path(@conn, :feed), text: 'Feed',
+        d: 'M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z' %>
 
-      <%= render TwittercloneWeb.LayoutView, "navbutton.html" , link: Routes.profile_path(@conn, :myprofile),text: 'Profile' , d: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' %>
+        <%= link to: Routes.profile_path(@conn, :feed) do %>
+          <div class="p-3 w-20 h-fit mt-2 flex flex-col place-items-center bg-dark hover:text-deepdark rounded-lg shadow-md text-textclr focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4">
+            <div class=' justify-items-center p-auto'>
+              <span class="material-symbols-outlined" style="font-size: 40px; width: 40px">
+              account_circle
+              </span>
+            </div>
+            <p class="text-center text-base text-textclr">Profile</p>
+          </div>
+        <% end %>
 
-      <%= render TwittercloneWeb.LayoutView, "navbutton.html" , link: Routes.room_path(@conn, :new), text: 'Rooms' ,d: 'M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207'    %>
+      
 
+      <%= render TwittercloneWeb.LayoutView, "navbutton.html" , link: "/live/room/new", text: 'Rooms',
+        d: 'M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207'
+      %>
+      
       <%= if @conn.assigns.current_user do %>
 
       <button
@@ -64,24 +77,37 @@
       </button>
 
       <% end %>
-
-
     </div>
 
     <!-- User avatar -->
     <div class="relative flex flex-col items-center flex-shrink-0 p-2 space-y-2 " x-data="{ isOpen: false }">
       <%= if @conn.assigns.current_user do %>
-      
-
-      <%= link to: "/logout" do %>
-      <div class="p-3 h-fit mt-2 flex-col place-items-center bg-dark text-deepdark rounded-lg shadow-md hover:text-textclr focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4">
-                <svg class=' w-9 h-9 place-self-center p-auto' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d="M16,17V14H9V10H16V7L21,12L16,17M14,2A2,2 0 0,1 16,4V6H14V4H5V20H14V18H16V20A2,2 0 0,1 14,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2H14Z">></path></svg>
-                <p class="text-center text-base text-textclr" >Logout</p>    
-              </div>
-            <% end %>
+        <%= link to: "/logout" do %>
+          <div
+            class="p-3 w-20 h-fit mt-2 flex flex-col place-items-center bg-dark hover:text-deepdark rounded-lg shadow-md text-textclr focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4">
+            <div class=' w-9 h-9 justify-items-center p-auto'>
+              <span class="material-symbols-outlined">
+              logout
+              </span>
+            </div>
+            <p class="text-center text-base text-textclr">Logout</p>
+          </div>
+        <% end %>
+      <% else %>
+      <%= link to: "/login" do %>
+          <div
+            class="p-3 w-20 h-fit mt-2 flex flex-col  bg-dark hover:text-deepdark rounded-lg shadow-md text-textclr focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4">
+            <div class='ml-1 w-9 h-9 justify-items-center p-auto' >
+              <span class="material-symbols-outlined">
+                login
+              </span>
+            </div>
+            <p class="text-center text-base text-textclr">Login</p>
+          </div>
+        <% end %>
       <% end %>
 
-      <!--
+              <!--
       <button @click="isOpen = !isOpen; $nextTick(() => {isOpen ? $refs.userMenu.focus() : null})"
         class="transition-opacity rounded-lg opacity-80 hover:opacity-100 focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2">
         <svg class='w-12 h-16 ' fill='none' stroke='currentColor' viewBox='0 0 24 24'
@@ -104,67 +130,63 @@
     -->
     </div>
 
-    
+
   </nav>
 
-  
+
   <div x-transition:enter="transform transition-transform duration-300" x-transition:enter-start="-translate-x-full"
     x-transition:enter-end="translate-x-0" x-transition:leave="transform transition-transform duration-300"
     x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full" x-show="isSidebarOpen"
-    class="fixed inset-y-0 left-0 z-10 flex-shrink-0 w-64 bg-deepdark border-r-2 border-zinc-800 shadow-lg sm:left-16 rounded-tr-3xl rounded-br-3xl sm:w-72 lg:static lg:w-64">
-    
-    <%= if  @conn.assigns.current_user do %>
+    class="fixed inset-y-0 left-0 z-10 flex-shrink-0 w-64 bg-deepdark border-r-2 border-zinc-800 shadow-lg sm:left-16 rounded-tr-3xl rounded-br-3xl sm:w-72 sm:static">
 
-    <!-- Rooms subtab -->
-    <nav x-show="currentSidebarTab == 'roomsTab'" aria-label="Main" class="flex flex-col h-full">
+    <%= if @conn.assigns.current_user do %>
 
-      <!-- Links -->
-      <div class="flex-1 px-4 space-y-2 overflow-hidden hover:overflow-auto">
-        <div class=" rounded-xl my-10 p-10 items-center space-x-2  transition-colors bg-lightdark group">
-          <p class="text-center text-indigo-400" >Rooms</p>
-        </div>
-        
-        <a href={"#{Routes.room_path(@conn, :new)}"} class=" p-3 flex items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg">
-          <span aria-hidden="true" class="p-2 bg-indigo-700 rounded-lg">
-            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M17,13H13V17H11V13H7V11H11V7H13V11H17M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3Z" />
-            </svg>
+      <!-- Rooms subtab -->
+      <nav x-show="currentSidebarTab == 'roomsTab'" aria-label="Main" class="flex flex-col h-full">
 
-            <style class="w-6 h-6">
-              .material-symbols-outlined {
-                font-variation-settings:
-                'FILL' 0,
-                'wght' 400,
-                'GRAD' 0,
-                'opsz' 48
-              }
+        <!-- Links -->
+        <div class="flex-1 px-4 space-y-2 overflow-hidden hover:overflow-auto">
+          <div class=" rounded-xl my-10 p-10 items-center space-x-2  transition-colors bg-lightdark group">
+            <p class="text-center text-indigo-400">Rooms</p>
+          </div>
+          <a href="/live/room/new"
+            class=" p-3 flex items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg">
+            <span aria-hidden="true" class="p-2 bg-indigo-700 rounded-lg">
+              <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M17,13H13V17H11V13H7V11H11V7H13V11H17M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3Z" />
+              </svg>
+
+              <style class="w-6 h-6">
+                .material-symbols-outlined {
+                  font-variation-settings:
+                    'FILL' 0,
+                    'wght' 400,
+                    'GRAD' 0,
+                    'opsz' 48
+                }
               </style>
+            </span>
+            <span>New Room </span>
+          </a>
+          <%= for room <- @conn.assigns.current_user.rooms do %>
+            <%= render TwittercloneWeb.LayoutView, "roombutton.html" , link: "/rooms/#{room.id}" , text: room.name,
+              d: 'M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207'
+              %>
+          <% end %>
+        </div>
+      </nav>
 
-          </span>
-          <span>New Room </span>
-        </a>
-        <%= for room <- @conn.assigns.current_user.rooms do %>
-          <%= render TwittercloneWeb.LayoutView, "roombutton.html" , link: "/rooms/#{room.id}" , text: room.name ,d: 'M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207'    %>
-        <% end %>
-        
-      </div>
+      <% end %>
 
-      
+        <!-- Links subtab -->
 
-
-    </nav>
-
-    <% end %>
-
-    <!-- Links subtab -->
-
-    <nav x-show="currentSidebarTab == 'linksTab'" aria-label="Main" class="flex flex-col h-full">
-      <!-- Logo -->
-      <div class="flex items-center justify-center flex-shrink-0 py-10">
-        <a href="#">
-          <!-- <svg
+        <nav x-show="currentSidebarTab == 'linksTab'" aria-label="Main" class="flex flex-col h-full">
+          <!-- Logo -->
+          <div class="flex items-center justify-center flex-shrink-0 py-10">
+            <a href="#">
+              <!-- <svg
                 class="text-indigo-600"
                 width="96"
                 height="53"
@@ -177,57 +199,56 @@
                   d="M7.691 34.703L13.95 28.2 32.09 52h8.087L18.449 23.418 38.594.813h-8.157L7.692 26.125V.812H.941V52h6.75V34.703zm27.61-7.793h17.156v-5.308H35.301v5.308zM89.19 13v22.512c0 3.703-1.02 6.574-3.058 8.613-2.016 2.04-4.934 3.059-8.754 3.059-3.773 0-6.68-1.02-8.719-3.059-2.039-2.063-3.058-4.945-3.058-8.648V.813h-6.68v34.874c.047 5.297 1.734 9.458 5.062 12.481 3.328 3.023 7.793 4.535 13.395 4.535l1.793-.07c5.156-.375 9.234-2.098 12.234-5.168 3.024-3.07 4.547-7.02 4.57-11.848V13h-6.785zM89 8h7V1h-7v7z"
                 />
               </svg> -->
-          <img class="w-24 h-auto"
-            src="https://raw.githubusercontent.com/kamona-ui/dashboard-alpine/main/public/assets/images/logo.png"
-            alt="K-UI" />
-        </a>
-      </div>
+              <img class="w-24 h-auto"
+                src="https://raw.githubusercontent.com/kamona-ui/dashboard-alpine/main/public/assets/images/logo.png"
+                alt="K-UI" />
+            </a>
+          </div>
 
-      <!-- Links -->
-      <div class="flex-1 px-4 space-y-2 overflow-hidden hover:overflow-auto">
-        <a href="#" class="flex items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg">
-          <span aria-hidden="true" class="p-2 bg-indigo-700 rounded-lg">
-            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-            </svg>
-          </span>
-          <span>Home</span>
-        </a>
-        <a href="#"
-          class="flex items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white">
-          <span aria-hidden="true"
-            class="p-2 transition-colors rounded-lg group-hover:bg-indigo-700 group-hover:text-white">
-            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-            </svg>
-          </span>
-          <span>Pages</span>
-        </a>
-      </div>
-
-      
+          <!-- Links -->
+          <div class="flex-1 px-4 space-y-2 overflow-hidden hover:overflow-auto">
+            <a href="#" class="flex items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg">
+              <span aria-hidden="true" class="p-2 bg-indigo-700 rounded-lg">
+                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+              </span>
+              <span>Home</span>
+            </a>
+            <a href="#"
+              class="flex items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white">
+              <span aria-hidden="true"
+                class="p-2 transition-colors rounded-lg group-hover:bg-indigo-700 group-hover:text-white">
+                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+              </span>
+              <span>Pages</span>
+            </a>
+          </div>
 
 
-    </nav>
 
-    <section x-show="currentSidebarTab == 'roomsTab'" class="px-4 py-6">
-      <h2 class="text-xl">Rooms</h2>
-    </section>
 
-    <section x-show="currentSidebarTab == 'messagesTab'" class="px-4 py-6">
-      <h2 class="text-xl">Messages</h2>
-    </section>
+        </nav>
 
-    <section x-show="currentSidebarTab == 'notificationsTab'" class="px-10 py-10">
-      <h2 class="text-xl">Notifications</h2>
-    </section>
+        <section x-show="currentSidebarTab == 'roomsTab'" class="px-4 py-6">
+          <h2 class="text-xl">Rooms</h2>
+        </section>
+
+        <section x-show="currentSidebarTab == 'messagesTab'" class="px-4 py-6">
+          <h2 class="text-xl">Messages</h2>
+        </section>
+
+        <section x-show="currentSidebarTab == 'notificationsTab'" class="px-10 py-10">
+          <h2 class="text-xl">Notifications</h2>
+        </section>
   </div>
 
-  
+
 
 </div>
-

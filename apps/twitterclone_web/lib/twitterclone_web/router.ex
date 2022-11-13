@@ -27,6 +27,7 @@ defmodule TwittercloneWeb.Router do
     pipe_through [:browser, :auth]
 
     get "/login", SessionController, :new
+    get "/login/sub", SessionController, :login_sub
     post "/login", SessionController, :login
     get "/logout", SessionController, :logout
 
@@ -45,16 +46,22 @@ defmodule TwittercloneWeb.Router do
 
 
     live "/live", LiveController
-
+    get "/auth/google/callback/", GoogleAuthController, :index
+    live "/live/username_picker", LiveUsernamePicker
   end
+
 
   scope "/", TwittercloneWeb do
     pipe_through [:browser, :auth,  :allowed_for_users]
+    get "/welcome", PageController, :welcome
 
     get "/profile", ProfileController, :myprofile
     get "/feed", ProfileController, :feed
     get "/twat", ProfileController, :newtwat
     post "/twat", ProfileController, :createtwat
+    get "/profile/update_picture_url", ProfileController, :update_picture_url
+
+
 
     get "/twats/:id/edit", TwatController, :edit
     patch "/twats/:id", TwatController, :update
@@ -73,7 +80,10 @@ defmodule TwittercloneWeb.Router do
 
     get "/search", PageController, :search
 
+    live "/live/room/new", LiveCreateRoom
     live "/rooms/:room_id", LiveRoom
+
+
   end
 
   scope "/", TwittercloneWeb do

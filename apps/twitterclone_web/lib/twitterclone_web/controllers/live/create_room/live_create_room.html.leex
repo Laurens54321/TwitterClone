@@ -1,0 +1,60 @@
+<div class="bg-lightdark p-10 px-20 m-5 rounded-xl">
+    <p class="p-3 mb-3 text-center sm:text-left" > Add people to room </p>
+
+    <div class="flex  flex-col mb-5" >
+        <%= f = form_for :search, "#", id: "username-form", phx_change: :form_update, class: "" %>
+
+            <div class="border-2 rounded-xl flex flex-row flex-wrap ">
+
+                <span class="no-flex material-symbols-outlined w-16 h-16 p-1 text-center align-middle" style="font-size: 36px">
+                    search
+                </span>
+
+                <div class="flex flex-row flex-wrap">
+                <%= for user <- @userids do %>
+                    <div class="bg-deepdark p-3 m-1 rounded-xl flex flex-row ">
+                        <p>@<%= user %> </p>
+                        <button phx-click="unselect-user" type="button" phx-value-user="<%=user%>" class="ml-2" style="height: 26px">
+                            <span class="material-symbols-outlined " >
+                                close
+                            </span>
+                        </button>
+                    </div>
+
+                <% end %>
+                </div>
+
+                <%= text_input f, :search, value: @usernameForm, placeholder: "Username", class: "flex-grow text-2xl border-0 m-1" %>
+            </div>
+
+            <%= for user <- @searchresults do %>
+                <div class="hover:bg-dark p-5 m-2 rounded-xl flex flex-row" phx-click="select-user" phx-value-user="<%=user.user_id%>">
+                    <div class="mr-3">
+                        <img src="<%= user.picture_url %>" alt="Profile" class="rounded-xl" style="width:40px;height:40px;">
+                    </div>
+                    <div class="flex flex-col justify-center">
+                        <p>@<%= user.user_id %></p>
+                    </div>
+                </div>
+            <% end %>
+        </form>
+
+        <%= f = form_for :room, "#", id: "username-form", phx_submit: :submit_room, phx_change: :form_update, class: "" %>
+
+            <%= text_input f, :name, value: @usernameForm, placeholder: "Give your room a name", class: "flex-grow text-2xl border-0 mt-5" %>
+
+            <button  class="flex-none sm:w-1/4 bg-blue-600  ml-0 px-2 my-5"> <p> Create Room </p> </button>
+        </form>
+
+        <%= if assigns[:blazeit] do %>
+            <div class="bg-green-300 p-5 text-black rounded-xl mb-5">
+                <p> <%= @blazeit %> </p>
+            </div>
+        <% end %>
+
+    </div>
+
+
+
+
+</div>

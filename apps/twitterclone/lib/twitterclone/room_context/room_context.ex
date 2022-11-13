@@ -148,9 +148,26 @@ defmodule Twitterclone.RoomContext do
     query = from(u in Message, where: u.room_id == ^room_id)
     case Repo.all(query) do
       Ecto.QueryError -> {:error, :not_found}
-      [] -> []
       list ->
-        for n <- list, do: Repo.preload(n, preloads)
+        msgs = for n <- list, do: Repo.preload(n, preloads)
+        {:ok, msgs}
+    end
+  end
+
+  def get_room_messages(room_id) do
+    base = from(msg in Twitterclone.RoomContext.Message)
+    query = from(u in base,
+      left_join: user in assoc(u, :user),
+      on: like(u.user_id, user.user_id),
+      left_join: replytomsg in assoc(u, :replyto),
+      on: u.replyto_id == replytomsg.id,
+      where: u.room_id == ^room_id,
+      preload: [user: user],
+      preload: [replyto: replytomsg])
+    case Repo.all(query) do
+      Ecto.QueryError -> {:error, :not_found}
+      msgs ->
+        {:ok, msgs}
     end
   end
 

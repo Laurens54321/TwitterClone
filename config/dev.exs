@@ -8,7 +8,7 @@ config :twitterclone, Twitterclone.Repo,
   database: "twitterclone_dev",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10,
-  migration_timestamps: [type: :timestamptz]
+  migration_timestamps: [type: :utc_datetime]
 
 # For development, we disable any cache and enable
 # debugging and code reloading.

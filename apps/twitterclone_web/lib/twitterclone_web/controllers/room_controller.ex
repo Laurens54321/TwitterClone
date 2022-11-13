@@ -23,7 +23,9 @@ defmodule TwittercloneWeb.RoomController do
     user_ids = [user.user_id | user_ids]
     Logger.info "user_ids"
     IO.inspect user_ids
-    {:ok, room} = if String.trim(roomname) == "", do: RoomContext.create_room(user_ids), else: RoomContext.create_room(user_ids, roomname)
+    {:ok, room} = if String.trim(roomname) == "",
+      do: RoomContext.create_room(user_ids),
+      else: RoomContext.create_room(user_ids, roomname)
     redirect(conn, to: "/rooms/#{room.id}")
   end
 

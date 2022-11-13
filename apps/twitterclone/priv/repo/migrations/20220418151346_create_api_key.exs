@@ -4,7 +4,7 @@ defmodule Twitterclone.Repo.Migrations.CreateAPIKeys do
   def change do
     create table(:api_keys) do
       add :key, :string
-      add :user_id, references(:users, type: :string,  column: :user_id), null: false
+      add :user_id, references(:users, type: :string,  column: :user_id, on_delete: :delete_all), null: false
 
       timestamps()
     end

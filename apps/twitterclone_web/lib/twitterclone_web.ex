@@ -108,4 +108,22 @@ defmodule TwittercloneWeb do
   defmacro __using__(which) when is_atom(which) do
     apply(__MODULE__, which, [])
   end
+
+  def handle_blazeit(socket, message) do
+    if (message =~ "420") do
+      Phoenix.Socket.assign(socket, blazeit: "Eyo blazeit man")
+    else
+      socket
+    end
+  end
+
+  def handle_live_blazeit(socket, message) do
+    if (message =~ "420") do
+      Phoenix.LiveView.assign(socket, blazeit: "Eyo blazeit man")
+    else
+      socket
+    end
+  end
+
+
 end

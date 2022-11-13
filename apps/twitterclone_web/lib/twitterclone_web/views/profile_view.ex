@@ -8,4 +8,9 @@ defmodule TwittercloneWeb.ProfileView do
     Enum.count(room.messages)
   end
 
+  def getOauthCount(user_id) do
+    {:ok, oauths} = Twitterclone.UserContext.get_oauth_users(user_id)
+    Enum.count(oauths)
+  end
+
 end

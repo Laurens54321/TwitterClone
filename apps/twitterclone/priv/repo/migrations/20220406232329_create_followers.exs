@@ -3,7 +3,7 @@ defmodule Twitterclone.Repo.Migrations.CreateFollowers do
 
   def change do
     create table(:followers) do
-      add :user_id, references(:users, type: :string,  column: :user_id, null: false)
+      add :user_id, references(:users, type: :string,  column: :user_id, null: false, on_delete: :delete_all)
       add :follower_id, references(:users, type: :string,  column: :user_id, null: false)
 
       timestamps()

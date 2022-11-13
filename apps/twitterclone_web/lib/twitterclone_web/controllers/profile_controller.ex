@@ -92,4 +92,20 @@ defmodule TwittercloneWeb.ProfileController do
       false -> {:error, :unauthorized}
     end
   end
+
+  def oauth_signup(conn, args) do
+    IO.inspect(conn)
+    oauth_user = UserContext.get_oauth_user_bysub("")
+    changeset = UserContext.change_user(%UserContext.User{})
+    render(conn, "oath_signup.html", changeset: changeset, oauth_user: oauth_user)
+  end
+
+  def update_picture_url(conn, args) do
+    current_user = Guardian.Plug.current_resource(conn)
+    oauths = UserContext.get_oauth_users(current_user.user_id)
+    UserContext.update_user(%{
+      picture_url: Enum.at(oauths, 0).picture
+    })
+    redirect(conn, to: Routes.profile_path(conn, :myprofile))
+  end
 end

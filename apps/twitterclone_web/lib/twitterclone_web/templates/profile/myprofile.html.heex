@@ -1,50 +1,64 @@
-<div>
+<div class="p-5 m-5 bg-lightdark rounded-xl shadow-xl" >
 
-  <h1><%= gettext "My Profile" %> </h1>
+  <div class="flex flex-col">
 
-  <ul>
+    <div class="flex flex-row" >
+      <div class="flex flex-row justify-center bg-deepdark p-2 m-5 rounded-xl ">
+        <img src={@current_user.picture_url} alt="Profile pic lol" class="rounded-xl" style="width: 60px;rem;height:60px;">
+      </div>
 
-    <li>
-      <strong>Name:</strong>
-      <p> <%= @user.name %> </p>
-    </li>
-    <li>
-      <strong>Username:</strong>
-      <p> @ <%= @user.user_id %> </p>
-    </li>
+      <%= link to:  Routes.follower_path(@conn, :following, @user.user_id), method: :get do %>
+        <div class="grid grid-rows-3 p-3 m-5 " > 
+          <p class="inline-block text-4xl text-center align-bottom row-span-2"> <%= length(Twitterclone.UserContext.get_following(@user.user_id)) %> </p>
+          <h2 class=" row-span-1"> Following </h2> 
+        </div>
+      <% end %>
+  
+      <%= link to: Routes.follower_path(@conn, :followers, @user.user_id), method: :get do %>
+        <div class="grid grid-rows-3 p-3 m-5 " > 
+          <p class="inline-block text-4xl text-center align-bottom row-span-2"> <%= length(Twitterclone.UserContext.get_followers(@user.user_id)) %> </p>
+          <h2 class=" row-span-1"> Followers </h2> 
+        </div>
+      <% end %>
+    </div>
+    <div class="m-5 flex flex-col">
+        <div class="mb-5 flex flex-row">
+          <%= button gettext("Edit Profile"), 
+              to:  Routes.user_path(@conn, :edit, @user.user_id), method: :get,
+              class: "mr-5 px-3 bg-blue-600 " %>
 
-    <li>
-      <strong>Email:</strong>
-      <p><%= @user.email %> </p>
-    </li>
+          <%= button gettext("Generate API Key"), 
+          to:  Routes.api_path(@conn, :generate), method: :get,
+          class: "mr-5 px-3 bg-blue-600 " %>
+    
+        </div>
 
-    <li>
-      <strong>Passwordhash:</strong>
-      <p> <%= @user.passwordHash %> </p>
-    </li>
+        <div class="flex sm:flex-row flex-col  flex-wrap">
+          <div class="flex flex-col mr-20">
+            <p> <%= @user.name %> </p>
+            <p class="text-darktextclr text-xl"> @<%= @user.user_id %> </p>
+          </div>
+          <div class="mr-20 mt-5 sm:mt-0">
+            <p><%= @user.email %> </p>
+          </div>
+          <div class=" mr-20 mt-5 sm:mt-0 sm:flex-col flex-row  ">
+            <p>API Key:</p>
+            <p class="text-clip"> <%= api_key(@user) %> </p>
+          </div>
+          <div class=" mr-20 mt-5 sm:mt-0 sm:flex-col flex-row  ">
+            <p>OAuth connections:</p>
+            <p class="text-clip"> <%= getOauthCount(@user.user_id) %> </p>
+          </div>
+        </div>
+    </div>
 
-    <li>
-      <strong>API Key:</strong>
-      <p> <%= api_key(@user) %> </p>
-    </li>
-  </ul>
+    
+  </div>
 
-  <%= button gettext("Generate API Key"), 
-      to:  Routes.api_path(@conn, :generate), method: :get %>
-
-  <%= button gettext("Edit Profile"), 
-      to:  Routes.user_path(@conn, :edit, @user.user_id), method: :get %>
+  
 
   <div class="profilebar" >
-    <span class="followercount" > <h2> Following </h2> 
-    <%= button length(Twitterclone.UserContext.get_following(@user.user_id)), 
-      to:  Routes.follower_path(@conn, :following, @user.user_id), method: :get %>
-    </span>
-
-    <span class="followercount" > <h2> Followers </h2> 
-    <%= button length(Twitterclone.UserContext.get_followers(@user.user_id)), 
-      to: Routes.follower_path(@conn, :followers, @user.user_id), method: :get %>
-    </span>
+    
   </div>
 
 </div>

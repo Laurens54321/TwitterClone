@@ -8,6 +8,7 @@ defmodule Twitterclone.Repo.Migrations.CreateUsers do
       add :email, :string, null: false
       add :passwordHash, :string, null: false
       add :role, :string, null: false
+      add :picture_url, :string, null: true
 
       timestamps()
     end
