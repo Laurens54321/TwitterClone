@@ -5,8 +5,9 @@ defmodule TwittercloneWeb.ProfileController do
   #alias Twitterclone.UserContext.User
   alias Twitterclone.TwatContext
   alias Twitterclone.TwatContext.Twat
-  alias Twitterclone.UserContext.Follower
+  alias Twitterclone.FollowerContext.Follower
   alias Twitterclone.RoomContext
+  alias Twitterclone.FollowerContext
 
   action_fallback TwittercloneWeb.FallbackController
 
@@ -18,7 +19,7 @@ defmodule TwittercloneWeb.ProfileController do
 
   def feed(conn, _args) do
     current_user = Guardian.Plug.current_resource(conn)
-    following = UserContext.get_following(current_user.user_id)
+    following = FollowerContext.get_following(current_user.user_id)
     twats = TwatContext.get_by_userid_list(following, [:user, :comments])
     rooms = RoomContext.get_by_userid(current_user.user_id, [:messages])
     render(conn, "feed.html", twats: twats, title: "Feed", rooms: rooms)
@@ -72,7 +73,7 @@ defmodule TwittercloneWeb.ProfileController do
 
   def follow(conn, %{"user_id" => user_id, "follower_id" => follower_id}) do
     with true <- Guardian.Plug.current_resource(conn).user_id == follower_id do
-        with {:ok, %Follower{}} <- UserContext.create_follower(%{user_id: user_id, follower_id: follower_id}) do
+        with {:ok, %Follower{}} <- FollowerContext.create_follower(%{user_id: user_id, follower_id: follower_id}) do
           conn
           |> redirect(to: Routes.profile_path(conn, :profile, user_id))
         end
@@ -84,7 +85,7 @@ defmodule TwittercloneWeb.ProfileController do
 
   def unfollow(conn, %{"user_id" => user_id, "follower_id" => follower_id}) do
     with true <- Guardian.Plug.current_resource(conn).user_id == follower_id do
-      with {:ok, %Follower{}} <- UserContext.delete_follower(UserContext.get_follower_record(user_id, follower_id)) do
+      with {:ok, %Follower{}} <- FollowerContext.delete_follower(FollowerContext.get_follower_record(user_id, follower_id)) do
         conn
         |> redirect(to: Routes.profile_path(conn, :profile, user_id))
       end

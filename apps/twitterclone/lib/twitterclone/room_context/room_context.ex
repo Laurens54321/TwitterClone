@@ -6,8 +6,7 @@ defmodule Twitterclone.RoomContext do
   import Ecto.Query, warn: false
   alias Twitterclone.Repo
 
-  alias Twitterclone.UserContext.Follower
-  alias Twitterclone.TwatContext.Twat
+  require Logger
 
   alias Twitterclone.RoomContext.Room
   alias Twitterclone.RoomContext.Message
@@ -192,6 +191,30 @@ defmodule Twitterclone.RoomContext do
       Ecto.QueryError -> {:error, :not_found}
       msgs ->
         {:ok, msgs}
+    end
+  end
+
+  def compare_msg(x, y), do: NaiveDateTime.diff(x.inserted_at, y.inserted_at) > 600 || x.user_id != y.user_id
+
+  def put_show_time(messages) do
+    msg_amount = Enum.count(messages) - 1
+    if msg_amount == -1 do
+      []
+    else
+      for x <- 0..msg_amount do
+        cond do
+          msg_amount == 0 -> %{Enum.at(messages, 0) | showtime: true}
+          x == 0 -> %{Enum.at(messages, 0) | showtime: true}
+          msg_amount > 0 && x > 0 ->
+            elem = Enum.at(messages, x)
+            prev_elem = Enum.at(messages, x - 1)
+            if compare_msg(elem, prev_elem) do
+              %{elem | showtime: true}
+            else
+              elem
+            end
+        end
+      end
     end
   end
 end

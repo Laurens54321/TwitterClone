@@ -4,19 +4,19 @@
 
     <div class="flex flex-row" >
       <div class="flex flex-row justify-center bg-deepdark p-2 m-5 rounded-xl ">
-        <img src={@current_user.picture_url} alt="Profile pic lol" class="rounded-xl" style="width: 60px;rem;height:60px;">
+        <img src={@current_user.picture_url} alt="Profile pic lol" class="rounded-xl" style="width: 60px;height:60px;">
       </div>
 
       <%= link to:  Routes.follower_path(@conn, :following, @user.user_id), method: :get do %>
         <div class="grid grid-rows-3 p-3 m-5 " > 
-          <p class="inline-block text-4xl text-center align-bottom row-span-2"> <%= length(Twitterclone.UserContext.get_following(@user.user_id)) %> </p>
+          <p class="inline-block text-4xl text-center align-bottom row-span-2"> <%= length(Twitterclone.FollowerContext.get_following(@user.user_id)) %> </p>
           <h2 class=" row-span-1"> Following </h2> 
         </div>
       <% end %>
   
       <%= link to: Routes.follower_path(@conn, :followers, @user.user_id), method: :get do %>
         <div class="grid grid-rows-3 p-3 m-5 " > 
-          <p class="inline-block text-4xl text-center align-bottom row-span-2"> <%= length(Twitterclone.UserContext.get_followers(@user.user_id)) %> </p>
+          <p class="inline-block text-4xl text-center align-bottom row-span-2"> <%= length(Twitterclone.FollowerContext.get_followers(@user.user_id)) %> </p>
           <h2 class=" row-span-1"> Followers </h2> 
         </div>
       <% end %>

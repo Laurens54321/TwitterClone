@@ -1,4 +1,4 @@
-<div class="flex flex-col min-h-0" >
+<div class="grow flex flex-col min-h-0 pb-5" >
 
     <div id="chatheader" class="bg-lightdark m-5 p-5 flex-none text-3xl text-center text-textclr  rounded-2xl shadow-lg">
         <p>Currently chatting in <strong> <%= @room.name %> </strong> as <strong> <%= @user %></strong></p>
@@ -7,15 +7,15 @@
     <div id="chat" class="flex flex-grow min-h-0 m-5 p-3 pl-0 bg-gray-700 rounded-xl shadow-lg " >
 
         <div id="scroll" onload="scrollToBottom" phx-hook="InfiniteScroll"
-            class="p-3 min-h-0 grow overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch" >
+            class="p-3 flex grow flex-col overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch" >
             <%=for message <- @messages do %>
                 <%= if message.user_id == @user do  %>
                     <div id="<%= message.id %>" >
-                       <%= live_component MessageComponent, message: message, id: message.id, msgtype: :sent, current_user: @user, showtime: Enum.member?(@showtimeids, message.id)  %>
+                       <%= live_component MessageComponent, message: message, id: message.id, msgtype: :sent, current_user: @user, showtime: message.showtime  %>
                     </div>
                 <% else %>
                     <div id="<%= message.id %>" >
-                        <%= live_component MessageComponent, message: message, id: message.id, msgtype: :rec, current_user: @user, showtime: Enum.member?(@showtimeids, message.id) %>
+                        <%= live_component MessageComponent, message: message, id: message.id, msgtype: :rec, current_user: @user, showtime: message.showtime %>
                     </div>
                 <% end %>
             <% end %>

@@ -3,7 +3,7 @@ defmodule TwittercloneWeb.FollowerControllerTest do
 
   import Twitterclone.UserContextFixtures
 
-  alias Twitterclone.UserContext.Follower
+  alias Twitterclone.FollowerContext.Follower
 
   @create_attrs %{
     follower_id: "some follower_id",

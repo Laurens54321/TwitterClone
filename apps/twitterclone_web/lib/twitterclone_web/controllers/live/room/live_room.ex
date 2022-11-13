@@ -9,20 +9,17 @@ defmodule TwittercloneWeb.LiveRoom do
     {:ok, user, _idk} = Guardian.resource_from_token(TwittercloneWeb.Guardian, session["guardian_default_token"])
     {:ok, room} = RoomContext.get_room(room_id)
     {:ok, messages} = RoomContext.get_room_paginated(room.id, 0, 15)
-    messages = Enum.sort_by(messages, fn(p) -> p.inserted_at end)
     topic = "room" <> room_id
     if connected?(socket), do: TwittercloneWeb.Endpoint.subscribe(topic)
-    showids = show_time(messages)
     #RoomContext.remove_newmsg(room_id, user.user_id)
     TwittercloneWeb.Presence.track(self(), topic, user.user_id, %{})
     {:ok, assign(socket,
             room: room,
             topic: topic,
             messageForm: "",
-            messages: messages,
+            messages: messages |> Enum.sort_by(fn(p) -> p.inserted_at end) |> RoomContext.put_show_time,
             user: user.user_id,
             replymsg: [],
-            showtimeids: showids,
             page: 0
             )}
   end
@@ -31,14 +28,14 @@ defmodule TwittercloneWeb.LiveRoom do
 
   defp show_time(messages) do
     timeids = messages
-        |> Enum.chunk_every(2, 1, :discard)
-        |> Enum.map(fn [x, y] -> if(NaiveDateTime.diff(x.inserted_at, y.inserted_at) > 600 || x.user_id != y.user_id , do: x.id) end) # show time if message is 600 sec apart = 10 min
-        |> Enum.filter(& !is_nil(&1))
-      case timeids do
-        [] -> [Enum.at(messages, 0).id]
-        [id] -> [id]
-        ids -> [ Enum.at(messages, 0).id | ids]
-      end
+      |> Enum.chunk_every(2, 1, :discard)
+      |> Enum.map(fn [x, y] -> if(NaiveDateTime.diff(x.inserted_at, y.inserted_at) > 600 || x.user_id != y.user_id , do: x.id) end) # show time if message is 600 sec apart = 10 min
+      |> Enum.filter(& !is_nil(&1))
+    case timeids do
+      [] -> [Enum.at(messages, 0).id]
+      [id] -> [id]
+      ids -> [ Enum.at(messages, 0).id | ids]
+    end
   end
 
   @impl true
@@ -48,7 +45,6 @@ defmodule TwittercloneWeb.LiveRoom do
     replymsg = socket.assigns.replymsg
     {:ok, newmsg} = RoomContext.create_message(user_id, room_id, message, replymsg)
     newmsg = Twitterclone.Repo.preload(newmsg, [:replyto, :user])
-    IO.inspect(newmsg)
     TwittercloneWeb.Endpoint.broadcast(socket.assigns.topic, "new-message", newmsg)
     {:noreply, assign(socket, messageForm: "", replymsg: [])}
   end
@@ -82,8 +78,13 @@ defmodule TwittercloneWeb.LiveRoom do
 
   @impl true
   def handle_info(%{event: "new-message", payload: message}, socket) do
-    showids = show_time(socket.assigns.messages)
-    {:noreply, assign(socket, showtimeids: showids, messages: socket.assigns.messages ++ [message])}
+    msg = if RoomContext.compare_msg(message, Enum.at(socket.assigns.messages, -1)) do
+      %{message | showtime: true}
+    else
+
+      message
+    end
+    {:noreply, assign(socket,  messages: socket.assigns.messages ++ [msg])}
   end
 
   @impl true

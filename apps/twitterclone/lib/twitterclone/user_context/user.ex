@@ -17,13 +17,13 @@ defmodule Twitterclone.UserContext.User do
     has_many :oauth_users, Twitterclone.UserContext.OauthUser, foreign_key: :user_id
     many_to_many  :following,
                   Twitterclone.UserContext.User,
-                  join_through: Twitterclone.UserContext.Follower,
+                  join_through: Twitterclone.FollowerContext.Follower,
                   join_keys: [follower_id: :user_id, user_id: :user_id]
 
 
     many_to_many  :followers,
                   Twitterclone.UserContext.User,
-                  join_through: Twitterclone.UserContext.Follower,
+                  join_through: Twitterclone.FollowerContext.Follower,
                   join_keys: [user_id: :user_id, follower_id: :user_id]
 
     has_one :api_key, Twitterclone.UserContext.ApiKey, foreign_key: :user_id
@@ -72,9 +72,7 @@ defmodule Twitterclone.UserContext.User do
     |> put_password_hash()
   end
 
-  defp put_password_hash(
-    %Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset
-  ) do
+  defp put_password_hash(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
     change(changeset, passwordHash: Pbkdf2.hash_pwd_salt(password))
   end
 

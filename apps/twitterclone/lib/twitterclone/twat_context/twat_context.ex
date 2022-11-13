@@ -6,7 +6,7 @@ defmodule Twitterclone.TwatContext do
   import Ecto.Query, warn: false
   alias Twitterclone.Repo
 
-  alias Twitterclone.UserContext.Follower
+  alias Twitterclone.FollowerContext.Follower
   alias Twitterclone.TwatContext.Twat
 
   @doc """

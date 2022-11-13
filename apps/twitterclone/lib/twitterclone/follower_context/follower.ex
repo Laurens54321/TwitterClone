@@ -1,4 +1,4 @@
-defmodule Twitterclone.UserContext.Follower do
+defmodule Twitterclone.FollowerContext.Follower do
   use Ecto.Schema
   import Ecto.Changeset
 

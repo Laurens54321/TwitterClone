@@ -89,7 +89,7 @@ defmodule Twitterclone.UserContextTest do
 
 
   describe "followers" do
-    alias Twitterclone.UserContext.Follower
+    alias Twitterclone.FollowerContext.Follower
 
     import Twitterclone.UserContextFixtures
 
