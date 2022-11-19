@@ -51,7 +51,19 @@
             </div>
         <% end %>
 
-        <%= live_component TwittercloneWeb.LiveRoom.ChatFormComponent, id: "chat" %>
+        <div>
+            <%= form_for :chat, "#", [id: "chat-form", phx_submit: :submit_message, phx_change: :form_update, multipart: :true], fn f -> %>
+                    <div class="flex flex-row border-2 items-center rounded-xl pl-4 phx-submit-loading:animate-pulse">
+                        <svg class="hidden phx-submit-loading:block  animate-spin -ml-1 mr-3 h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <%= text_input f, :message, value: @messageForm, placeholder: "Send message", required: "required", class: "text-lg  border-0 border-transparent focus:border-transparent focus:ring-0", style: "border: 0" %>
+                        <!--  <%= file_input f, :picture, type: "file", id: "user_picture" %> -->
+                    </div>
+
+            <% end %>
+        </div>
     </div>
 </div>
 

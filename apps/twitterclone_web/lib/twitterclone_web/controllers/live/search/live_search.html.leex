@@ -1,0 +1,44 @@
+<div class="bg-lightdark p-10 px-20 m-5 rounded-xl">
+    <p class="p-3 mb-3 text-center sm:text-left" > Search for stuff </p>
+
+    <div class="flex  flex-col mb-5" >
+        <%= f = form_for :search, "#", id: "search-form", phx_change: :form_update, class: "" %>
+
+            <div class="border-2 rounded-xl flex flex-row  ">
+
+                <span class=" material-symbols-outlined w-16 h-16 p-1 text-center align-middle" style="font-size: 36px">
+                    search
+                </span>
+
+                <%= text_input f, :search, value: @searchForm, placeholder: "Search", class: " text-2xl border-0 m-1" %>
+            </div>
+
+            <%= if Enum.count(@roomsearchresults) > 0 do %>
+                <div class="no-flex mt-5 p-5 bg-deepdark rounded-xl grid grid-flow-row-dense lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 " >
+                    <p class="lg:col-span-4 md:col-span-3 col-span-2 text-center">Rooms</p>
+                    <%= for room <- @roomsearchresults do %>
+                        <div class="col-span-1" >
+                            <%= link to: "/live/#{room.id}", method: :get do %>
+                                <div class="p-5 bg-lightdark rounded-xl text-textclr grid grid-cols-4 gap-2 truncate  ">
+                                    <p class="col-span-2 "><%= room.name %></p>
+                                </div>
+                            <% end %>
+                        </div>
+                    <% end %>
+                </div>
+            <% end %>
+
+
+            <%= for item <- @searchresults do %>
+                <%= live_component UserSearchResultComponent, item: item %>
+            <% end %>
+        </form>
+
+
+
+    </div>
+
+
+
+
+</div>

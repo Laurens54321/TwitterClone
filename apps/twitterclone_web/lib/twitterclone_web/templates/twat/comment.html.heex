@@ -19,7 +19,7 @@
             </div>
             
             <div class="post__footer">
-                <span class="text-darktxtclr"><%= @twat.inserted_at |> Timex.format!("%H:%M", :strftime) %></span>
+                <span class="text-darktxtclr"><%= @twat.inserted_at |> TwittercloneWeb.format_timestamp%></span>
             </div>
             </div>
         </div>

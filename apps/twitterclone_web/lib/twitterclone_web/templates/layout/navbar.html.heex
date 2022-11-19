@@ -6,7 +6,7 @@
   <!-- Left mini bar -->
   <nav aria-label="Options"
     class="z-20 flex-col items-center flex-shrink-0 hidden w-30 py-4 bg-deepdark border-r-2 border-zinc-800 shadow-md sm:flex "
-    :class="(isSidebarOpen) ? '' : 'rounded-tr-3xl rounded-br-3xl'">
+    class="(isSidebarOpen) ? '' : 'rounded-tr-3xl rounded-br-3xl'">
     <!-- Logo -->
     <div class="flex-shrink-0 py-4">
       <div class="text-4xl font-extrabold ">
@@ -73,13 +73,24 @@
           <p class="group-hover:block hidden text-textclr text-center text-base text-textclr">Twat</p>
         </div>
       <% end %>
+
+      <%= link to: "/search" do %>
+        <div class="p-3  h-fit flex flex-col  place-items-center group transition transition-property:all transition-duration-100 bg-dark hover:text-deepdark rounded-lg shadow-md text-textclr focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4">
+          <div class=' flex justify-items-center p-auto'>
+            <span class="material-symbols-outlined" style="font-size: 40px; width: 40px">
+            search
+            </span>
+          </div>
+          <p class="group-hover:block hidden text-textclr text-center text-base text-textclr">Search</p>
+        </div>
+      <% end %>
       
       <%= if @conn.assigns.current_user do %>
 
       <button
         @click="(isSidebarOpen && currentSidebarTab == 'roomsTab') ? isSidebarOpen = false : isSidebarOpen = true; currentSidebarTab = 'roomsTab'"
         class="p-5 bg-dark h-fit transition-colors rounded-lg shadow-md   "
-        :class="(isSidebarOpen && currentSidebarTab == 'roomsTab') ? 'text-white bg-deepdark border-0' : 'text-textclr bg-dark border-2'">
+        class="(isSidebarOpen && currentSidebarTab == 'roomsTab') ? 'text-white bg-deepdark border-0' : 'text-textclr bg-dark border-2'">
         <span class="sr-only">Toggle message panel</span>
         <svg class='w-12 h-12 dark:text-black' fill='none' stroke='currentColor' viewBox='0 0 24 24'
           xmlns='http://www.w3.org/2000/svg'>

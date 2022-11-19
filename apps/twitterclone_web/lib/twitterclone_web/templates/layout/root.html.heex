@@ -111,7 +111,7 @@
           <button
             @click="(isSidebarOpen && currentSidebarTab == 'roomsTab') ? isSidebarOpen = false : isSidebarOpen = true; currentSidebarTab = 'roomsTab'"
             class="p-5 bg-dark h-fit transition-colors rounded-lg shadow-md   "
-            :class="(isSidebarOpen && currentSidebarTab == 'roomsTab') ? 'text-white bg-deepdark border-0' : 'text-textclr bg-dark border-2'">
+            class="(isSidebarOpen && currentSidebarTab == 'roomsTab') ? 'text-white bg-deepdark border-0' : 'text-textclr bg-dark border-2'">
             <span class="sr-only">Toggle message panel</span>
             <svg class='w-12 h-16 dark:text-black' fill='none' stroke='currentColor' viewBox='0 0 24 24'
               xmlns='http://www.w3.org/2000/svg'>

@@ -125,5 +125,15 @@ defmodule TwittercloneWeb do
     end
   end
 
+  def format_timestamp(timestamp) do
+    IO.inspect(timestamp)
+    {:ok, now} = DateTime.now("Europe/Brussels")
+    {:ok, ts} = DateTime.from_naive(timestamp, "Europe/Brussels")
+    if (DateTime.diff(now, ts, :hour) > 24 ) do
+      timestamp |> Timex.format!("%H:%M %d/%m", :strftime)
+    else
+      timestamp |> Timex.format!("%H:%M", :strftime)
+    end
 
+  end
 end

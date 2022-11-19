@@ -127,4 +127,20 @@ defmodule Twitterclone.TwatContext do
     end
     List.flatten(twats)
   end
+
+  def search_twats(search_phrase) do
+    start_character = String.slice(search_phrase, 0..1)
+
+    from(
+      p in Twat,
+      where: ilike(p.text, ^"#{start_character}%"),
+      where: fragment("SIMILARITY(?, ?) > 0",  p.text, ^search_phrase),
+      order_by: fragment("LEVENSHTEIN(?, ?)", p.text, ^search_phrase),
+
+      left_join: user in assoc(p, :user),
+      on: like(p.user_id, user.user_id),
+      preload: [user: user]
+    )
+    |> Repo.all()
+  end
 end

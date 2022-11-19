@@ -34,9 +34,9 @@ defmodule MessageComponent do
                             <div class="flex flex-col " style="width: 35px">
                                 <!-- time -->
                                 <%= if (@message.showtime) do %>
-                                    <p class="text-sm text-darktextclr text-center "> <%= @message.inserted_at |> Timex.format!("%H:%M", :strftime) %> </p>
+                                    <p class="text-sm text-darktextclr text-center "> <%= @message.inserted_at |> TwittercloneWeb.format_timestamp%> </p>
                                 <% else %>
-                                    <p class="hidden group-hover:block text-sm text-darktextclr text-center"> <%= @message.inserted_at |> Timex.format!("%H:%M", :strftime) %> </p>
+                                    <p class="hidden group-hover:block text-sm text-darktextclr text-center"> <%= @message.inserted_at |> TwittercloneWeb.format_timestamp%> </p>
 
                                 <% end %>
 
@@ -99,9 +99,9 @@ defmodule MessageComponent do
                     <div class="flex flex-col " style="width: 35px">
                             <!-- time -->
                         <%= if (@message.showtime) do %>
-                            <p class="text-sm text-darktextclr  text-center"> <%= @message.inserted_at |> Timex.format!("%H:%M", :strftime) %> </p>
+                            <p class="text-sm text-darktextclr  text-center"> <%= @message.inserted_at |> TwittercloneWeb.format_timestamp%> </p>
                         <% else %>
-                            <p class="hidden group-hover:block text-sm text-darktextclr text-center "> <%= @message.inserted_at |> Timex.format!("%H:%M", :strftime) %> </p>
+                            <p class="hidden group-hover:block text-sm text-darktextclr text-center "> <%= @message.inserted_at |> TwittercloneWeb.format_timestamp%> </p>
                         <% end %>
 
                         <%= if (@message.showprof) do %>

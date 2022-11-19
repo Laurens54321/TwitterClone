@@ -12,6 +12,7 @@ defmodule Twitterclone.RoomContext do
   alias Twitterclone.RoomContext.Message
   alias Twitterclone.RoomContext.RoomConnection
   alias Twitterclone.RoomContext.VirtualRoom
+  alias Twitterclone.Preloader
 
   def list_rooms do
     Repo.all(Room)
@@ -214,5 +215,17 @@ defmodule Twitterclone.RoomContext do
         end
       end
     end
+  end
+
+  def search_rooms(search_phrase) do
+    start_character = String.slice(search_phrase, 0..1)
+
+    from(
+      p in Room,
+      where: ilike(p.name, ^"#{start_character}%"),
+      where: fragment("SIMILARITY(?, ?) > 0",  p.name, ^search_phrase),
+      order_by: fragment("LEVENSHTEIN(?, ?)", p.name, ^search_phrase)
+    )
+    |> Repo.all()
   end
 end

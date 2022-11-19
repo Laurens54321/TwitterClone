@@ -13,7 +13,7 @@
                 </div>
 
                 <div class=" text-darktextclr mt-2">
-                    <span class=""><%= @twat.inserted_at |> Timex.format!("%H:%M", :strftime) %></span>
+                    <span class=""><%= @twat.inserted_at |> TwittercloneWeb.format_timestamp%></span>
                 </div>
 
                 <%= if TwittercloneWeb.TwatView.isMyTwat?(@conn, @twat) do %>

@@ -7,7 +7,7 @@
                     <div class="p-5 bg-lightdark rounded-xl text-textclr grid grid-cols-4 gap-2 truncate  ">
                         <p class="col-span-2 "><%= room.name %></p>
                         <%= if 0 != TwittercloneWeb.ProfileView.getMessageCount room  do %>
-                            <p class="col-span-2 text-right"><%= List.last(room.messages).updated_at |> Timex.format!("%H:%M", :strftime) %></p> 
+                            <p class="col-span-2 text-right"><%= List.last(room.messages).updated_at |> TwittercloneWeb.format_timestamp%></p> 
                             <p class="text-darktextclr col-span-4 pl-6"><%= List.last(room.messages).text %> - by: <%= List.last(room.messages).user_id %></p>
                             
                         <% end %>

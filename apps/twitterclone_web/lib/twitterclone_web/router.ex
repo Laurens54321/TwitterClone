@@ -78,10 +78,9 @@ defmodule TwittercloneWeb.Router do
     get "/room/new", RoomController, :new
     post "/room/create", RoomController, :create
 
-    get "/search", PageController, :search
-
     live "/live/room/new", LiveCreateRoom
     live "/rooms/:room_id", LiveRoom
+    live "/search", LiveSearch
 
 
   end

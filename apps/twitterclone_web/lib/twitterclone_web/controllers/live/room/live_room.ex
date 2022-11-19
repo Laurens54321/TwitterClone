@@ -24,7 +24,8 @@ defmodule TwittercloneWeb.LiveRoom do
             user: user.user_id,
             replymsg: [],
             page: 0,
-            page_end: false
+            page_end: false,
+            messageForm: ""
             )}
   end
 
@@ -106,7 +107,8 @@ defmodule TwittercloneWeb.LiveRoom do
   end
 
   @impl true
-  def handle_event("form_update", %{"chat" => %{"message" => message}}, socket) do
+  def handle_event("form_update", %{"chat" => %{"message" => message}} = chat, socket) do
+    IO.inspect(chat)
     {:noreply, assign(socket, messageForm: message)}
   end
 

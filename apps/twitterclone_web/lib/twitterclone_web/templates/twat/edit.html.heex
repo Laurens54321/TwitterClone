@@ -1,4 +1,5 @@
-<.form let={f} for={@changeset} action={Routes.twat_path(@conn, :update, @twat)} method={"PATCH"}>
+
+  <%= form_for @changeset , Routes.twat_path(@conn, :update, @twat), [method: "PATCH"], fn f -> %>
   <%= if @changeset.action do %>
     <div class="alert alert-danger">
       <p> <%= gettext "Oops, something went wrong! Please check the errors below."%></p>
@@ -17,4 +18,4 @@
   <div>
     <%= submit "Save" %>
   </div>
-</.form>
+  <% end %>
