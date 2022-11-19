@@ -1,4 +1,4 @@
-<div class="flex flex-col min-h-0 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
+<div class="flex flex-col pb-5 min-h-0 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
     <div class="no-flex m-5 p-5 bg-deepdark rounded-xl grid grid-flow-row-dense lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4 " >
         <p class="lg:col-span-4 md:col-span-3 col-span-2 text-center">Rooms</p>
         <%= for room <- @rooms do %>
@@ -8,8 +8,8 @@
                         <p class="col-span-2 "><%= room.name %></p>
                         <%= if 0 != TwittercloneWeb.ProfileView.getMessageCount room  do %>
                             <p class="col-span-2 text-right"><%= List.last(room.messages).updated_at |> Timex.format!("%H:%M", :strftime) %></p> 
-                            <p class="text-darktextclr col-span-3 pl-6"><%= List.last(room.messages).text %></p>
-                            <p class="text-darktextclr col-span-1 text-right md:text-left  w-fit ">By: <%= List.last(room.messages).user_id %></p>
+                            <p class="text-darktextclr col-span-4 pl-6"><%= List.last(room.messages).text %> - by: <%= List.last(room.messages).user_id %></p>
+                            
                         <% end %>
                     </div>
                 <% end %>   
@@ -17,7 +17,7 @@
         <% end %>
     </div>
     
-    <div class="flex flex-col grow min-h-0 overflow-y-auto">
+    <div class="flex flex-col grow ">
         <div class="grid md:grid-cols-2 px-5 grid-cols-1 justify-center gap-5" >
             <%= for twat <- @twats do %>
                 <div class="col-span-1 " >

@@ -1,22 +1,58 @@
-<%= render TwittercloneWeb.TwatView, "twat.html", conn: @conn, twat: @twat %>
-
-<%= if @current_user do %>
-<!-- tweetbox starts, don't show it if not logged in -->
-<%= form_for @changeset, Routes.profile_path(@conn, :createcomment, @twat.id ), fn f -> %>
-    <div class="tweetBox">
-    <form>
-        <div class="tweetbox__input">
-        <%= text_input f, :text, class: "tweetBox", placeholder: gettext("What do u think about this twat hmmm?")  %>
+<div class="flex flex-col ">
+    <div class="flex flex-col my-5 space-y-5 p-5">
+        <div class="flex flex-row">
+            <div class="rounded-xl grow p-3 bg-lightdark  ">
+                <div class="flex p-5 justify-items-center space-y-2">
+                    <div class="">
+                        <div class="">
+                            <div class="flex flex-nowrap mb-2">
+                                <p class="font-extrabold"><%= @twat.user.name %> </p>                            
+                                <p class="pl-3">@<%= @twat.user_id %></p>
+                            </div>
+                            <div class="">
+                                <%= @twat.text %>
+                            </div>
+                        </div>
+        
+                        <div class=" text-darktextclr mt-2">
+                            <span class=""><%= @twat.inserted_at |> Timex.format!("%H:%M", :strftime) %></span>
+                        </div>
+        
+                        <%= if TwittercloneWeb.TwatView.isMyTwat?(@conn, @twat) do %>
+                            <div class="mt-5 flex justify-items-center space-x-5">
+                                <%= button gettext("Edit"), to: Routes.twat_path(@conn, :edit, @twat.id), method: :get, class: "p-3" %>
+                                <%= button gettext("Delete"), to: "/twats/#{@twat.id}" , method: :delete, class: "p-3" %>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
         </div>
-        <%= submit "Twat", class: "tweetBox__tweetButton"%>  
-    </form>
+        
+        <%= if @current_user do %>
+        <!-- tweetbox starts, don't show it if not logged in -->
+            <%= form_for @changeset, Routes.profile_path(@conn, :createcomment, @twat.id ), fn f -> %>
+                <div class="">
+                <form>
+                    <div class="flex flex-row">
+                        <%= text_input f, :text, class: "tweetBox", placeholder: gettext("What do u think about this twat hmmm?")  %>
+                        <%= submit "Twat", class: "w-40 bg-blue-600 rounded-xl mx-5"%>  
+                    </div>
+                </form>
+            </div>
+            <% end %>
+        <!-- tweetbox ends -->
+        <% end %>
+    </div>
+
+    <hr class="my-10 mx-8 h-px border-0 bg-darktextclr ">
+    
+    <div class="flex flex-col grow">
+        <h2 class="text-center" >Comments</h2>
+        <%= for subtwat <- @twat.comments do %>
+            <%= render TwittercloneWeb.TwatView, "twat.html", conn: @conn, twat: subtwat, show_comments: false %>
+        <% end %>
+    </div>
+    
+    <%= link gettext("Back"), to: NavigationHistory.last_path(@conn, 1) %>
 </div>
-<% end %>
-<!-- tweetbox ends -->
-<% end %>
-
-<%= for subtwat <- @twat.comments do %>
-    <%= render TwittercloneWeb.TwatView, "comment.html", conn: @conn, twat: subtwat %>
-<% end %>
-
-<%= link gettext("Back"), to: NavigationHistory.last_path(@conn, 1) %>

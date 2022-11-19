@@ -4,7 +4,7 @@ defmodule TwittercloneWeb.PageController do
 
   def index(conn, _params) do
 
-    render(conn, "index.html")
+    render(conn, "index.html", oauth_google_url: ElixirAuthGoogle.generate_oauth_url(conn))
   end
   def test(conn, _params) do
     render(conn, "test.html")

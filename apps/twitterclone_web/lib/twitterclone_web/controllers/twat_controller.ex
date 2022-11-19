@@ -3,8 +3,6 @@ defmodule TwittercloneWeb.TwatController do
 
   alias Twitterclone.TwatContext
   alias Twitterclone.TwatContext.Twat
-  alias Twitterclone.CommentContext
-  alias Twitterclone.CommentContext.Comment
 
   action_fallback TwittercloneWeb.FallbackController
 
@@ -15,7 +13,7 @@ defmodule TwittercloneWeb.TwatController do
 
   def show(conn, %{"id" => id}) do
     with {:ok, twat} <- TwatContext.get_twat(id, [:user, :comments, comments: [:user]]) do
-      changeset = CommentContext.change_comment(%Comment{})
+      changeset = TwatContext.change_twat(%Twat{})
       render(conn, "twatpage.html", twat: twat, changeset: changeset)
     end
   end

@@ -1,75 +1,73 @@
-<div class="p-5 m-5 bg-lightdark rounded-xl shadow-xl" >
-
-  <div class="flex flex-col">
-
-    <div class="flex flex-row" >
-      <div class="flex flex-row justify-center bg-deepdark p-2 m-5 rounded-xl ">
-        <img src={@current_user.picture_url} alt="Profile pic lol" class="rounded-xl" style="width: 60px;height:60px;">
+<div class="flex-col p-5 m-5 min-h-0 overflow-y-auto">
+  <div class="p-5 m-5 bg-lightdark rounded-xl shadow-xl" >
+  
+    <div class="flex flex-col">
+  
+      <div class="flex flex-row" >
+        <div class="flex flex-row justify-center bg-deepdark p-2 m-5 rounded-xl ">
+          <img src={@current_user.picture_url} alt="Profile pic lol" class="rounded-xl" style="width: 60px;height:60px;">
+        </div>
+  
+        <%= link to:  Routes.follower_path(@conn, :following, @user.user_id), method: :get do %>
+          <div class="grid grid-rows-3 p-3 m-5 " > 
+            <p class="inline-block text-4xl text-center align-bottom row-span-2"> <%= length(Twitterclone.FollowerContext.get_following(@user.user_id)) %> </p>
+            <h2 class=" row-span-1"> Following </h2> 
+          </div>
+        <% end %>
+    
+        <%= link to: Routes.follower_path(@conn, :followers, @user.user_id), method: :get do %>
+          <div class="grid grid-rows-3 p-3 m-5 " > 
+            <p class="inline-block text-4xl text-center align-bottom row-span-2"> <%= length(Twitterclone.FollowerContext.get_followers(@user.user_id)) %> </p>
+            <h2 class=" row-span-1"> Followers </h2> 
+          </div>
+        <% end %>
       </div>
-
-      <%= link to:  Routes.follower_path(@conn, :following, @user.user_id), method: :get do %>
-        <div class="grid grid-rows-3 p-3 m-5 " > 
-          <p class="inline-block text-4xl text-center align-bottom row-span-2"> <%= length(Twitterclone.FollowerContext.get_following(@user.user_id)) %> </p>
-          <h2 class=" row-span-1"> Following </h2> 
-        </div>
-      <% end %>
+      <div class="m-5 flex flex-col">
+          <div class="mb-5 flex flex-row">
+            <%= button gettext("Edit Profile"), 
+                to:  Routes.user_path(@conn, :edit, @user.user_id), method: :get,
+                class: "mr-5 px-3 bg-blue-600 " %>
   
-      <%= link to: Routes.follower_path(@conn, :followers, @user.user_id), method: :get do %>
-        <div class="grid grid-rows-3 p-3 m-5 " > 
-          <p class="inline-block text-4xl text-center align-bottom row-span-2"> <%= length(Twitterclone.FollowerContext.get_followers(@user.user_id)) %> </p>
-          <h2 class=" row-span-1"> Followers </h2> 
-        </div>
-      <% end %>
-    </div>
-    <div class="m-5 flex flex-col">
-        <div class="mb-5 flex flex-row">
-          <%= button gettext("Edit Profile"), 
-              to:  Routes.user_path(@conn, :edit, @user.user_id), method: :get,
-              class: "mr-5 px-3 bg-blue-600 " %>
-
-          <%= button gettext("Generate API Key"), 
-          to:  Routes.api_path(@conn, :generate), method: :get,
-          class: "mr-5 px-3 bg-blue-600 " %>
-    
-        </div>
-
-        <div class="flex sm:flex-row flex-col  flex-wrap">
-          <div class="flex flex-col mr-20">
-            <p> <%= @user.name %> </p>
-            <p class="text-darktextclr text-xl"> @<%= @user.user_id %> </p>
+            <%= button gettext("Generate API Key"), 
+            to:  Routes.api_path(@conn, :generate), method: :get,
+            class: "mr-5 px-3 bg-blue-600 " %>
+      
           </div>
-          <div class="mr-20 mt-5 sm:mt-0">
-            <p><%= @user.email %> </p>
-          </div>
-          <div class=" mr-20 mt-5 sm:mt-0 sm:flex-col flex-row  ">
-            <p>API Key:</p>
-            <p class="text-clip"> <%= api_key(@user) %> </p>
-          </div>
-          <div class=" mr-20 mt-5 sm:mt-0 sm:flex-col flex-row  ">
-            <p>OAuth connections:</p>
-            <p class="text-clip"> <%= getOauthCount(@user.user_id) %> </p>
-          </div>
-        </div>
-    </div>
-
-    
-  </div>
-
   
-
-  <div class="profilebar" >
-    
+          <div class="flex sm:flex-row flex-col  flex-wrap">
+            <div class="flex flex-col mr-20">
+              <p> <%= @user.name %> </p>
+              <p class="text-darktextclr text-xl"> @<%= @user.user_id %> </p>
+            </div>
+            <div class="mr-20 mt-5 sm:mt-0">
+              <p><%= @user.email %> </p>
+            </div>
+            <div class=" mr-20 mt-5 sm:mt-0 sm:flex-col flex-row  ">
+              <p>API Key:</p>
+              <p class="text-clip"> <%= api_key(@user) %> </p>
+            </div>
+            <div class=" mr-20 mt-5 sm:mt-0 sm:flex-col flex-row  ">
+              <p>OAuth connections:</p>
+              <p class="text-clip"> <%= getOauthCount(@user.user_id) %> </p>
+            </div>
+          </div>
+      </div>
+  
+      
+    </div>
+  
   </div>
-
-</div>
-
-<span><%= link gettext("Back"), to: NavigationHistory.last_path(@conn, 1) %></span>
-
-<div>
-
-<h2>Twats </h2>
-
-<%= for twat <- @twats do %>
-    <%= render TwittercloneWeb.TwatView, "twat.html", conn: @conn, twat: twat %>
-<% end %>
+  
+  <span><%= link gettext("Back"), to: NavigationHistory.last_path(@conn, 1) %></span>
+  
+  <div>
+  
+  <h2 class="text-center">Twats </h2>
+  
+  <div class="grow flex flex-col space-y-3" >
+    <%= for twat <- @twats do %>
+        <%= render TwittercloneWeb.TwatView, "twat.html", conn: @conn, twat: twat, show_comments: true %>
+    <% end %>
+  </div>
+  </div>
 </div>

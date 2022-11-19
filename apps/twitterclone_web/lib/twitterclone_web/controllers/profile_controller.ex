@@ -26,17 +26,19 @@ defmodule TwittercloneWeb.ProfileController do
   end
 
   def profile(conn, %{"user_id" => user_id}) do
-    with {:ok, user} <- UserContext.get_by_userid(user_id, [:twats, :followers, :api_key, twats: [:user, :comments]]) do
-      current_user = Guardian.Plug.current_resource(conn)
-      cond do
-        current_user == nil ->
-          render(conn, "profile.html", user: user, twats: user.twats, title: "Profile")
-        current_user.user_id == user.user_id ->
-          redirect(conn, to: Routes.profile_path(conn, :myprofile))
-        true ->
-          following = current_user in user.followers
-          render(conn, "profile.html", user: user, twats: user.twats, follow_button: getfollowbutton(following), title: "Profile")
-      end
+    case UserContext.get_by_userid(user_id, [:twats, :followers, :api_key, twats: [:user, :comments]]) do
+      {:error, :resource_not_found} -> redirect(conn, to: Routes.session_path(conn, :login))
+      {:ok, user} ->
+        current_user = Guardian.Plug.current_resource(conn)
+        cond do
+          current_user == nil ->
+            render(conn, "profile.html", user: user, twats: user.twats, title: "Profile")
+          current_user.user_id == user.user_id ->
+            redirect(conn, to: Routes.profile_path(conn, :myprofile))
+          true ->
+            following = current_user in user.followers
+            render(conn, "profile.html", user: user, twats: user.twats, follow_button: getfollowbutton(following), title: "Profile")
+        end
     end
   end
 
@@ -51,7 +53,7 @@ defmodule TwittercloneWeb.ProfileController do
   def newtwat(conn, _params) do
     current_user = Guardian.Plug.current_resource(conn)
     changeset = TwatContext.change_twat(%Twat{}, %{user_id: current_user.user_id})
-    render(conn, "twat.html", changeset: changeset, title: "Twat Something!")
+    render(conn, "newtwat.html", changeset: changeset, title: "Twat Something!")
   end
 
   def createtwat(conn, %{"twat" => twat_params}) do
@@ -94,14 +96,14 @@ defmodule TwittercloneWeb.ProfileController do
     end
   end
 
-  def oauth_signup(conn, args) do
+  def oauth_signup(conn, _args) do
     IO.inspect(conn)
     oauth_user = UserContext.get_oauth_user_bysub("")
     changeset = UserContext.change_user(%UserContext.User{})
     render(conn, "oath_signup.html", changeset: changeset, oauth_user: oauth_user)
   end
 
-  def update_picture_url(conn, args) do
+  def update_picture_url(conn, _args) do
     current_user = Guardian.Plug.current_resource(conn)
     oauths = UserContext.get_oauth_users(current_user.user_id)
     UserContext.update_user(%{

@@ -1,42 +1,62 @@
-<div class="px-20">
+<div class="px-10">
 
-  <section class=" text-center bg-lightdark pt-20 pb-14 my-5 rounded-xl shadow-xl">
+  <section class=" text-center bg-lightdark pt-20 pb-14 my-5 rounded-xl shadow-xl ">
     <h1 class="text-6xl"><%= gettext "Welcome to %{name}!", name: "Twatter" %></h1>
     <p class="text-3xl pt-10"><%= gettext "Not owned by %{elon}", elon: "Elon Musk" %> </p>
   </section>
   
   <%= if assigns[:error] do %>
-      <div class=" bg-red-500 p-5 rounded-xl">
+      <div class=" bg-red-500 p-5 rounded-xl shadow-xl">
         <p> <%= @error %></p>
       </div>
     <% end %>
   
-  <div class="bg-lightdark p-5 rounded-xl mt-10 shadow-xl grid grid-cols-2 justify-items-center">
+  <div class="bg-lightdark p-5 rounded-xl shadow-xl mt-10  grid grid-cols-2 justify-items-center">
     <%= if @current_user do %>
       <p>Hello  <%= @current_user.user_id %>!</p>
       <p>Role:  <%= @current_user.role %> </p>
-      <div class="p-5 bg-deepdark  rounded-xl">
-         <%= link gettext("Sign out"), to: Routes.session_path(@conn, :logout) %>
-      </div>
-      
-      <div class="p-5 bg-deepdark  rounded-xl">
-        <%= link gettext("Profile"), to: Routes.profile_path(@conn, :profile, @current_user.user_id) %>
-      </div>
+
+      <%= link to: Routes.session_path(@conn, :logout) do %>
+        <div class="p-5 bg-deepdark rounded-xl shadow-xl">
+          <p><%= gettext("Sign out") %></p>
+        </div>
+      <% end %>
+
+      <%= link to: Routes.profile_path(@conn, :profile, @current_user.user_id) do %>
+        <div class="p-5 bg-deepdark rounded-xl shadow-xl">
+          <p><%= gettext("Profile") %></p>
+        </div>
+      <% end %>
     
     <% else %>
 
-      <div class=" rounded-xl text-center text-fancyclr  shadow-md bg-dark p-5 w-1/4 col-span-2" >
-        <span class="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-400">
-          Log in to do all the things
-        </span>
-      </div>
+      <div class="col-span-2 flex flex-col space-y-5">
+        <div class=" rounded-xl text-center text-fancyclr  shadow-md bg-dark p-5  " >
+          <span class="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-400">
+            Log in to do all the things
+          </span>
+        </div>
+  
+        <div class="flex flex-row justify-between">
+          <%= link to: Routes.session_path(@conn, :new) do %>
+            <div class="p-5 bg-deepdark rounded-xl shadow-xl">
+              <p><%= gettext("Sign in") %></p>
+            </div>
+          <% end %>
+    
+          <%= link to: Routes.user_path(@conn, :new) do %>
+            <div class="p-5 bg-deepdark rounded-xl shadow-xl">
+              <p><%= gettext("Register") %></p>
+            </div>
+          <% end %>
+        </div>
 
-      <div class="p-5 bg-deepdark rounded-xl">
-        <%= link gettext("Sign in"), to: Routes.session_path(@conn, :new) %>
-      </div>
-      
-      <div class="p-5 bg-deepdark  rounded-xl">
-        <%= link gettext("Register"), to: Routes.user_path(@conn, :new) %>
+        <%= link to: @oauth_google_url do %>
+            <div class="p-5 bg-blue-600 rounded-xl shadow-xl flex flex-row justify-center " >
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/240px-Google_%22G%22_Logo.svg.png" alt="Profile" style="width:24px;height:24px;">
+                <p class="pl-5 text-center font-bold align-middle" > <%= gettext("Sign in with Google") %></p>
+            </div>
+          <% end %>
       </div>
     <% end %>
   </div>

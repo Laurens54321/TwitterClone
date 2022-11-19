@@ -194,7 +194,9 @@ defmodule Twitterclone.RoomContext do
     end
   end
 
-  def compare_msg(x, y), do: NaiveDateTime.diff(x.inserted_at, y.inserted_at) > 600 || x.user_id != y.user_id
+  def compare_msg_time(x, y), do: NaiveDateTime.diff(x.inserted_at, y.inserted_at) > 600
+
+  def compare_msg_prof(x, y), do: x.user_id != y.user_id
 
   def put_show_time(messages) do
     msg_amount = Enum.count(messages) - 1
@@ -203,16 +205,12 @@ defmodule Twitterclone.RoomContext do
     else
       for x <- 0..msg_amount do
         cond do
-          msg_amount == 0 -> %{Enum.at(messages, 0) | showtime: true}
-          x == 0 -> %{Enum.at(messages, 0) | showtime: true}
+          msg_amount == 0 -> %{Enum.at(messages, 0) | showtime: true, showprof: true}
+          x == 0 -> %{Enum.at(messages, 0) | showtime: true, showprof: true}
           msg_amount > 0 && x > 0 ->
             elem = Enum.at(messages, x)
             prev_elem = Enum.at(messages, x - 1)
-            if compare_msg(elem, prev_elem) do
-              %{elem | showtime: true}
-            else
-              elem
-            end
+            %{elem | showtime: compare_msg_time(elem, prev_elem), showprof: compare_msg_prof(elem, prev_elem)}
         end
       end
     end

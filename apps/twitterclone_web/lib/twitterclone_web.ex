@@ -119,7 +119,7 @@ defmodule TwittercloneWeb do
 
   def handle_live_blazeit(socket, message) do
     if (message =~ "420") do
-      Phoenix.LiveView.assign(socket, blazeit: "Eyo blazeit man")
+      Phoenix.LiveView.assign(socket, :blazeit, "Eyo blazeit man")
     else
       socket
     end

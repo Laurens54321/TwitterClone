@@ -1,26 +1,27 @@
-<!-- comment starts -->
+
+<div class="rounded-xl grow p-3 m-5  bg-lightdark">
     <%= link to: Routes.twat_path(@conn, :show, @twat.id), 
-        method: :get, class: "btn " do %>
+        method: :get, class: "flex flex-row " do %>
         <div class="post">
             <div class="post__avatar"> </div>
 
-            <div class="post__body">
-            <div class="post__header">
-                <div class="post__headerText">
+            <div class="">
+            <div class="">
+                <div class="">
                 <h3>
                     <%= @twat.user.name %> 
-                    <span class="post__headerSpecial">@<%= @twat.user_id %></span>
+                    <span class="">@<%= @twat.user_id %></span>
                 </h3>
                 </div>
-                <div class="post__headerDescription">
-                <%= @twat.text %>
+                <div class="">
+                <%= @twat.text  %>
                 </div>
             </div>
             
             <div class="post__footer">
-                <span class="post__headerSpecial">@<%= @twat.inserted_at %></span>
+                <span class="text-darktxtclr"><%= @twat.inserted_at |> Timex.format!("%H:%M", :strftime) %></span>
             </div>
             </div>
         </div>
     <% end %>
-<!-- comment ends -->
+</div>

@@ -10,10 +10,9 @@ defmodule TwittercloneWeb.SessionController do
     maybe_user = Guardian.Plug.current_resource(conn)
 
     if maybe_user do
-      redirect(conn, to: "/")
+      redirect(conn, to: Routes.profile_path(conn, :feed))
     else
-      oauth_google_url = ElixirAuthGoogle.generate_oauth_url(conn)
-      render(conn, "new.html", changeset: changeset, action: Routes.session_path(conn, :login), oauth_google_url: oauth_google_url)
+      render(conn, "new.html", changeset: changeset, action: Routes.session_path(conn, :login), oauth_google_url: ElixirAuthGoogle.generate_oauth_url(conn))
     end
   end
 

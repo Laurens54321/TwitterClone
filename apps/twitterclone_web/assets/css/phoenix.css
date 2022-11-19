@@ -456,17 +456,7 @@ select,
 textarea {
   margin-bottom: 1.5rem;
 }
-blockquote,
-dl,
-figure,
-form,
-ol,
-p,
-pre,
-table,
-ul {
-  margin-bottom: 2.5rem;
-}
+
 table {
   border-spacing: 0;
   display: block;

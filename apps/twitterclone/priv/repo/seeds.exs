@@ -45,15 +45,17 @@
     "role" => "User"
     })
 
-{:ok, _cs} =
+{:ok, cs } =
   Twitterclone.TwatContext.create_twat(%{
     "text" => "First tweet!",
     "user_id" => "admin"})
 
 {:ok, _cs} =
   Twitterclone.TwatContext.create_twat(%{
-    "text" => "Another tweet!",
-    "user_id" => "admin"})
+    "text" => "subtweet!",
+    "user_id" => "admin",
+    "replyto_id" => cs.id
+    })
 
 {:ok, _cs} =
   Twitterclone.TwatContext.create_twat(%{
@@ -61,23 +63,17 @@
     "user_id" => "user"})
 
 {:ok, _cs} =
-  Twitterclone.CommentContext.create_comment(%{
-    "text" => "Comment",
-    "user_id" => "user",
-    "twat_id" => 1})
-
-{:ok, _cs} =
-  Twitterclone.UserContext.create_follower(%{
+  Twitterclone.FollowerContext.create_follower(%{
     "user_id" => "admin",
     "follower_id" => "user"})
 
 {:ok, _cs} =
-  Twitterclone.UserContext.create_follower(%{
+  Twitterclone.FollowerContext.create_follower(%{
     "user_id" => "manager",
     "follower_id" => "user"})
 
 {:ok, _cs} =
-  Twitterclone.UserContext.create_follower(%{
+  Twitterclone.FollowerContext.create_follower(%{
     "user_id" => "4",
     "follower_id" => "user"})
 

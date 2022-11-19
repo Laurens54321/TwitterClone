@@ -1,4 +1,4 @@
-<div class="rounded-xl p-3 m-auto basis-2 sm:basis-1 md:basis-2 lg:basis-3 xl:basis-4 2xl:basis-5 bg-lightdark ring-1 ring-slate-900/5 shadow-lg max-w-5xl ">
+<div class="rounded-xl grow p-3 bg-lightdark  ">
     <%= link to: Routes.twat_path(@conn, :show, @twat.id), method: :get, class: "" do %>
         <div class="flex p-5 justify-items-center space-y-2">
             <div class="">
@@ -13,7 +13,7 @@
                 </div>
 
                 <div class=" text-darktextclr mt-2">
-                    <span class="">@<%= @twat.inserted_at %></span>
+                    <span class=""><%= @twat.inserted_at |> Timex.format!("%H:%M", :strftime) %></span>
                 </div>
 
                 <%= if TwittercloneWeb.TwatView.isMyTwat?(@conn, @twat) do %>
@@ -23,11 +23,8 @@
                     </div>
                 <% end %>
 
-                <%= if 0 != TwittercloneWeb.TwatView.getCommentCount @twat   do %>
+                <%= if @show_comments && 0 != TwittercloneWeb.TwatView.getCommentCount @twat   do %>
                 <div class="mt-5 flex flex-nowrap">
-                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M9,22A1,1 0 0,1 8,21V18H4A2,2 0 0,1 2,16V4C2,2.89 2.9,2 4,2H20A2,2 0 0,1 22,4V16A2,2 0 0,1 20,18H13.9L10.2,21.71C10,21.9 9.75,22 9.5,22V22H9Z" />
-                    </svg>
                     <p class="pl-5"> <%= getCommentCount @twat %></p>
                 </div>
                 <% end %>

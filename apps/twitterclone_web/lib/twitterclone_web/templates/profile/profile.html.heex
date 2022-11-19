@@ -1,39 +1,41 @@
-<div class="rounded-xl bg-lightdark p-5 m-5">
-
-  <h1><%= gettext "Profile"  %></h1>
-
-  <%= if assigns[:follow_button] do %> <!-- trick to check if nil -->
-    <%= render @follow_button, conn: @conn, current_user: @current_user, user: @user %>
-  <% end %>
-
-  <ul>
-    <li>
-      <strong><%= @user.name %></strong>
-      @<%= @user.user_id %>
-    </li>
-
-    <li>
-      <strong>Email:</strong>
-      <%= @user.email %>
-    </li>
-
-  </ul>
-
-</div>
-
-<span><%= link gettext("Edit"), to: Routes.user_path(@conn, :edit, @user.user_id) %></span> |
-<span><%= link gettext("Back"), to: NavigationHistory.last_path(@conn, 1) %></span>
-
-<div>
-
+<div class=" p-5 m-5 min-h-0 overflow-y-auto">
+  <div class="rounded-xl bg-lightdark p-5 m-5">
   
-<div class="bg-lightdark w-1/2 p-5 text-3xl text-center text-deepdark rounded-2xl">
-  <h2>Twats </h2>
-</div>
-
-<div class="flex flex-col justify-items-center" >
-  <%= for twat <- @twats do %>
-      <%= render TwittercloneWeb.TwatView, "twat.html", conn: @conn, twat: twat %>
-  <% end %>
-</div>
+    <h1><%= gettext "Profile"  %></h1>
+  
+    <%= if assigns[:follow_button] do %> <!-- trick to check if nil -->
+      <%= render @follow_button, conn: @conn, current_user: @current_user, user: @user %>
+    <% end %>
+  
+    <ul>
+      <li>
+        <strong><%= @user.name %></strong>
+        @<%= @user.user_id %>
+      </li>
+  
+      <li>
+        <strong>Email:</strong>
+        <%= @user.email %>
+      </li>
+  
+    </ul>
+  
+  </div>
+  
+  <span><%= link gettext("Edit"), to: Routes.user_path(@conn, :edit, @user.user_id) %></span> |
+  <span><%= link gettext("Back"), to: NavigationHistory.last_path(@conn, 1) %></span>
+  
+  <div>
+  
+    
+  <div class="bg-lightdark w-1/2 p-5 text-3xl text-center text-deepdark rounded-2xl">
+    <h2>Twats </h2>
+  </div>
+  
+  <div class="flex flex-col justify-items-center" >
+    <%= for twat <- @twats do %>
+        <%= render TwittercloneWeb.TwatView, "twat.html", conn: @conn, twat: twat, show_comments: true %>
+    <% end %>
+  </div>
+  </div>
 </div>

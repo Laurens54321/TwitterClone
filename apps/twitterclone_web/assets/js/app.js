@@ -27,8 +27,30 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
-import InfiniteScroll from "../js/infinite_scroll_hook";
 let Hooks = { InfiniteScroll }
+
+function sendNotification(title, message) {
+    if(Notification.permission === "granted") {
+        try {
+        new Notification(title, {body: message, requireInteraction: false});
+        } catch (e) {
+        console.debug("notifcation error: " + e)
+        }
+    }
+    }
+    
+    Hooks.Notification = {
+        mounted(){
+            if(Notification.permission === "default") {
+            Notification.requestPermission();
+            }
+            this.handleEvent("notification", ({title, message}) => sendNotification(title, message));
+        }
+    }
+    
+
+import InfiniteScroll from "../js/infinite_scroll_hook";
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {
     params: {_csrf_token: csrfToken},
@@ -45,9 +67,10 @@ window.addEventListener("phx:page-loading-stop", info => topbar.hide())
 liveSocket.connect()
 
 // expose liveSocket on window for web console debug logs and latency simulation:
-// >> liveSocket.enableDebug()
-// >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
+// liveSocket.enableDebug()
+ liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
+
 
 

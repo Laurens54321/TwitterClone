@@ -11,9 +11,10 @@ defmodule Twitterclone.RoomContext.Message do
     belongs_to :user, User, foreign_key: :user_id, references: :user_id, type: :string
 
     belongs_to  :replyto, Twitterclone.RoomContext.Message
-    has_many :replies, Twitterclone.RoomContext.Message, foreign_key: :replyto
+    has_many :comments, Twitterclone.RoomContext.Message, foreign_key: :replyto
 
     field :showtime, :boolean, virtual: true, default: false
+    field :showprof, :boolean, virtual: true, default: false
 
     timestamps()
   end
@@ -26,6 +27,7 @@ defmodule Twitterclone.RoomContext.Message do
     |> validate_required([:text, :user_id, :room_id])
     |> foreign_key_constraint(:user_id, name: :messages_user_id_fkey)
     |> foreign_key_constraint(:room_id, name: :messages_room_id_fkey)
+    #|> foreign_key_constraint(:replyto_id, name: :messages_replyto_id_fkey)
   end
 
 end
