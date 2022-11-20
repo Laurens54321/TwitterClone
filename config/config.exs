@@ -75,4 +75,9 @@ config :tailwind, version: "3.2.1", default: [
   cd: Path.expand("../apps/twitterclone_web/assets", __DIR__)
 ]
 
-import_config "dev.secret.exs"
+config :elixir_auth_google,
+  client_id: System.get_env("GOOGLE_CLIENT_ID"),
+  client_secret: System.get_env("GOOGLE_CLIENT_SECRET"),
+  google_scope: "email profile"
+
+#import_config "dev.secret.exs"
