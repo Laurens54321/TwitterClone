@@ -2,10 +2,10 @@ import Config
 
 # Configure your database
 config :twitterclone, Twitterclone.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "casaos",
+  password: "casaos",
   hostname: "localhost",
-  database: "twitterclone_dev",
+  database: "casaos",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10,
   migration_timestamps: [type: :utc_datetime]
